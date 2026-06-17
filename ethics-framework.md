@@ -1,8 +1,10 @@
 # A framework for assessing the ethics, social impact and environmental impact of online ecosystems
 
-**Version 1.2 — foundation document**
+**Version 1.3 — foundation document**
 
 This is the foundation document for the framework. It sets out the method, the criteria and the scoring logic. The separate tools (a scoring spreadsheet, a procurement version, an audit version and a public-reporting version) will be built from this document so they all work the same way.
+
+> **What changed in version 1.3.** This version incorporates selected recommendations from an external implementation guide. It adds: a dual-track carbon accounting note in criterion 1 covering Locational Marginal Emissions (LME) as a more precise method for operational carbon decisions alongside standard grid-average accounting; an ISO 14046 dual-scope water footprinting framework in criterion 2 distinguishing direct on-site and indirect off-site water use; stronger language in Section 4 on the primacy of independent, adversarial sources over corporate self-disclosures; a targeted verification threshold in criterion 9 capping raw scores at 2 where no independent checking exists (scores of 3 or 4 require third-party verification); temporal and spatial workload optimisation as a scoring signal in criterion 13; and three new sources (ISO 14046, Sun et al. 2025 on LMEs, Li et al. 2023 on AI water use). Two recommendations from the guide were not adopted: integrating specific commercial products (Cyrux AI and Mashinii) into the framework method, which would create product dependencies and endorsements incompatible with a tool-neutral framework; and replacing the evidence-quality multiplier system with framework-wide hard caps on self-reported scores — instead, a targeted cap is applied to criterion 9 only, where transparency is both the subject of the criterion and the foundation for all other scores.
 
 > **What changed in version 1.2.** This version reflects changes developed and tested in the AI provider scorecard. It adds: a thirteenth criterion (criterion 13, per-prompt efficiency, covering the ongoing carbon and water cost of each user query); updated score band labels (2 = OK, 3 = Good) for clearer plain-English meaning; renaming "confidence discount" to "evidence-quality adjustment" throughout; a new consideration for user location and grid-based carbon accounting; materiality notes for criteria 4 and 5 when assessing AI providers; and three new glossary entries. A Creative Commons Zero v1.0 Universal licence is applied — no rights reserved.
 
@@ -145,6 +147,8 @@ These multipliers are sensible defaults, not laws of nature. Two points to keep 
 - The defaults assume a provider's own data is usually more reliable than an outside estimate. That is not always true. A careful estimate from an independent watchdog can be more trustworthy than a cherry-picked self-report. Where that is the case, record your reason and treat the independent estimate as "Verified" or raise its multiplier.
 - You can change the multipliers to match how cautious your decision needs to be. A high-stakes procurement may discount unverified claims harder.
 
+**Prioritising adversarial and independent sources.** When scoring, you will often have two types of evidence in front of you: what the provider says about itself (sustainability reports, press releases, self-submitted survey responses) and what independent parties say (court filings, regulatory penalty notices, enforcement actions, audited watchdog reports, investigative journalism). Where these conflict, the independent source takes precedence. Corporate sustainability reports and voluntary self-disclosures are a starting point, not an end point. A high score based only on the provider's own materials should carry an Estimated or Self-reported confidence rating, not Verified. A regulatory enforcement action, a court finding, or a documented report from an established watchdog can lower a self-reported score — and should. Record which sources you used and flag any significant conflicts between them.
+
 ### Weighting
 
 Not every criterion matters equally for every decision. The framework lets you set a **weight** for each criterion (for example, 0 to 3) before you add up scores. A team choosing an AI model for a sensitive use might weight military use and transparency highly. A team choosing a CMS for a public website might weight accessibility and carbon highly.
@@ -243,6 +247,10 @@ Each criterion below follows the same shape: what it means, why it matters, what
 
 **A note on user location and grid intensity.** Where an AI provider processes your queries matters. A provider hosted in China routes inference through a coal-heavy grid (~550 g CO₂/kWh); a provider using EU data centres may run on a grid nearer to 60–230 g CO₂/kWh depending on country. Some providers use market-based carbon accounting (buying renewable energy certificates globally) which can understate the location-based impact for users in high-carbon grid areas, or overstate it for users on clean-grid infrastructure. When scoring, note which accounting method the provider uses, and consider the grid intensity of where your queries will actually be processed. For open-weight models, self-hosting on low-carbon infrastructure is a genuine option that can transform this score.
 
+**A note on Locational Marginal Emissions (LMEs).** Annual average grid intensity figures are adequate for compliance reporting, but they can misrepresent the real carbon consequence of adding computational load to the grid at a specific time and place. Locational Marginal Emissions (LMEs) measure the carbon cost of the *next unit* of electricity at a specific point on the grid, accounting for which generators are actually dispatched and the physical constraints of transmission. LME values vary by hour, day, season, and grid node — a data centre that looks clean by annual average may be drawing on coal capacity at peak demand, while a facility in a region with abundant wind or hydro may be genuinely low-carbon in real time.
+
+For scoring purposes, the distinction matters most when assessing providers who claim real-time or near-real-time carbon optimisation — routing workloads to lower-LME regions or shifting non-latency-sensitive tasks to off-peak hours. A provider who uses LME signals for operational decisions is doing something substantively different and more rigorous than one who simply purchases annual renewable energy certificates. If a provider can demonstrate LME-aware workload scheduling, treat this as evidence of stronger practice under criterion 3 (efficiency) as well as criterion 1. For a more technical treatment, see: Sun et al. (2025), *Locational Marginal Emissions for Carbon-Aware Data Center Operations in Large-Scale Power Grids*, arXiv:2512.18819.
+
 **A note for AI models.** Separate the **training footprint** (the large, one-off cost of building the model) from the **inference footprint** (the ongoing cost of running it for users). A model can look clean on a per-query basis while hiding a very large training footprint that has not yet been "earned back" through use. Ask for both figures, and ask how the training footprint is spread across expected use. A small, efficient model reused widely may be far better than a giant model trained at great cost and used little.
 
 **Scoring signals.** A high score (3–4) means full three-scope reporting including embodied carbon, both training and inference footprints disclosed for AI, science-based targets, real cuts and hour-by-hour clean energy, independently verified. A low score (0–1) means no emissions data, or vague claims resting mainly on offsets.
@@ -251,27 +259,39 @@ Each criterion below follows the same shape: what it means, why it matters, what
 
 ### Criterion 2: Water use
 
-**What it means.** The fresh water consumed to run and cool the infrastructure, and the water used to generate its electricity.
+**What it means.** The fresh water consumed to run and cool the infrastructure, and the water used to generate its electricity — assessed across both direct on-site use and indirect off-site use, in line with ISO 14046.
 
-**Why it matters.** Data centres use water to cool equipment, and the power stations that supply them use more. Water stress is a **local** problem: the same litre matters far more in a drought-hit region than in a wet one. Most of a data centre's water footprint can come indirectly from electricity generation, and a large share of cooling water evaporates rather than returning to the local system. Figures are often incomplete and contested, so treat single numbers with care.
+**Why it matters.** Data centres use water to cool equipment, and the power stations that supply them use more. Water stress is a **local** problem: the same litre matters far more in a drought-hit region than in a wet one. Crucially, research suggests roughly two-thirds of a data centre's total water footprint occurs *off-site* — at the power stations that generate its electricity — not in the cooling towers visible on-site. Generative AI models generate significant heat that requires water to dissipate: estimates suggest roughly 0.5 litres of freshwater per 20 to 50 typical queries, though this varies significantly by model, data-centre design, and local climate. Figures are often incomplete and contested, so treat single numbers with care.
+
+**Understanding the two scopes of water use.** ISO 14046 defines a life-cycle approach to water footprinting that distinguishes:
+
+- **Direct water footprint (on-site, Scope 1):** Water evaporated in cooling towers, used in humidification systems, or otherwise consumed on-site and not returned to the local watershed. This is what most data-centre water metrics (such as WUE) measure.
+- **Indirect water footprint (off-site, Scope 2 and 3):** Water consumed at the electricity generation layer (thermoelectric plants use cooling water; hydroelectric dams lose water to evaporation from reservoirs) and embedded in hardware manufacturing (semiconductor fabrication is highly water-intensive). These off-site volumes often exceed on-site consumption significantly.
+
+When reviewing a provider's water data, check whether they are reporting both scopes, not just the more visible on-site figure. A provider reporting only WUE may be hiding the majority of its water impact.
+
+**Assessing local water stress.** Volume alone does not indicate impact. One litre consumed from a water-abundant watershed is categorically different from one litre consumed in a region already under water stress. The AWARE (Available WAter REmaining) methodology provides a water-stress weighting factor for different regions, allowing consumption figures to be adjusted for local scarcity. A provider operating in a water-stressed region should face higher scrutiny even if its raw consumption is modest.
 
 **What to look at.**
 
 - Whether the provider reports **both** water withdrawal (total taken) and water consumption (permanently lost). Reporting only one can make the footprint look smaller than it is.
 - Whether figures are given **per site**, not just as a single company-wide total. A national total tells a local community nothing about its own aquifer.
-- Whether the provider reports water at sites in water-stressed areas, and what it is doing there.
+- Whether the provider reports water at sites in water-stressed areas using a recognised stress-weighting tool (such as AWARE), and what it is doing there.
+- Whether indirect water use (electricity generation, hardware manufacturing) is estimated and reported alongside direct on-site use.
 - Use of recycled or non-drinking water, closed-loop cooling, and "water-positive" commitments that replenish the same watershed.
 - The Water Usage Effectiveness (WUE) metric, measured to a recognised standard.
 
 **Evidence and standards.**
 
-- [ISO/IEC 30134-9:2022 — Water Usage Effectiveness (WUE)](https://www.iso.org/standard/79342.html) — the standard data-centre water metric.
+- [ISO 14046:2014 — Environmental Management: Water Footprint](https://www.iso.org/standard/43263.html) — the international standard for life-cycle water footprinting, covering both direct and indirect scopes, impact categories beyond volume (including scarcity and eutrophication), and the principles for regional weighting.
+- [ISO/IEC 30134-9:2022 — Water Usage Effectiveness (WUE)](https://www.iso.org/standard/79342.html) — the standard data-centre water metric for on-site direct use.
 - [EU data-centre reporting scheme — Delegated Regulation (EU) 2024/1364](https://eur-lex.europa.eu/eli/reg_del/2024/1364/oj) — requires larger EU data centres to report water and energy data, under the [Energy Efficiency Directive (EU) 2023/1791](https://eur-lex.europa.eu/eli/dir/2023/1791/oj).
+- Li, P., Yang, J., Islam, M. A., & Ren, S. (2023). *Making AI Less "Thirsty": Uncovering and Addressing the Secret Water Footprint of AI Models*. arXiv:2304.03271. — estimates per-query water consumption across AI providers.
 - For background on local and indirect water impacts, see the [World Economic Forum on data-centre water circularity](https://www.weforum.org/stories/2025/11/data-centres-and-water-circularity/) and the [Lincoln Institute analysis of land and water impacts](https://www.lincolninst.edu/publications/land-lines-magazine/articles/land-water-impacts-data-centers/).
 
-**How it varies by layer.** Hosting providers and data centres are where water use is direct. AI models, CMSs and frameworks inherit it — judge them on the hosts and regions they let you choose.
+**How it varies by layer.** Hosting providers and data centres are where water use is direct. AI models, CMSs and frameworks inherit it — judge them on the hosts and regions they let you choose. For AI models specifically, per-query water estimates are now available from some providers (see criterion 13) and should be used alongside site-level figures.
 
-**Scoring signals.** A high score (3–4) means per-site reporting of both withdrawal and consumption, low or recycled water use, attention to water-stressed sites, and verified replenishment. A low score (0–1) means no water data, or only a single global figure with no local detail.
+**Scoring signals.** A high score (3–4) means per-site reporting of both direct and indirect water use, ISO 14046-aligned assessment, low or recycled water use, AWARE-weighted assessment at water-stressed sites, and verified replenishment. A low score (0–1) means no water data, only a single global on-site figure with no indirect scope, or no attention to local water stress.
 
 ---
 
@@ -468,7 +488,9 @@ Each criterion below follows the same shape: what it means, why it matters, what
 
 **How it varies by layer.** Transparency is direct and central at every layer. Always score it for the thing itself.
 
-**Scoring signals.** A high score (3–4) means full, regular, independently verified reporting, clear AI or software documentation, open governance and honest disclosure of problems. A low score (0–1) means little or no disclosure and no independent checking.
+**Note on scoring threshold for this criterion.** Because transparency is both a criterion in its own right and the foundation for every other score, it carries a stronger verification requirement than other criteria. A score of 3 or 4 on criterion 9 requires independent verification — not just self-report. This means an audit by a credible third party, a regulatory finding, or documentation from an established watchdog, not simply a provider's own sustainability report or press release. A provider with detailed, consistent self-reporting but no independent checking should score no higher than 2 on this criterion, however thorough its disclosures appear. This is the one place in the framework where the evidence-quality multiplier system is supplemented by a threshold rule: the multiplier still applies when calculating totals, but the raw score itself is capped at 2 where independent verification is absent.
+
+**Scoring signals.** 4 = full, regular reporting independently audited or certified; clear and honest AI or software documentation; open governance; proactive disclosure of problems and limits. 3 = substantive reporting with some independent verification (for example, a single third-party audit or a recognised certification, even if not covering all areas). 2 = detailed self-reporting without independent verification — the ceiling where no third-party checking exists. 1 = limited or patchy disclosure with no checking. 0 = no meaningful disclosure.
 
 ---
 
@@ -588,7 +610,14 @@ Broader support (logistics, communications, intelligence analysis, general cloud
 
 **A note on user location.** Per-prompt carbon depends on where inference runs. A provider using EU data centres (lower-carbon grids) will have a lower location-based per-query carbon figure than one using US data centres, even if both publish the same market-based figure. When scoring, note which accounting method is used and consider the grid intensity of the user's likely inference location.
 
-**Scoring signals.** 4 = peer-reviewed figures published for both carbon and water per prompt, with a clear reproducible methodology. 3 = independently verified or detailed self-reported figures for both carbon and water. 2 = partial figures (e.g. energy only, or water only) or well-evidenced estimates from a credible third party. 1 = no per-query data; impact is assumed to be typical for a frontier model. 0 = no per-query data and the provider is known to use high-carbon energy sources for inference (for example, unmitigated fossil generation at the data centre).
+**Workload optimisation as a higher-order signal.** Beyond publishing per-prompt figures, a small number of providers are beginning to shift computational workloads in response to real-time grid conditions. This can take two forms:
+
+- *Temporal shifting:* scheduling non-urgent workloads (such as large training runs or batch inference) during hours when the grid is cleaner — often at night in summer when solar generation has ended, or during periods of high wind. This reduces both carbon intensity and cooling-water evaporation (cooler ambient temperatures reduce the water needed for heat dissipation).
+- *Spatial shifting:* routing non-latency-sensitive queries to data centre regions where the Locational Marginal Emissions (LME) value is lower at that moment — for example, prioritising a facility drawing on hydropower over one on a gas-heavy grid.
+
+When evidence of active, LME-aware or carbon-aware workload scheduling exists and can be verified, this should be treated as a significant positive indicator under this criterion and under criterion 3 (efficiency). Providers who claim carbon-aware operation should be asked for specifics: what data source drives the decision, how shifts are verified, and what the measured impact has been. Vague claims of "carbon-aware compute" without operational evidence should be treated as self-reported at best.
+
+**Scoring signals.** 4 = peer-reviewed figures published for both carbon and water per prompt, with a clear reproducible methodology. 3 = independently verified or detailed self-reported figures for both carbon and water. 2 = partial figures (e.g. energy only, or water only) or well-evidenced estimates from a credible third party. 1 = no per-query data; impact is assumed to be typical for a frontier model. 0 = no per-query data and the provider is known to use high-carbon energy sources for inference (for example, unmitigated fossil generation at the data centre). Demonstrated and verifiable LME-aware or temporal workload shifting may justify raising a score by one level where the core data is already present.
 
 ---
 
@@ -644,10 +673,16 @@ All links were checked against official or recognised sources. Standards are upd
 - [ISO/IEC 30134-2 — Power Usage Effectiveness (PUE)](https://www.iso.org/standard/63451.html)
 - [ISO/IEC 30134 series (PUE, REF, WUE, ERF)](https://www.iso.org/publication/PUB200301.html)
 - [ISO/IEC 30134-9:2022 — Water Usage Effectiveness (WUE)](https://www.iso.org/standard/79342.html)
+- [ISO 14046:2014 — Environmental Management: Water Footprint](https://www.iso.org/standard/43263.html) — life-cycle water footprinting standard covering direct and indirect scopes, impact categories (scarcity, eutrophication), and regional stress weighting.
 - [Energy Efficiency Directive (EU) 2023/1791](https://eur-lex.europa.eu/eli/dir/2023/1791/oj)
 - [Data-centre rating scheme — Delegated Regulation (EU) 2024/1364](https://eur-lex.europa.eu/eli/reg_del/2024/1364/oj)
 - [World Economic Forum — data-centre water circularity](https://www.weforum.org/stories/2025/11/data-centres-and-water-circularity/)
 - [Lincoln Institute — land and water impacts of data centres](https://www.lincolninst.edu/publications/land-lines-magazine/articles/land-water-impacts-data-centers/)
+
+**Per-prompt efficiency and AI environmental impact**
+
+- Li, P., Yang, J., Islam, M. A., & Ren, S. (2023). *Making AI Less "Thirsty": Uncovering and Addressing the Secret Water Footprint of AI Models*. arXiv:2304.03271. [https://arxiv.org/abs/2304.03271](https://arxiv.org/abs/2304.03271) — estimates per-query water consumption across AI providers and distinguishes direct and indirect water scopes.
+- Sun, X., et al. (2025). *Locational Marginal Emissions for Carbon-Aware Data Center Operations in Large-Scale Power Grids*. arXiv:2512.18819. [https://arxiv.org/abs/2512.18819](https://arxiv.org/abs/2512.18819) — presents LME methodology for data-centre carbon accounting at grid-node level, with accuracy comparisons against annual grid averages.
 
 **Hardware, repair and e-waste**
 
@@ -710,7 +745,7 @@ All links were checked against official or recognised sources. Standards are upd
 
 ## 9. Glossary
 
-**AI (artificial intelligence)** — software that performs tasks normally needing human intelligence, such as understanding language or recognising images.
+**AWARE (Available WAter REmaining)** — a regional water-stress weighting tool used in life-cycle assessments to convert water-consumption volumes into impact scores adjusted for local scarcity. One litre consumed in a water-stressed region carries a higher AWARE weight than one litre consumed in an abundant region. Used in ISO 14046-compliant water footprinting.
 
 **Algorithmic management** — the use of automated systems to track, score, schedule, direct or discipline workers. It raises concerns when it sets unsafe work paces, removes human judgement, or harms workers' wellbeing without a way to appeal.
 
@@ -736,6 +771,8 @@ All links were checked against official or recognised sources. Standards are upd
 
 **Location-based vs market-based carbon accounting** — two ways of measuring the carbon intensity of electricity use. Market-based accounting uses the carbon certificates a provider has purchased (which may claim zero carbon regardless of where generation happens). Location-based accounting uses the actual carbon intensity of the grid where electricity is consumed. For AI inference, these can diverge significantly: a provider claiming zero carbon via certificates may still route queries through a coal-heavy grid. Both figures are useful; location-based accounting better reflects the actual physical impact on the electricity system.
 
+**LME (Locational Marginal Emissions)** — the marginal carbon cost of the next unit of electricity at a specific point on the electricity grid, accounting for which generators are actually dispatched and how transmission constraints affect the grid at that moment. LME values change by the hour and vary significantly across a grid. They are more precise than annual average grid intensity figures for operational carbon decisions — such as choosing when and where to run heavy AI workloads. See criterion 1 for how this applies to scoring.
+
 **Per-prompt efficiency** — the carbon and water cost of a single AI query, as opposed to an annual corporate total or an infrastructure-level efficiency metric. Measured as grams of CO₂ equivalent and millilitres of water per query (or per token). The most useful unit for comparing the ongoing operational environmental impact of different AI tools. See criterion 13.
 
 **PUE (power usage effectiveness)** — how much total energy a data centre uses for every unit that reaches the computing equipment. Lower is better.
@@ -760,6 +797,6 @@ All links were checked against official or recognised sources. Standards are upd
 
 ---
 
-*End of foundation document, version 1.2. The scoring spreadsheet, procurement version, audit version and public-reporting version will each be built from this document as separate tools.*
+*End of foundation document, version 1.3. The scoring spreadsheet, procurement version, audit version and public-reporting version will each be built from this document as separate tools.*
 
 *Released under [Creative Commons Zero v1.0 Universal (CC0)](https://creativecommons.org/publicdomain/zero/1.0/) — no rights reserved. You may copy, modify, distribute and use this work without permission.*
