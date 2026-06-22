@@ -183,44 +183,18 @@
                         <input type="text" id="ai-search" placeholder="Search (e.g., NotebookLM, Copilot, GitHub, Claude...)" oninput="handleSearch()" onkeydown="handleSearchKeydown(event)" class="w-full pl-9 pr-4 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-hive-dark focus:border-transparent transition-all">
                     </div>
 
-                    <!-- Gemini AI Analysis CTA Panel -->
-                    <div id="ai-analysis-cta-panel" class="hidden mb-6 bg-hive-cream border border-amber-200 rounded-xl p-4 transition-all">
-                        <h4 class="text-xs font-bold text-hive-dark uppercase tracking-wide mb-1 flex items-center">
-                            🤖 AI privacy assistant
-                        </h4>
-                        <p class="text-xs text-slate-700 mb-3">
-                            Can't find your tool? Use <strong>Gemini</strong> to analyse <span id="target-search-term" class="font-bold underline"></span>'s default model-training configuration and dynamically build the opt-out steps.
-                        </p>
-                        <button id="gemini-query-button" type="button" onclick="triggerGeminiLookup()" class="w-full bg-hive-dark text-hive-yellow hover:bg-slate-800 transition-colors py-2.5 px-4 rounded-lg font-bold text-xs flex items-center justify-center space-x-2">
-                            <span>Analyse privacy opt-out with Gemini</span>
-                            <span id="gemini-spinner" class="hidden animate-spin rounded-full h-4 w-4 border-2 border-hive-yellow border-t-transparent"></span>
-                        </button>
-                        <p id="gemini-config-note" class="hidden text-[11px] text-slate-700 mt-2">
-                            Live AI lookup isn't configured for this deployment. The preloaded tools below work without it.
-                        </p>
+                    <!-- Jump links to categories -->
+                    <nav aria-label="Jump to category" class="flex flex-wrap gap-2 mb-4">
+                        <button type="button" onclick="scrollToGroup('models')" class="text-[11px] font-bold bg-slate-100 hover:bg-hive-yellow text-hive-dark px-2.5 py-1 rounded-full transition-colors">AI models</button>
+                        <button type="button" onclick="scrollToGroup('dev')" class="text-[11px] font-bold bg-slate-100 hover:bg-hive-yellow text-hive-dark px-2.5 py-1 rounded-full transition-colors">Dev tools</button>
+                        <button type="button" onclick="scrollToGroup('aggregators')" class="text-[11px] font-bold bg-slate-100 hover:bg-hive-yellow text-hive-dark px-2.5 py-1 rounded-full transition-colors">Aggregators</button>
+                    </nav>
 
-                        <!-- User-supplied key entry (in-memory only; not stored, not sent to Hive IT) -->
-                        <div id="api-key-entry" class="hidden mt-3 border-t border-amber-200 pt-3">
-                            <label for="user-api-key-input" class="block text-[11px] font-bold text-slate-700 mb-1">Your Gemini API key</label>
-                            <input type="password" id="user-api-key-input" autocomplete="off" spellcheck="false" placeholder="AIza…"
-                                   onkeydown="if(event.key==='Enter'){event.preventDefault();submitApiKey();}"
-                                   class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-hive-dark focus:border-transparent">
-                            <label class="flex items-center gap-2 mt-2 text-[11px] text-slate-700 cursor-pointer select-none">
-                                <input type="checkbox" id="show-key-toggle" onchange="toggleKeyVisibility()" class="w-4 h-4 accent-hive-dark"> Show key
-                            </label>
-                            <p class="text-[11px] text-slate-600 mt-2">
-                                Your key stays in this browser tab only — it is never stored or sent to Hive IT, and it clears when you reload. Get a key from
-                                <a href="https://aistudio.google.com/apikey" target="_blank" class="underline font-bold text-hive-dark hover:text-hive-yellow-hover">Google AI Studio</a>.
-                            </p>
-                            <button type="button" onclick="submitApiKey()" class="w-full mt-2 bg-hive-dark text-hive-yellow hover:bg-slate-800 transition-colors py-2 px-4 rounded-lg font-bold text-xs">
-                                Use key &amp; analyse
-                            </button>
-                        </div>
-                        <div id="clear-key-row" class="hidden mt-2 text-right">
-                            <button type="button" onclick="clearApiKey()" class="text-[11px] text-slate-600 underline hover:text-hive-dark">Clear my API key</button>
-                        </div>
-                    </div>
-                    <div class="space-y-4 max-h-[500px] overflow-y-auto pr-1" id="agent-config-list">
+                    <!-- No-results note (shown when a search matches nothing) -->
+                    <p id="no-results-note" class="hidden mb-4 text-xs text-slate-700 bg-hive-cream border border-amber-200 rounded-xl p-3">
+                        No tool matches <span id="no-results-term" class="font-bold"></span>. Try a shorter term, or check the governance guidance below for tools not yet listed.
+                    </p>
+                    <div class="space-y-5 max-h-[820px] overflow-y-auto pr-1" id="agent-config-list">
                         <!-- Rendered Dynamically in JS for interactive states -->
                     </div>
                 </div>
@@ -275,7 +249,7 @@
                     </div>
 
                     <!-- Dynamic Instructions Container -->
-                    <div id="dynamic-guide-view" class="space-y-8">
+                    <div id="dynamic-guide-view" class="space-y-8 max-h-[820px] overflow-y-auto pr-1">
                         <!-- Content automatically hydrated on selections -->
                     </div>
 
@@ -467,17 +441,10 @@
 
     <!-- Core Interactive Application Script -->
     <script>
-        // ── LIVE AI LOOKUP CONFIGURATION ──────────────────────────────────────────────
-        // This build asks each visitor for THEIR OWN Gemini API key the first time they run
-        // the live "Analyse opt-out" lookup. The key is held in memory for that browser tab
-        // only — it is never written into this file, never stored, and never sent to your
-        // server. It clears on reload. This avoids shipping a shared key to everyone.
-        const apiKey = "";     // optional preset; normally leave blank so users supply their own
-        let userApiKey = "";   // filled in at runtime from the key the visitor enters
-
-        // Optional: a server-side proxy (see gemini-proxy-worker.js). If set, it is used and
-        // visitors are NOT asked for a key. Leave blank to use the per-user key flow.
-        const GEMINI_PROXY_URL = "";
+        // Shared icons for the added entries
+        const chatIcon = `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>`;
+        const codeIcon = `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>`;
+        const aggIcon = `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 7l8-4 8 4-8 4-8-4zM4 12l8 4 8-4M4 17l8 4 8-4" /></svg>`;
 
         // Preloaded Coding & Frontier AI Agents.
         // NOTE: lastVerified shows when each opt-out path was checked against vendor docs.
@@ -749,6 +716,255 @@
                         ]
                     }
                 }
+            },
+            aws_kiro: {
+                id: 'aws_kiro',
+                name: 'AWS Kiro',
+                lastVerified: 'June 2026',
+                icon: codeIcon,
+                desc: 'Amazon\'s agentic IDE. Free Tier and individual subscribers (social login / AWS Builder ID) have content collection on by default, which may be used for model training. Accounts via IAM Identity Center or Amazon Q Developer Pro, and enterprise, are excluded.',
+                tiers: {
+                    individual: {
+                        id: 'aws_kiro_individual',
+                        name: 'Free Tier / individual subscriber',
+                        privateByDefault: false,
+                        steps: [
+                            'In Kiro, open <strong>Settings → Data Sharing And Prompt Logging</strong> (in Kiro Web: <strong>Settings → Agent</strong>).',
+                            'Turn <strong>OFF</strong> <strong>"Content Collection For Service Improvement"</strong> / <strong>"Share Kiro content with AWS"</strong> (Kiro Web: <strong>"Allow AWS to use your Kiro Web content for service improvement"</strong>).',
+                            'Also turn <strong>OFF</strong> the <strong>Telemetry</strong> setting to stop usage and metrics collection.',
+                            '<em>Note:</em> Kiro\'s docs and the AWS Service Terms (§50.3) have been inconsistent on this, so opting out is the safe choice. Opt-out is prospective only.'
+                        ]
+                    },
+                    enterprise: {
+                        id: 'aws_kiro_enterprise',
+                        name: 'IAM Identity Center / Q Developer Pro / Enterprise',
+                        privateByDefault: true,
+                        steps: [
+                            '<strong>Private by default:</strong> content from users signing in via AWS IAM Identity Center, an external identity provider, or an Amazon Q Developer Pro subscription is not used for service improvement or training.',
+                            'Enterprise telemetry is controlled by your admin in the Kiro console.'
+                        ]
+                    }
+                }
+            },
+            lovable: {
+                id: 'lovable',
+                name: 'Lovable',
+                lastVerified: 'June 2026',
+                icon: codeIcon,
+                desc: 'AI app builder ("vibe coding"). Your prompts, code and project data may be used to train Lovable models by default. Identifiable personal data is excluded, and the underlying providers (OpenAI, Google, OpenRouter) are governed by their own terms.',
+                tiers: {
+                    free: {
+                        id: 'lovable_free',
+                        name: 'Free / Pro',
+                        privateByDefault: false,
+                        steps: [
+                            'There is no in-product toggle on Free/Pro — email <a href="mailto:privacy@lovable.dev" class="underline font-bold text-hive-dark hover:text-hive-yellow-hover">privacy@lovable.dev</a> (or contact Support) to opt out of model-training use.',
+                            'Lovable says it honours the request for future use, free of charge, on any plan.',
+                            '<em>Note:</em> opt-out is prospective; identifiable PII is not used for training in any case.'
+                        ]
+                    },
+                    business: {
+                        id: 'lovable_business',
+                        name: 'Business / Enterprise',
+                        privateByDefault: false,
+                        steps: [
+                            'A workspace admin or owner can enable <strong>Data collection opt out</strong> in <strong>Settings → Privacy &amp; security</strong> so workspace code and data are not used for training or internal evaluation.',
+                            'This control is only available on Business and Enterprise workspaces.'
+                        ]
+                    }
+                }
+            },
+            meta_ai: {
+                id: 'meta_ai',
+                name: 'Meta AI / Llama',
+                lastVerified: 'June 2026',
+                icon: chatIcon,
+                desc: 'Meta uses public Facebook/Instagram content and your interactions with Meta AI to train its models. There is no simple on/off toggle. In the UK, EU and Switzerland you have a GDPR right to object; in most other regions there is no opt-out.',
+                tiers: {
+                    objection: {
+                        id: 'meta_ai_objection',
+                        name: 'UK / EU / Switzerland (right to object)',
+                        privateByDefault: false,
+                        steps: [
+                            'In the Facebook or Instagram app: <strong>Settings &amp; privacy → Privacy Centre → AI at Meta → Submit an objection request</strong> (set your region so the correct option appears).',
+                            'Submit both the "use of my information for Meta AI" and the "information from third parties" objection forms.',
+                            '<em>Note:</em> the objection covers your own content and AI interactions, not content others post about you, and applies prospectively.'
+                        ]
+                    },
+                    other: {
+                        id: 'meta_ai_other',
+                        name: 'WhatsApp / US / other regions',
+                        privateByDefault: false,
+                        steps: [
+                            'There is no objection mechanism for Meta AI in WhatsApp, and no opt-out in the US and most other regions.',
+                            'The only real protection is to avoid the Meta AI chatbot and not share sensitive information with it.'
+                        ]
+                    }
+                }
+            },
+            deepseek: {
+                id: 'deepseek',
+                name: 'DeepSeek',
+                lastVerified: 'June 2026',
+                icon: chatIcon,
+                desc: 'China-based. Inputs and outputs may be used for model improvement by default. A toggle exists, but data is stored under Chinese jurisdiction with weak deletion guarantees, so opting out is not a strong safeguard.',
+                tiers: {
+                    free: {
+                        id: 'deepseek_free',
+                        name: 'Consumer (web / app)',
+                        privateByDefault: false,
+                        steps: [
+                            'Web: click the <strong>⋯</strong> next to your name → <strong>Settings → Data</strong>. App: <strong>Settings → Data controls</strong>.',
+                            'Turn <strong>OFF</strong> <strong>"Improve the model for everyone"</strong>.',
+                            '<strong>Caution:</strong> DeepSeek stores data on servers subject to Chinese law and may retain it; for confidential or client work, avoid the platform rather than relying on this toggle.'
+                        ]
+                    },
+                    api: {
+                        id: 'deepseek_hosted',
+                        name: 'Via a Western host (Bedrock, Azure, etc.)',
+                        privateByDefault: true,
+                        steps: [
+                            '<strong>Lower risk:</strong> running the open DeepSeek model through a Western cloud/API host keeps data off DeepSeek\'s own servers and under that host\'s terms.',
+                            'Check the specific host\'s training and retention policy.'
+                        ]
+                    }
+                }
+            },
+            qwen: {
+                id: 'qwen',
+                name: 'Qwen (Alibaba)',
+                lastVerified: 'June 2026',
+                icon: chatIcon,
+                desc: 'Alibaba\'s chat and model service (operated by Alibaba Cloud Singapore). The consumer chat has no clear training opt-out toggle; data use is governed by Alibaba\'s privacy policy.',
+                tiers: {
+                    free: {
+                        id: 'qwen_free',
+                        name: 'Qwen Chat (consumer)',
+                        privateByDefault: false,
+                        steps: [
+                            'There is no obvious in-product training opt-out. Manage what you can in your account settings, and exercise data rights via <a href="mailto:DPO_qwenlm-intl@service.alibaba.com" class="underline font-bold text-hive-dark hover:text-hive-yellow-hover">the Alibaba Cloud DPO</a>.',
+                            '<strong>Caution:</strong> treat consumer Qwen Chat as training-by-default; do not enter confidential or client data.'
+                        ]
+                    },
+                    api: {
+                        id: 'qwen_api',
+                        name: 'Alibaba Cloud API',
+                        privateByDefault: true,
+                        steps: [
+                            '<strong>Lower risk:</strong> Alibaba Cloud states API inputs and outputs are not retained for training by default; confirm against your account region and terms.'
+                        ]
+                    }
+                }
+            },
+            grok: {
+                id: 'grok',
+                name: 'Grok (xAI)',
+                lastVerified: 'June 2026',
+                icon: chatIcon,
+                desc: 'xAI trains Grok on your conversations and your public X posts by default. A genuine opt-out exists in X settings, but it is not retroactive and is separate from your X account-data stream.',
+                tiers: {
+                    free: {
+                        id: 'grok_free',
+                        name: 'Grok via X account',
+                        privateByDefault: false,
+                        steps: [
+                            'On the web, open X <strong>Settings and privacy → Privacy and safety → Grok &amp; Third-party Collaborators</strong> (sometimes labelled <strong>Data sharing</strong>).',
+                            'Uncheck the option allowing your data and Grok interactions to be used for training and fine-tuning.',
+                            'Use <strong>Private Chat</strong> for sensitive prompts (not saved to history; deleted within ~30 days), and the xAI Privacy Portal (x.ai/privacy-portal) for deletion requests.',
+                            '<em>Note:</em> opt-out is prospective; making your X account private also limits public-post training.'
+                        ]
+                    },
+                    enterprise: {
+                        id: 'grok_enterprise',
+                        name: 'xAI API / Enterprise',
+                        privateByDefault: true,
+                        steps: [
+                            '<strong>Private by default:</strong> xAI API and enterprise agreements are not used for training. Confirm against your contract.'
+                        ]
+                    }
+                }
+            },
+            kimi: {
+                id: 'kimi',
+                name: 'Kimi (Moonshot AI)',
+                lastVerified: 'June 2026',
+                icon: chatIcon,
+                desc: 'China-based. Moonshot AI trains on prompts and outputs by default — including API usage — and there is no in-product opt-out toggle.',
+                tiers: {
+                    free: {
+                        id: 'kimi_free',
+                        name: 'Consumer &amp; API',
+                        privateByDefault: false,
+                        steps: [
+                            'There is no settings toggle. To opt out you must contact Moonshot AI directly (e.g. <a href="mailto:membership@moonshot.ai" class="underline font-bold text-hive-dark hover:text-hive-yellow-hover">membership@moonshot.ai</a>) and request that your data not be used for training.',
+                            '<strong>Caution:</strong> assume anything you enter, including via the API, may become permanent training data; do not share confidential or client information.'
+                        ]
+                    }
+                }
+            },
+            duck_ai: {
+                id: 'duck_ai',
+                name: 'Duck.ai (DuckDuckGo)',
+                lastVerified: 'June 2026',
+                icon: aggIcon,
+                desc: 'Aggregator. DuckDuckGo proxies your request, strips your IP and metadata, and holds agreements with every model provider (OpenAI, Anthropic, and Together.ai for Llama/Mistral) prohibiting training and requiring deletion within 30 days. The policy is uniform across all its models.',
+                tiers: {
+                    standard: {
+                        id: 'duck_ai_standard',
+                        name: 'Free / Plus / Pro',
+                        privateByDefault: true,
+                        steps: [
+                            '<strong>Private by default:</strong> no chats are used for training by DuckDuckGo or the underlying providers; chats are stored locally on your device unless you turn that off.',
+                            '<strong>Residual risk:</strong> protection is contractual and operational rather than technically guaranteed, and DuckDuckGo is US-based — fine for general work, not a channel for regulated or highly sensitive data.'
+                        ]
+                    }
+                }
+            },
+            zed: {
+                id: 'zed',
+                name: 'Zed (hosted models)',
+                lastVerified: 'June 2026',
+                icon: aggIcon,
+                desc: 'Code editor that routes to multiple hosted models. Zed holds zero-data-retention, no-training agreements with all hosted providers (Anthropic, Google, OpenAI, xAI), so the umbrella is uniform — with a couple of exceptions worth knowing.',
+                tiers: {
+                    hosted: {
+                        id: 'zed_hosted',
+                        name: 'Zed-hosted models (Pro)',
+                        privateByDefault: true,
+                        steps: [
+                            '<strong>Private by default:</strong> prompts and code are discarded after each request and never used for training across all hosted providers.',
+                            '<strong>Exceptions:</strong> provider-designated "safety retention" models (e.g. Anthropic Mythos-class) get short-term provider retention but still no training; and Edit Prediction training is opt-in, only for open-source projects.'
+                        ]
+                    },
+                    byok: {
+                        id: 'zed_byok',
+                        name: 'Bring-your-own API key',
+                        privateByDefault: false,
+                        steps: [
+                            'If you use your own API key instead of Zed-hosted models, Zed\'s umbrella no longer applies — the provider\'s own terms govern.',
+                            'Opt out (or confirm exclusion) directly with that provider, and see its entry in this navigator.'
+                        ]
+                    }
+                }
+            },
+            t3_chat: {
+                id: 't3_chat',
+                name: 'T3 Chat',
+                lastVerified: 'June 2026',
+                icon: aggIcon,
+                desc: 'Aggregator routing to OpenAI, Anthropic, Google, DeepSeek and others via their APIs. T3 says it does not train on your data, and mainstream providers do not train on API traffic — but T3 retains chat history (no anonymising proxy), and the umbrella does not extend cleanly to non-Western models.',
+                tiers: {
+                    standard: {
+                        id: 't3_chat_standard',
+                        name: 'Standard account',
+                        privateByDefault: false,
+                        steps: [
+                            'T3 states it does not use your data to train models, and OpenAI/Anthropic/Google do not train on API requests — so coverage for mainstream models is reasonable.',
+                            'Unlike Duck.ai, T3 stores your message history on its servers and does not strip your identity, so it is not zero-retention.',
+                            '<strong>Caution:</strong> if you select <strong>DeepSeek or Qwen</strong> inside T3, those upstream Chinese providers have weaker and less clear training/retention terms — avoid sensitive data with those models.'
+                        ]
+                    }
+                }
             }
         };
 
@@ -789,75 +1005,106 @@
             });
         }
 
-        // Render the Left Setup Panel dynamically with search and custom fallback
-        function renderConfigPanel(filterTerm = '') {
-            const container = document.getElementById('agent-config-list');
-            const aiCtaPanel = document.getElementById('ai-analysis-cta-panel');
-            const targetSearchLabel = document.getElementById('target-search-term');
-            container.innerHTML = '';
+        // Category grouping for the stack panel
+        const toolCategories = [
+            { key: 'models', label: 'AI models', ids: ['chatgpt', 'claude', 'gemini', 'notebooklm', 'copilot', 'mistral', 'meta_ai', 'deepseek', 'qwen', 'grok', 'kimi'] },
+            { key: 'dev', label: 'Dev tools', ids: ['github_copilot', 'jetbrains_ai', 'aws_kiro', 'lovable'] },
+            { key: 'aggregators', label: 'Aggregators', ids: ['duck_ai', 'zed', 't3_chat'] }
+        ];
 
-            const term = filterTerm.trim().toLowerCase();
-            let matches = 0;
+        // Build a single tool card
+        function buildAgentCardHtml(key) {
+            const agent = agentData[key];
+            const activeState = userStack[key] ? userStack[key].active : false;
+            const activeTiers = userStack[key] ? userStack[key].selectedTiers : [];
 
-            Object.keys(agentData).forEach(key => {
-                const agent = agentData[key];
-                const activeState = userStack[key] ? userStack[key].active : false;
-                const activeTiers = userStack[key] ? userStack[key].selectedTiers : [];
+            let tierSelectorsHtml = '';
+            Object.keys(agent.tiers).forEach(tierKey => {
+                const tier = agent.tiers[tierKey];
+                const isSelected = activeTiers.includes(tierKey);
+                const shieldBadge = tier.privateByDefault ? '👑 ' : '';
 
-                if (term && !agent.name.toLowerCase().includes(term) && !agent.desc.toLowerCase().includes(term)) {
-                    return;
-                }
-                matches++;
-
-                let tierSelectorsHtml = '';
-                Object.keys(agent.tiers).forEach(tierKey => {
-                    const tier = agent.tiers[tierKey];
-                    const isSelected = activeTiers.includes(tierKey);
-                    const shieldBadge = tier.privateByDefault ? '👑 ' : '';
-
-                    tierSelectorsHtml += `
-                        <button type="button" onclick="toggleAgentTier('${key}', '${tierKey}')"
-                                aria-pressed="${isSelected ? 'true' : 'false'}"
-                                class="flex items-center justify-between text-left border rounded-lg p-2 py-1.5 text-xs font-semibold cursor-pointer transition-all ${isSelected ? 'border-hive-dark bg-hive-dark text-hive-yellow' : 'border-slate-300 bg-white text-slate-700 hover:bg-slate-50'}">
-                            <span class="truncate">${shieldBadge}${tier.name}</span>
-                            ${tier.privateByDefault ? '<span class="text-[11px] bg-hive-yellow text-hive-dark px-1.5 py-0.5 rounded-full font-bold uppercase tracking-wide flex-shrink-0 ml-1">Shielded</span>' : ''}
-                        </button>
-                    `;
-                });
-
-                const cardHtml = `
-                    <div id="agent-card-${key}" class="border-2 rounded-xl p-3.5 transition-all duration-300 ${activeState ? 'border-hive-yellow bg-slate-50 shadow-sm' : 'border-slate-200'}">
-                        <div class="flex items-center justify-between mb-2">
-                            <div class="flex items-center space-x-2.5 min-w-0">
-                                <div class="p-1.5 rounded-lg flex-shrink-0 ${activeState ? 'bg-hive-dark text-hive-yellow' : 'bg-slate-200 text-slate-700'}" aria-hidden="true">
-                                    ${agent.icon}
-                                </div>
-                                <span class="font-bold text-xs sm:text-sm text-hive-dark truncate">${agent.name}</span>
-                            </div>
-                            <input type="checkbox" id="check-${key}" ${activeState ? 'checked' : ''}
-                                   onchange="toggleAgentActive('${key}')"
-                                   class="w-5 h-5 accent-hive-dark cursor-pointer rounded flex-shrink-0"
-                                   aria-label="Activate guide for ${agent.name}">
-                        </div>
-
-                        <p class="text-[12px] text-slate-600 leading-normal mb-1 ${activeState ? 'block' : 'hidden'}">
-                            ${agent.desc}
-                        </p>
-                        <p class="text-[11px] text-slate-500 mb-2.5 ${activeState ? 'block' : 'hidden'}">Steps last verified: ${agent.lastVerified || 'n/a'}</p>
-
-                        <div class="grid grid-cols-1 gap-1.5 mt-2 ${activeState ? 'grid' : 'hidden'}">
-                            ${tierSelectorsHtml}
-                        </div>
-                    </div>
+                tierSelectorsHtml += `
+                    <button type="button" onclick="toggleAgentTier('${key}', '${tierKey}')"
+                            aria-pressed="${isSelected ? 'true' : 'false'}"
+                            class="flex items-center justify-between text-left border rounded-lg p-2 py-1.5 text-xs font-semibold cursor-pointer transition-all ${isSelected ? 'border-hive-dark bg-hive-dark text-hive-yellow' : 'border-slate-300 bg-white text-slate-700 hover:bg-slate-50'}">
+                        <span class="truncate">${shieldBadge}${tier.name}</span>
+                        ${tier.privateByDefault ? '<span class="text-[11px] bg-hive-yellow text-hive-dark px-1.5 py-0.5 rounded-full font-bold uppercase tracking-wide flex-shrink-0 ml-1">Shielded</span>' : ''}
+                    </button>
                 `;
-                container.innerHTML += cardHtml;
             });
 
+            return `
+                <div id="agent-card-${key}" class="border-2 rounded-xl p-3.5 transition-all duration-300 ${activeState ? 'border-hive-yellow bg-slate-50 shadow-sm' : 'border-slate-200'}">
+                    <div class="flex items-center justify-between mb-2">
+                        <div class="flex items-center space-x-2.5 min-w-0">
+                            <div class="p-1.5 rounded-lg flex-shrink-0 ${activeState ? 'bg-hive-dark text-hive-yellow' : 'bg-slate-200 text-slate-700'}" aria-hidden="true">
+                                ${agent.icon}
+                            </div>
+                            <span class="font-bold text-xs sm:text-sm text-hive-dark truncate">${agent.name}</span>
+                        </div>
+                        <input type="checkbox" id="check-${key}" ${activeState ? 'checked' : ''}
+                               onchange="toggleAgentActive('${key}')"
+                               class="w-5 h-5 accent-hive-dark cursor-pointer rounded flex-shrink-0"
+                               aria-label="Activate guide for ${agent.name}">
+                    </div>
+
+                    <p class="text-[12px] text-slate-600 leading-normal mb-1 ${activeState ? 'block' : 'hidden'}">
+                        ${agent.desc}
+                    </p>
+                    <p class="text-[11px] text-slate-500 mb-2.5 ${activeState ? 'block' : 'hidden'}">Steps last verified: ${agent.lastVerified || 'n/a'}</p>
+
+                    <div class="grid grid-cols-1 gap-1.5 mt-2 ${activeState ? 'grid' : 'hidden'}">
+                        ${tierSelectorsHtml}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Render the Left Setup Panel dynamically with search, grouped by category
+        function renderConfigPanel(filterTerm = '') {
+            const container = document.getElementById('agent-config-list');
+            const noResults = document.getElementById('no-results-note');
+
+            const term = filterTerm.trim().toLowerCase();
+            const matchesTerm = (key) => {
+                const agent = agentData[key];
+                return !term || agent.name.toLowerCase().includes(term) || agent.desc.toLowerCase().includes(term);
+            };
+
+            const seen = new Set();
+            let matches = 0;
+            let html = '';
+
+            toolCategories.forEach(cat => {
+                const ids = cat.ids.filter(key => agentData[key]);
+                ids.forEach(key => seen.add(key));
+                const shown = ids.filter(matchesTerm);
+                if (shown.length === 0) return;
+                matches += shown.length;
+                html += `<div id="group-${cat.key}" class="scroll-mt-2">
+                    <h4 class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 mb-2 pt-1">${cat.label}</h4>
+                    <div class="space-y-3">${shown.map(buildAgentCardHtml).join('')}</div>
+                </div>`;
+            });
+
+            // Any tools not assigned to a category fall into "Other"
+            const others = Object.keys(agentData).filter(k => !seen.has(k)).filter(matchesTerm);
+            if (others.length) {
+                matches += others.length;
+                html += `<div id="group-other" class="scroll-mt-2">
+                    <h4 class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 mb-2 pt-1">Other</h4>
+                    <div class="space-y-3">${others.map(buildAgentCardHtml).join('')}</div>
+                </div>`;
+            }
+
+            container.innerHTML = html;
+
             if (matches === 0 && filterTerm.trim().length > 0) {
-                aiCtaPanel.classList.remove('hidden');
-                targetSearchLabel.textContent = `"${filterTerm}"`;
+                noResults.classList.remove('hidden');
+                document.getElementById('no-results-term').textContent = `"${filterTerm}"`;
             } else {
-                aiCtaPanel.classList.add('hidden');
+                noResults.classList.add('hidden');
             }
 
             fixExternalLinks(container);
@@ -870,218 +1117,19 @@
         function handleSearchKeydown(event) {
             if (event.key === 'Enter') {
                 event.preventDefault();
-                const ctaPanel = document.getElementById('ai-analysis-cta-panel');
-                if (!ctaPanel.classList.contains('hidden')) {
-                    triggerGeminiLookup();
-                }
+                renderConfigPanel(document.getElementById('ai-search').value);
             }
         }
 
-        function cleanJsonText(rawText) {
-            if (!rawText) return "{}";
-            let cleaned = rawText.trim();
-            if (cleaned.startsWith("```")) {
-                cleaned = cleaned.replace(/^```json/, "").replace(/^```/, "").replace(/```$/, "").trim();
+        // Jump-link handler: clears any active filter so the target group exists, then scrolls to it
+        function scrollToGroup(key) {
+            const search = document.getElementById('ai-search');
+            if (search.value) {
+                search.value = '';
+                renderConfigPanel('');
             }
-            return cleaned;
-        }
-
-        // Gemini API dynamic model parser with exponential backoff (1s,2s,4s,8s,16s).
-        async function queryGeminiPrivacyModel(aiName) {
-            const usingProxy = Boolean(GEMINI_PROXY_URL);
-            const url = usingProxy
-                ? GEMINI_PROXY_URL
-                : `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${userApiKey || apiKey}`;
-
-            const systemPrompt = `You are a cybersecurity and data privacy expert specializing in AI governance.
-Analyze the requested AI tool/plugin. Determine how to opt-out of model training for its Free/Hobby tier and Paid/Pro/Enterprise tiers.
-Produce a structured JSON response matching the schema.
-For steps:
-- Free steps should provide realistic, precise click-paths or settings to toggle off training. Keep it under 5 concise steps.
-- Paid/Enterprise steps should explain if it is secure-by-default (set privateByDefault to true) or explain the exact enterprise opt-out settings if false.
-Always write clean, actionable steps.`;
-
-            const userPrompt = `Provide the model training opt-out privacy steps for the AI tool named "${aiName}".`;
-
-            const payload = {
-                contents: [{ parts: [{ text: userPrompt }] }],
-                systemInstruction: { parts: [{ text: systemPrompt }] },
-                generationConfig: {
-                    responseMimeType: "application/json",
-                    responseSchema: {
-                        type: "OBJECT",
-                        properties: {
-                            name: { type: "STRING", description: "The clean display name of the AI tool" },
-                            desc: { type: "STRING", description: "A brief description of how it uses user data" },
-                            tiers: {
-                                type: "OBJECT",
-                                properties: {
-                                    free: {
-                                        type: "OBJECT",
-                                        properties: {
-                                            name: { type: "STRING", description: "e.g. Free Tier" },
-                                            privateByDefault: { type: "BOOLEAN" },
-                                            steps: { type: "ARRAY", items: { type: "STRING" } }
-                                        },
-                                        required: ["name", "privateByDefault", "steps"]
-                                    },
-                                    paid: {
-                                        type: "OBJECT",
-                                        properties: {
-                                            name: { type: "STRING", description: "e.g. Business Plan" },
-                                            privateByDefault: { type: "BOOLEAN" },
-                                            steps: { type: "ARRAY", items: { type: "STRING" } }
-                                        },
-                                        required: ["name", "privateByDefault", "steps"]
-                                    }
-                                },
-                                required: ["free", "paid"]
-                            }
-                        },
-                        required: ["name", "desc", "tiers"]
-                    }
-                }
-            };
-
-            // Exponential backoff: sleeps of 1s, 2s, 4s, 8s, 16s across 6 attempts.
-            let delay = 1000;
-            for (let attempt = 1; attempt <= 6; attempt++) {
-                try {
-                    const response = await fetch(url, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: usingProxy ? JSON.stringify({ tool: aiName }) : JSON.stringify(payload)
-                    });
-                    if (!response.ok) throw new Error(`HTTP Error ${response.status}`);
-                    const data = await response.json();
-                    if (usingProxy) {
-                        // The proxy returns the final {name, desc, tiers:{free, paid}} object directly.
-                        return (typeof data === 'string') ? JSON.parse(cleanJsonText(data)) : data;
-                    }
-                    const rawJson = data.candidates?.[0]?.content?.parts?.[0]?.text;
-                    return JSON.parse(cleanJsonText(rawJson));
-                } catch (error) {
-                    if (attempt === 6) throw error;
-                    await new Promise(resolve => setTimeout(resolve, delay));
-                    delay *= 2;
-                }
-            }
-        }
-
-        async function triggerGeminiLookup() {
-            const query = document.getElementById('ai-search').value.trim();
-            if (!query) return;
-
-            // If no proxy is configured and the visitor hasn't supplied a key yet, ask for one.
-            if (!GEMINI_PROXY_URL && !(userApiKey || apiKey)) {
-                showKeyPrompt();
-                return;
-            }
-
-            const button = document.getElementById('gemini-query-button');
-            const spinner = document.getElementById('gemini-spinner');
-
-            button.disabled = true;
-            spinner.classList.remove('hidden');
-            showToast(`Consulting Gemini to analyse ${query}…`);
-
-            try {
-                const geminiPayload = await queryGeminiPrivacyModel(query);
-
-                const customId = `custom_${Date.now()}`;
-                const formattedFreeId = `${customId}_free`;
-                const formattedPaidId = `${customId}_paid`;
-
-                agentData[customId] = {
-                    id: customId,
-                    name: geminiPayload.name,
-                    lastVerified: 'Generated now (AI — verify with vendor)',
-                    icon: `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" /></svg>`,
-                    desc: geminiPayload.desc,
-                    tiers: {
-                        free: {
-                            id: formattedFreeId,
-                            name: geminiPayload.tiers.free.name,
-                            privateByDefault: geminiPayload.tiers.free.privateByDefault,
-                            steps: geminiPayload.tiers.free.steps
-                        },
-                        paid: {
-                            id: formattedPaidId,
-                            name: geminiPayload.tiers.paid.name,
-                            privateByDefault: geminiPayload.tiers.paid.privateByDefault,
-                            steps: geminiPayload.tiers.paid.steps
-                        }
-                    }
-                };
-
-                userStack[customId] = { active: true, selectedTiers: ['free'] };
-
-                document.getElementById('ai-search').value = '';
-                document.getElementById('ai-analysis-cta-panel').classList.add('hidden');
-
-                renderConfigPanel();
-                updateRoadmap();
-                evaluateFileVulnerability();
-                showToast(`Draft playbook generated for ${geminiPayload.name} — verify before relying on it.`);
-
-                setTimeout(() => {
-                    const newCard = document.getElementById(`agent-card-${customId}`);
-                    if (newCard) {
-                        newCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                        newCard.classList.add('ring-4', 'ring-hive-yellow', 'ring-offset-2');
-                        setTimeout(() => newCard.classList.remove('ring-4', 'ring-hive-yellow', 'ring-offset-2'), 2500);
-                    }
-                }, 100);
-
-            } catch (err) {
-                console.error("Gemini lookup error: ", err);
-                if (!GEMINI_PROXY_URL && (userApiKey || apiKey)) {
-                    showToast("The lookup failed — your API key may be invalid or out of quota. Check it and try again.");
-                    document.getElementById('api-key-entry').classList.remove('hidden');
-                } else {
-                    showToast("The AI lookup didn't complete — the analysis service may be unavailable. Try again, or use the preloaded tools below.");
-                }
-            } finally {
-                button.disabled = false;
-                spinner.classList.add('hidden');
-            }
-        }
-
-        // ── User-supplied API key: entered at runtime, kept in memory for this tab only ──
-        function showKeyPrompt() {
-            document.getElementById('ai-analysis-cta-panel').classList.remove('hidden');
-            document.getElementById('api-key-entry').classList.remove('hidden');
-            const input = document.getElementById('user-api-key-input');
-            input.focus();
-            showToast("Enter your own Gemini API key to run the live analysis.");
-        }
-
-        function toggleKeyVisibility() {
-            const input = document.getElementById('user-api-key-input');
-            input.type = document.getElementById('show-key-toggle').checked ? 'text' : 'password';
-        }
-
-        function submitApiKey() {
-            const input = document.getElementById('user-api-key-input');
-            const val = input.value.trim();
-            if (!val) {
-                showToast("Please paste a Gemini API key first.");
-                input.focus();
-                return;
-            }
-            userApiKey = val;
-            input.value = '';
-            document.getElementById('show-key-toggle').checked = false;
-            input.type = 'password';
-            document.getElementById('api-key-entry').classList.add('hidden');
-            document.getElementById('clear-key-row').classList.remove('hidden');
-            triggerGeminiLookup();
-        }
-
-        function clearApiKey() {
-            userApiKey = '';
-            document.getElementById('clear-key-row').classList.add('hidden');
-            showToast("Your API key has been cleared from this session.");
+            const el = document.getElementById('group-' + key);
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
         function toggleAgentActive(key) {
