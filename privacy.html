@@ -8,7 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Inter Font for beautiful geometric layouts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
+
     <script>
         // Tailwind configuration matching Hive IT's specific branding guidelines
         tailwind.config = {
@@ -22,7 +22,7 @@
                             'dark-sec': '#1F2937',      // Secondary deep slate-black
                             light: '#FDFBF7',           // Warm ivory-white organic background
                             cream: '#FAF7F0',           // Warm cream accent panel color
-                            green: '#059669',           // Accent green for verified/safe states
+                            green: '#047857',           // Accent green for verified/safe states (darkened for AA contrast)
                             'green-light': '#ECFDF5',   // Soft background for safe modules
                             coral: '#E11D48',           // Alert/High-risk tone
                             'coral-light': '#FFF1F2',   // Soft warning alert background
@@ -40,16 +40,46 @@
             font-family: 'Inter', sans-serif;
             background-color: #FDFBF7;
         }
-        /* Custom accessibility focus outlines to pass WCAG 2.2 AAA */
+        /* High-contrast focus outlines for keyboard users */
         *:focus-visible {
-            outline: 4px solid #FFC72C !important;
+            outline: 4px solid #111827 !important;
             outline-offset: 2px !important;
+            border-radius: 2px;
         }
-        /* Printable layout support to allow printing physically */
+        /* Visually hidden helper for screen-reader-only text */
+        .sr-only {
+            position: absolute;
+            width: 1px; height: 1px;
+            padding: 0; margin: -1px;
+            overflow: hidden;
+            clip: rect(0,0,0,0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* Text-resize utility (scales rem-based type from the root) */
+        html.txt-large { font-size: 118.75%; }
+
+        /* High-contrast mode: strengthen muted text and borders WITHOUT removing
+           the colour-coding that the risk model depends on. */
+        body.hc { background-color: #ffffff; }
+        body.hc .text-slate-400,
+        body.hc .text-slate-500,
+        body.hc .text-slate-600 { color: #0f172a !important; }
+        body.hc .border-slate-100,
+        body.hc .border-slate-200 { border-color: #334155 !important; }
+        body.hc .bg-hive-cream,
+        body.hc .bg-slate-50 { background-color: #ffffff !important; }
+        body.hc a:not([class*="bg-"]) { text-decoration: underline; }
+
+        /* Respect reduced-motion preferences */
+        @media (prefers-reduced-motion: reduce) {
+            * { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+        }
+
+        /* Printable layout support */
         @media print {
-            .no-print {
-                display: none !important;
-            }
+            .no-print { display: none !important; }
             .print-full {
                 width: 100% !important;
                 max-width: 100% !important;
@@ -58,30 +88,23 @@
             }
         }
         /* Scrollbar aesthetics matching palette */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #FAF7F0;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #FFC72C;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #E0AB1B;
-        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #FAF7F0; }
+        ::-webkit-scrollbar-thumb { background: #FFC72C; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #E0AB1B; }
     </style>
 </head>
 <body class="flex flex-col min-h-screen text-slate-800 transition-all duration-300" id="main-body">
 
+    <!-- Skip link for keyboard / screen-reader users -->
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:bg-hive-dark focus:text-hive-yellow focus:px-4 focus:py-2 focus:rounded-lg focus:font-bold">Skip to main content</a>
 
     <!-- Navigation Header -->
     <header class="bg-hive-dark text-white shadow-md border-b-4 border-hive-yellow no-print">
-        <div class="max-w-7xl mx-auto px-4 py-5 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
-            <!-- Brand Logo Mark inspired by hiveit.co.uk (straightened) -->
-            <div class="flex items-center space-x-3 cursor-pointer" onclick="location.reload()">
-                <div class="w-10 h-10 bg-hive-yellow rounded-lg flex items-center justify-center font-black text-hive-dark text-xl shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 py-5 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <!-- Brand Logo Mark inspired by hiveit.co.uk (non-interactive brand mark) -->
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-hive-yellow rounded-lg flex items-center justify-center font-black text-hive-dark text-xl shadow-lg" aria-hidden="true">
                     H
                 </div>
                 <div>
@@ -89,8 +112,18 @@
                     <p class="text-xs text-hive-yellow font-medium">Inclusive &amp; Ethical Technology</p>
                 </div>
             </div>
-            <!-- Subtitle and Meta -->
-            <div class="text-center sm:text-right">
+            <!-- Accessibility controls + meta -->
+            <div class="flex flex-wrap items-center justify-center gap-3">
+                <div class="flex items-center gap-2" role="group" aria-label="Accessibility controls">
+                    <button type="button" id="btn-text-large" aria-pressed="false" onclick="toggleAccessibility('text-large')"
+                            class="text-xs font-bold bg-hive-dark-sec text-white border border-slate-600 hover:border-hive-yellow px-3 py-1.5 rounded-lg transition-colors">
+                        Aa Larger text
+                    </button>
+                    <button type="button" id="btn-high-contrast" aria-pressed="false" onclick="toggleAccessibility('high-contrast')"
+                            class="text-xs font-bold bg-hive-dark-sec text-white border border-slate-600 hover:border-hive-yellow px-3 py-1.5 rounded-lg transition-colors">
+                        High contrast
+                    </button>
+                </div>
                 <span class="text-xs font-semibold uppercase tracking-widest bg-hive-yellow text-hive-dark px-2.5 py-1 rounded-full">
                     AI Coding, Document &amp; Chat Privacy
                 </span>
@@ -99,58 +132,68 @@
     </header>
 
     <!-- Main Content Area -->
-    <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-8 sm:py-12">
-        
+    <main id="main-content" class="flex-grow max-w-7xl w-full mx-auto px-4 py-8 sm:py-12">
+
         <!-- Hero Section -->
-        <section class="mb-12 text-center sm:text-left">
+        <section class="mb-8 text-center sm:text-left">
             <div class="max-w-3xl">
                 <h2 class="text-4xl sm:text-5xl font-extrabold text-hive-dark tracking-tight mb-4">
                     Stop letting AI agents train on <span class="underline decoration-hive-yellow decoration-wavy decoration-2">your files, chats &amp; code</span>.
                 </h2>
                 <p class="text-lg text-slate-600 leading-relaxed">
-                    Under default configurations, commercial code assistants, consumer search/chats, and reference engines use your workspace scripts and document uploads to train public models. Reclaim control with this custom blueprint.
+                    Under default configurations, many commercial code assistants, consumer chat tools, and reference engines use your workspace scripts and document uploads to train public models. Reclaim control with this custom blueprint.
                 </p>
             </div>
         </section>
 
+        <!-- Honest currency disclaimer (addresses content-rot risk) -->
+        <div class="mb-10 bg-hive-cream border border-amber-200 rounded-xl px-4 py-3 text-xs text-slate-700 flex items-start gap-2" role="note">
+            <span aria-hidden="true">ℹ️</span>
+            <p>
+                AI vendor privacy settings change frequently — GitHub Copilot's individual plans switched to training-by-default in April 2026, and Claude's consumer plans did in September 2025. Each tool below shows when its steps were last verified.
+                <strong>Always confirm against the vendor's own settings page before relying on it.</strong>
+            </p>
+        </div>
+
         <!-- Dynamic Grid Layout for Configurations and Roadmaps -->
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            
+
             <!-- Left Panel: Configurations & Stack (5 Cols) -->
             <div class="lg:col-span-5 space-y-6 no-print">
-                
+
                 <!-- Card Container: Customize Stack -->
                 <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 relative overflow-hidden">
-                    <div class="absolute top-0 left-0 w-2 h-full bg-hive-yellow"></div>
+                    <div class="absolute top-0 left-0 w-2 h-full bg-hive-yellow" aria-hidden="true"></div>
                     <h3 class="text-xl font-bold text-hive-dark mb-1 flex items-center">
-                        <svg class="w-5 h-5 mr-2 text-hive-yellow" fill="currentColor" viewBox="0 0 20 20">
+                        <svg class="w-5 h-5 mr-2 text-hive-dark" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                             <path d="M5 4a1 1 0 00-2 0v7.268a2 2 0 000 3.464V16a1 1 0 102 0v-1.268a2 2 0 000-3.464V4zM11 4a1 1 0 10-2 0v1.268a2 2 0 000 3.464V16a1 1 0 102 0V8.732a2 2 0 000-3.464V4zM16 3a1 1 0 011 1v7.268a2 2 0 010 3.464V16a1 1 0 11-2 0v-1.268a2 2 0 010-3.464V4a1 1 0 011-1z"></path>
                         </svg>
-                        1. Configure Your Stack
+                        1. Configure your stack
                     </h3>
-                    <p class="text-xs text-slate-500 mb-4">Select or search for your developer plugins, synthesis engines, and AI agents to track configurations.</p>
+                    <p class="text-xs text-slate-600 mb-4">Select or search for your developer plugins, synthesis engines, and AI agents to track configurations.</p>
 
                     <!-- Search Box for AIs -->
                     <div class="mb-4 relative">
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <label for="ai-search" class="sr-only">Search for an AI tool</label>
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-500">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                             </svg>
                         </div>
-                        <input type="text" id="ai-search" placeholder="Search (e.g., NotebookLM, Copilot, GitHub, Claude...)" oninput="handleSearch()" class="w-full pl-9 pr-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-hive-yellow focus:border-transparent transition-all">
+                        <input type="text" id="ai-search" placeholder="Search (e.g., NotebookLM, Copilot, GitHub, Claude...)" oninput="handleSearch()" onkeydown="handleSearchKeydown(event)" class="w-full pl-9 pr-4 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-hive-dark focus:border-transparent transition-all">
                     </div>
 
                     <!-- Gemini AI Analysis CTA Panel -->
                     <div id="ai-analysis-cta-panel" class="hidden mb-6 bg-hive-cream border border-amber-200 rounded-xl p-4 transition-all">
                         <h4 class="text-xs font-bold text-hive-dark uppercase tracking-wide mb-1 flex items-center">
-                            🤖 AI Privacy Assistant
+                            🤖 AI privacy assistant
                         </h4>
-                        <p class="text-xs text-slate-600 mb-3">
-                            Can't find your tool? Let's use <strong>Gemini 2.5</strong> to analyze <span id="target-search-term" class="font-bold underline"></span>'s default model training configurations and dynamically build the opt-out steps.
+                        <p class="text-xs text-slate-700 mb-3">
+                            Can't find your tool? Use <strong>Gemini</strong> to analyse <span id="target-search-term" class="font-bold underline"></span>'s default model-training configuration and dynamically build the opt-out steps.
                         </p>
-                        <button id="gemini-query-button" onclick="triggerGeminiLookup()" class="w-full bg-hive-dark text-hive-yellow hover:bg-slate-800 transition-colors py-2.5 px-4 rounded-lg font-bold text-xs flex items-center justify-center space-x-2">
-                            <span>Analyze Privacy Opt-Out on Gemini</span>
-                            <span id="gemini-spinner" class="hidden animate-spin rounded-full h-4.5 w-4.5 border-2 border-hive-yellow border-t-transparent"></span>
+                        <button id="gemini-query-button" type="button" onclick="triggerGeminiLookup()" class="w-full bg-hive-dark text-hive-yellow hover:bg-slate-800 transition-colors py-2.5 px-4 rounded-lg font-bold text-xs flex items-center justify-center space-x-2">
+                            <span>Analyse privacy opt-out with Gemini</span>
+                            <span id="gemini-spinner" class="hidden animate-spin rounded-full h-4 w-4 border-2 border-hive-yellow border-t-transparent"></span>
                         </button>
                     </div>
 
@@ -164,46 +207,46 @@
 
             <!-- Right Panel: Data Security Roadmap (7 Cols) -->
             <div class="lg:col-span-7 space-y-8 print-full">
-                
+
                 <!-- Visual Risk Scoreboard -->
                 <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 flex flex-col sm:flex-row items-center justify-between gap-6 relative overflow-hidden">
-                    <div class="space-y-2 font-sans">
-                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">YOUR LIVE SETUP HEALTH</span>
-                        <h3 class="text-2xl font-black text-hive-dark" id="risk-rating-label">Calculating Risk Exposure...</h3>
-                        <p class="text-sm text-slate-500 leading-normal" id="risk-summary-text">Select at least one tool to evaluate model training vulnerabilities.</p>
+                    <div class="space-y-2 font-sans" aria-live="polite">
+                        <span class="text-xs font-bold text-slate-600 uppercase tracking-wider">Your live setup health</span>
+                        <h3 class="text-2xl font-black text-hive-dark" id="risk-rating-label">Calculating risk exposure…</h3>
+                        <p class="text-sm text-slate-600 leading-normal" id="risk-summary-text">Select at least one tool to evaluate model-training vulnerabilities.</p>
+                        <p class="sr-only" id="sr-status"></p>
                     </div>
-                    
-                    <!-- Circular Risk Meter -->
+
+                    <!-- Circular Risk Meter (decorative duplicate of the text status) -->
                     <div class="flex flex-col items-center flex-shrink-0" aria-hidden="true">
                         <div class="relative w-36 h-36 flex items-center justify-center">
-                            <!-- SVG Gauge Ring -->
                             <svg class="w-full h-full transform -rotate-90" viewBox="0 0 144 144">
                                 <circle cx="72" cy="72" r="54" stroke="#E5E7EB" stroke-width="12" fill="transparent" />
-                                <circle id="gauge-bar" cx="72" cy="72" r="54" stroke="#FFC72C" stroke-width="12" fill="transparent" 
+                                <circle id="gauge-bar" cx="72" cy="72" r="54" stroke="#FFC72C" stroke-width="12" fill="transparent"
                                         stroke-dasharray="339" stroke-dashoffset="339" class="transition-all duration-500 ease-out" />
                             </svg>
                             <div class="absolute flex flex-col items-center">
                                 <span class="text-2xl font-black text-hive-dark leading-none" id="gauge-percentage">0%</span>
-                                <span class="text-xxs uppercase tracking-wider text-slate-400 mt-1">Shielded</span>
+                                <span class="text-[11px] uppercase tracking-wider text-slate-600 mt-1">Shielded</span>
                             </div>
                         </div>
-                        <span class="text-xs font-semibold text-slate-500 mt-2" id="tasks-completed">0/0 tools completed</span>
+                        <span class="text-xs font-semibold text-slate-600 mt-2" id="tasks-completed">0/0 tools completed</span>
                     </div>
                 </div>
 
                 <!-- Custom Roadmap Instructions -->
                 <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 relative">
-                    <div class="flex justify-between items-center mb-6 border-b border-slate-100 pb-4 no-print">
+                    <div class="flex flex-wrap justify-between items-center gap-3 mb-6 border-b border-slate-100 pb-4 no-print">
                         <h3 class="text-xl font-bold text-hive-dark flex items-center">
-                            <span class="w-6 h-6 rounded-full bg-hive-yellow text-hive-dark flex items-center justify-center font-bold text-sm mr-2">2</span>
-                            Privacy Action Guide
+                            <span class="w-6 h-6 rounded-full bg-hive-yellow text-hive-dark flex items-center justify-center font-bold text-sm mr-2" aria-hidden="true">2</span>
+                            Privacy action guide
                         </h3>
                         <!-- Action utilities -->
                         <div class="flex flex-wrap gap-2">
-                            <button onclick="openVerificationModal()" class="text-xs bg-hive-dark text-hive-yellow hover:bg-slate-800 px-3.5 py-1.5 rounded-lg font-bold flex items-center transition-all" aria-label="Download formal verification certificate">
-                                🛡️ Generate Certificate
+                            <button type="button" onclick="openVerificationModal()" class="text-xs bg-hive-dark text-hive-yellow hover:bg-slate-800 px-3.5 py-1.5 rounded-lg font-bold flex items-center transition-all">
+                                🛡️ Generate summary
                             </button>
-                            <button onclick="copyRoadmapMarkdown()" class="text-xs bg-hive-yellow hover:bg-hive-yellow-hover text-hive-dark px-3.5 py-1.5 rounded-lg font-bold flex items-center transition-all" aria-label="Copy entire checklist as Markdown formatting">
+                            <button type="button" onclick="copyRoadmapMarkdown()" class="text-xs bg-hive-yellow hover:bg-hive-yellow-hover text-hive-dark px-3.5 py-1.5 rounded-lg font-bold flex items-center transition-all">
                                 📋 Copy Markdown
                             </button>
                         </div>
@@ -216,12 +259,12 @@
 
                     <!-- Default Empty State -->
                     <div id="empty-state-notice" class="py-12 text-center">
-                        <div class="w-16 h-16 bg-hive-cream rounded-full flex items-center justify-center mx-auto mb-4">
+                        <div class="w-16 h-16 bg-hive-cream rounded-full flex items-center justify-center mx-auto mb-4 text-2xl" aria-hidden="true">
                             🐝
                         </div>
-                        <h4 class="text-lg font-bold text-hive-dark">No Platforms Selected</h4>
-                        <p class="text-sm text-slate-500 max-w-sm mx-auto mt-2">
-                            Activate GitHub Copilot, JetBrains, ChatGPT, Claude, Gemini, NotebookLM, or search dynamic tools to generate your interactive coding security roadmap.
+                        <h4 class="text-lg font-bold text-hive-dark">No platforms selected</h4>
+                        <p class="text-sm text-slate-600 max-w-sm mx-auto mt-2">
+                            Activate GitHub Copilot, JetBrains, ChatGPT, Claude, Gemini, NotebookLM, or search for another tool to generate your interactive coding-security roadmap.
                         </p>
                     </div>
                 </div>
@@ -234,45 +277,52 @@
         <div class="mt-12 no-print">
             <div class="bg-hive-cream rounded-2xl shadow-sm border border-slate-200 p-6 sm:p-8 relative">
                 <span class="absolute -top-3 right-8 bg-hive-dark text-hive-yellow text-xs font-extrabold uppercase px-3 py-1 rounded shadow">
-                    Device Sandbox (Safe)
+                    Device sandbox (safe)
                 </span>
-                
+
                 <div class="mb-6">
                     <h3 class="text-2xl font-extrabold text-hive-dark mb-2 flex items-center">
-                        🔒 Interactive Code &amp; File Exposure Sandbox
+                        🔒 Interactive code &amp; file exposure sandbox
                     </h3>
-                    <p class="text-sm text-slate-600">
-                        Test file and code sensitivity parameters entirely in your browser. Mock developer and reference assets to trace compliance exposure across your configured IDE extensions and reference portals.
-                        <strong>No data is sent over the network.</strong>
+                    <p class="text-sm text-slate-700">
+                        Test file and code sensitivity entirely in your browser. Mock developer and reference assets to trace compliance exposure across your configured tools.
+                        <strong>No data is sent over the network — only the file name is read.</strong>
                     </p>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-                    
+
                     <!-- Sandbox Control: Upload & Select (Col 5) -->
                     <div class="lg:col-span-5 space-y-4">
-                        <!-- Drag & Drop Sim Zone -->
-                        <div id="drop-zone" class="border-2 border-dashed border-slate-300 rounded-xl p-8 text-center bg-white hover:border-hive-yellow hover:bg-slate-50 transition-all cursor-pointer relative" onclick="triggerFileSim()">
-                            <input type="file" id="file-uploader" class="hidden" onchange="handleFileSelect(event)">
-                            <svg class="w-12 h-12 mx-auto text-slate-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <!-- Drag & Drop Sim Zone (keyboard accessible) -->
+                        <div id="drop-zone" role="button" tabindex="0"
+                             aria-label="Browse for a file, or drag one here, to test it in the local sandbox"
+                             class="border-2 border-dashed border-slate-300 rounded-xl p-8 text-center bg-white hover:border-hive-yellow hover:bg-slate-50 transition-all cursor-pointer relative"
+                             onclick="triggerFileSim()"
+                             onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();triggerFileSim();}"
+                             ondragover="handleDragOver(event)"
+                             ondragleave="handleDragLeave(event)"
+                             ondrop="handleDrop(event)">
+                            <input type="file" id="file-uploader" class="hidden" onchange="handleFileSelect(event)" aria-hidden="true" tabindex="-1">
+                            <svg class="w-12 h-12 mx-auto text-slate-500 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
                             </svg>
                             <p class="text-base font-bold text-hive-dark">Drag a file here or browse</p>
-                            <p class="text-xs text-slate-400 mt-1">Simulate Code (JS, Py, Go), PDFs, CSVs, JSON, or configs locally</p>
+                            <p class="text-xs text-slate-600 mt-1">Simulate code (JS, Py, Go), PDFs, CSVs, JSON, or configs locally</p>
                         </div>
 
                         <!-- Quick Sample Files -->
                         <div>
-                            <p class="text-xs font-bold text-slate-500 mb-2 uppercase tracking-wide">Or test an operational template:</p>
+                            <p class="text-xs font-bold text-slate-600 mb-2 uppercase tracking-wide">Or test an operational template:</p>
                             <div class="flex flex-wrap gap-2">
-                                <button onclick="simulateSample('database_config.py')" class="text-xs bg-white border border-slate-200 hover:border-hive-yellow px-3 py-2 rounded-lg font-medium transition-all shadow-sm">
+                                <button type="button" onclick="simulateSample('database_config.py')" class="text-xs bg-white border border-slate-300 hover:border-hive-yellow px-3 py-2 rounded-lg font-medium transition-all shadow-sm">
                                     🐍 database_config.py
                                 </button>
-                                <button onclick="simulateSample('Customer_Feedback_PII.csv')" class="text-xs bg-white border border-slate-200 hover:border-hive-yellow px-3 py-2 rounded-lg font-medium transition-all shadow-sm">
-                                    👥 User_PII.csv
+                                <button type="button" onclick="simulateSample('Customer_PII.csv')" class="text-xs bg-white border border-slate-300 hover:border-hive-yellow px-3 py-2 rounded-lg font-medium transition-all shadow-sm">
+                                    👥 Customer_PII.csv
                                 </button>
-                                <button onclick="simulateSample('Financial_Forecast_Q4.xlsx')" class="text-xs bg-white border border-slate-200 hover:border-hive-yellow px-3 py-2 rounded-lg font-medium transition-all shadow-sm">
-                                    📊 Forecast.xlsx
+                                <button type="button" onclick="simulateSample('Financial_Forecast_Q4.xlsx')" class="text-xs bg-white border border-slate-300 hover:border-hive-yellow px-3 py-2 rounded-lg font-medium transition-all shadow-sm">
+                                    📊 Financial_Forecast_Q4.xlsx
                                 </button>
                             </div>
                         </div>
@@ -280,7 +330,7 @@
 
                     <!-- Sandbox Output: Analysis & Vulnerability Matrix (Col 7) -->
                     <div class="lg:col-span-7">
-                        <div id="sandbox-output" class="bg-white rounded-xl p-6 border border-slate-200 shadow-sm min-h-[220px] flex flex-col justify-between">
+                        <div id="sandbox-output" aria-live="polite" class="bg-white rounded-xl p-6 border border-slate-200 shadow-sm min-h-[220px] flex flex-col justify-between">
                             <!-- Dynamic output will display here -->
                         </div>
                     </div>
@@ -289,133 +339,135 @@
             </div>
         </div>
 
-        <!-- Five Golden Rules for Corporate AI Governance -->
-        <div class="mt-12 bg-hive-dark text-slate-300 rounded-2xl p-6 sm:p-8 shadow-sm relative overflow-hidden">
-            <div class="absolute top-0 right-0 w-32 h-32 bg-hive-yellow opacity-5 rounded-full transform translate-x-10 -translate-y-10"></div>
+        <!-- Golden Rules for Corporate AI Governance -->
+        <div class="mt-12 bg-hive-dark text-slate-200 rounded-2xl p-6 sm:p-8 shadow-sm relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-hive-yellow opacity-5 rounded-full transform translate-x-10 -translate-y-10" aria-hidden="true"></div>
             <h4 class="text-xl font-bold text-white mb-4 flex items-center">
-                🛡️ Coding AI Governance &amp; Code Sovereignty Rules
+                🛡️ Coding-AI governance &amp; code-sovereignty rules
             </h4>
             <ul class="space-y-4 text-sm leading-relaxed">
                 <li class="flex items-start">
                     <span class="text-hive-yellow mr-2 font-bold" aria-hidden="true">•</span>
-                    <span><strong>Keep Local References Clean:</strong> Avoid coding hardcoded API passwords, client credentials, or private connection variables directly in workspace environments where AI autocomplete runs. Use environment variables.</span>
+                    <span><strong>Keep local references clean:</strong> Don't hard-code API passwords, client credentials, or private connection strings into workspaces where AI autocomplete runs. Use environment variables.</span>
                 </li>
                 <li class="flex items-start">
                     <span class="text-hive-yellow mr-2 font-bold" aria-hidden="true">•</span>
-                    <span><strong>Audit Editor Telemetry Settings:</strong> Every major IDE plugin logs context chunks. Confirm in global system configuration files that telemetry sends are restricted.</span>
+                    <span><strong>Audit editor telemetry settings:</strong> Most IDE plugins log context chunks. Confirm in your global configuration that telemetry sends are restricted.</span>
                 </li>
                 <li class="flex items-start">
                     <span class="text-hive-yellow mr-2 font-bold" aria-hidden="true">•</span>
-                    <span><strong>Establish Commercial/Enterprise Accounts:</strong> If you are processing IP-sensitive codebases or client-protected modules, always purchase Enterprise or Team-level tiers. Standard individual free or personal subscriptions log context history by default.</span>
+                    <span><strong>Use commercial / enterprise accounts for sensitive work:</strong> If you process IP-sensitive codebases or client-protected modules, use Enterprise or Team tiers. Free and personal subscriptions increasingly default to logging context for training.</span>
                 </li>
                 <li class="flex items-start">
                     <span class="text-hive-yellow mr-2 font-bold" aria-hidden="true">•</span>
-                    <span><strong>Configure `.copilotignore` or `.gitignore` parameters:</strong> Configure workspace directory parameters to explicitly notify code indexing robots which local libraries should never be parsed.</span>
+                    <span><strong>Configure ignore files:</strong> Use <code>.copilotignore</code> / <code>.gitignore</code> and equivalent settings to tell code-indexing tools which local files should never be parsed.</span>
                 </li>
             </ul>
         </div>
 
     </main>
 
-    <!-- Modal Background Backdrop (For Verification certificate questions) -->
+    <!-- Modal Backdrop (Self-assessment summary) -->
     <div id="cert-modal-backdrop" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 transition-opacity duration-300">
-        <!-- Modal Card Container -->
-        <div class="bg-white rounded-2xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border-t-4 border-hive-yellow max-h-[85vh] overflow-y-auto transform scale-95 transition-transform duration-300 relative" id="cert-modal-card" role="dialog" aria-labelledby="modal-title" aria-modal="true">
-            <button onclick="closeVerificationModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-xl font-bold focus:outline-none" aria-label="Close modal">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border-t-4 border-hive-yellow max-h-[85vh] overflow-y-auto transform scale-95 transition-transform duration-300 relative" id="cert-modal-card" role="dialog" aria-labelledby="modal-title" aria-describedby="modal-desc" aria-modal="true">
+            <button type="button" onclick="closeVerificationModal()" class="absolute top-4 right-4 text-slate-500 hover:text-slate-800 text-2xl font-bold leading-none" aria-label="Close dialog">
                 &times;
             </button>
             <h3 id="modal-title" class="text-xl font-extrabold text-hive-dark mb-1 flex items-center">
-                🛡️ Compliance Verification Audit
+                🛡️ AI privacy self-assessment
             </h3>
-            <p class="text-xs text-slate-500 mb-6">Compile a secure, downloadable compliance file showing ownership and opt-out actions.</p>
+            <p id="modal-desc" class="text-xs text-slate-600 mb-6">Compile a downloadable record of your tools and the opt-out actions you've marked complete. This is a self-assessment, not an independent audit or certification.</p>
 
             <form onsubmit="generateVerificationFile(event)" class="space-y-5">
                 <div>
-                    <label for="auditor-name" class="block text-xs font-bold text-slate-600 uppercase tracking-wide mb-1">Your Full Name</label>
-                    <input type="text" id="auditor-name" required placeholder="e.g., Alex Reed" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-hive-yellow focus:border-transparent focus:outline-none">
+                    <label for="auditor-name" class="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-1">Your full name</label>
+                    <input type="text" id="auditor-name" required placeholder="e.g., Alex Reed" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-hive-dark focus:border-transparent focus:outline-none">
                 </div>
 
                 <div>
-                    <label for="auditor-email" class="block text-xs font-bold text-slate-600 uppercase tracking-wide mb-1">Your Email Address</label>
-                    <input type="email" id="auditor-email" required placeholder="e.g., alex@organization.com" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-hive-yellow focus:border-transparent focus:outline-none">
+                    <label for="auditor-email" class="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-1">Your email address</label>
+                    <input type="email" id="auditor-email" required placeholder="e.g., alex@organisation.com" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-hive-dark focus:border-transparent focus:outline-none">
                 </div>
 
                 <div class="pt-4 flex space-x-3">
-                    <button type="button" onclick="closeVerificationModal()" class="w-1/2 border border-slate-200 text-slate-600 font-bold text-xs py-3 rounded-lg hover:bg-slate-50 transition-colors">
+                    <button type="button" onclick="closeVerificationModal()" class="w-1/2 border border-slate-300 text-slate-700 font-bold text-xs py-3 rounded-lg hover:bg-slate-50 transition-colors">
                         Cancel
                     </button>
                     <button type="submit" class="w-1/2 bg-hive-dark text-hive-yellow hover:bg-slate-800 font-bold text-xs py-3 rounded-lg transition-colors shadow-md">
-                        Compile Certificate (.md)
+                        Download summary (.md)
                     </button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Ethical Badges (B-Corp Vibe Footer) -->
-    <section class="bg-hive-cream py-10 border-t border-slate-200 mt-16 no-print">
+    <!-- Ethical Badges (B-Corp Footer) -->
+    <section class="bg-hive-cream py-10 border-t border-slate-200 mt-16 no-print" aria-label="About Hive IT">
         <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
             <div class="space-y-2">
-                <h5 class="font-bold text-hive-dark uppercase text-xs tracking-wider">B-Corp Commitment</h5>
-                <p class="text-xs text-slate-500 leading-relaxed">
-                    Hive IT is a Certified B Corporation™. We strive to prioritize social equity, community health, and user empowerment. Safeguarding data sovereignty is key to ethical technology practices.
+                <h3 class="font-bold text-hive-dark uppercase text-xs tracking-wider">B-Corp commitment</h3>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                    Hive IT is a Certified B Corporation™. We prioritise social equity, community health, and user empowerment. Safeguarding data sovereignty is core to ethical technology.
                 </p>
             </div>
             <div class="space-y-2">
-                <h5 class="font-bold text-hive-dark uppercase text-xs tracking-wider">Inclusive by Design</h5>
-                <p class="text-xs text-slate-500 leading-relaxed">
-                    Every element, contrast ratio, and control in this navigator has been optimized for accessibility, meeting robust usability benchmarks for diverse users.
+                <h3 class="font-bold text-hive-dark uppercase text-xs tracking-wider">Inclusive by design</h3>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                    Controls, contrast, and keyboard support in this navigator are built to WCAG 2.2 AA, with text-resize and high-contrast options for diverse users.
                 </p>
             </div>
             <div class="space-y-2">
-                <h5 class="font-bold text-hive-dark uppercase text-xs tracking-wider">Sheffield Crafted</h5>
-                <p class="text-xs text-slate-500 leading-relaxed">
-                    Built by Hive IT's service design and software development hub based in Sheffield, South Yorkshire. Encouraging digital responsibility across modern organizations.
+                <h3 class="font-bold text-hive-dark uppercase text-xs tracking-wider">Sheffield crafted</h3>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                    Built by Hive IT's service-design and software-development hub in Sheffield, South Yorkshire — encouraging digital responsibility across modern organisations.
                 </p>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="bg-hive-dark text-slate-400 py-6 text-center text-xs border-t border-slate-800 no-print" role="contentinfo">
-        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
-            <div>
-                © 2026 Hive IT Ltd. All rights reserved. Registered in England &amp; Wales.
-            </div>
+    <footer class="bg-hive-dark text-slate-300 py-6 text-center text-xs border-t border-slate-800 no-print" role="contentinfo">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div>© 2026 Hive IT Ltd. All rights reserved. Registered in England &amp; Wales.</div>
             <div class="flex space-x-4">
-                <a href="https://www.hiveit.co.uk" target="_blank" class="hover:text-hive-yellow transition-colors underline decoration-dotted">Visit Hive IT Website</a>
-                <span>•</span>
-                <a href="mailto:info@hiveit.co.uk" class="hover:text-hive-yellow transition-colors underline decoration-dotted">Get In Touch</a>
+                <a href="https://www.hiveit.co.uk" target="_blank" rel="noopener noreferrer" class="hover:text-hive-yellow transition-colors underline decoration-dotted">Visit Hive IT website</a>
+                <span aria-hidden="true">•</span>
+                <a href="mailto:info@hiveit.co.uk" class="hover:text-hive-yellow transition-colors underline decoration-dotted">Get in touch</a>
             </div>
         </div>
     </footer>
 
-    <!-- Toast Notification Box -->
-    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-10 opacity-0 transition-all duration-300 bg-hive-dark text-white px-5 py-3 rounded-lg shadow-xl border-l-4 border-hive-yellow flex items-center space-x-2" role="alert">
-        <span class="text-hive-yellow">🔔</span>
-        <span id="toast-message" class="text-xs font-semibold">Message copied successfully!</span>
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-10 opacity-0 transition-all duration-300 bg-hive-dark text-white px-5 py-3 rounded-lg shadow-xl border-l-4 border-hive-yellow flex items-center space-x-2" role="status" aria-live="polite">
+        <span class="text-hive-yellow" aria-hidden="true">🔔</span>
+        <span id="toast-message" class="text-xs font-semibold"></span>
     </div>
 
     <!-- Core Interactive Application Script -->
     <script>
-        // Data Structure for preloaded Coding & Frontier AI Agents
+        // API Key for the Gemini model - declared globally for runtime injection by the preview environment.
+        const apiKey = "";
+
+        // Preloaded Coding & Frontier AI Agents.
+        // NOTE: lastVerified shows when each opt-out path was checked against vendor docs.
         const agentData = {
             github_copilot: {
                 id: 'github_copilot',
                 name: 'GitHub Copilot',
+                lastVerified: 'June 2026',
                 icon: `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>`,
-                desc: 'Indexes active programming workspace contexts. Individual tiers store telemetry code snippets by default unless manually adjusted.',
+                desc: 'As of 24 April 2026, Copilot Free, Pro, Pro+ and Max use your interaction data (prompts, outputs, code snippets and context) to train AI models by default. Business and Enterprise are exempt by contract.',
                 tiers: {
                     individual: {
                         id: 'github_copilot_individual',
-                        name: 'Copilot Individual',
+                        name: 'Copilot Free / Pro / Pro+ / Max',
                         privateByDefault: false,
                         steps: [
-                            'Log in to your account dashboard at <a href="https://github.com/settings/copilot" target="_blank" class="underline font-bold text-hive-dark hover:text-hive-yellow-hover">github.com/settings/copilot</a>.',
-                            'Locate the setting labeled <strong>"Allow GitHub to use my code snippets for product improvements"</strong>.',
-                            'Uncheck / De-select the checkbox to block all model training.',
-                            'Click <strong>Save</strong> to commit your changes.',
-                            '<em>Pro-Tip:</em> To prevent specific directories from sending context, add a local <code>.copilotignore</code> file in your repository root.'
+                            'Go to <a href="https://github.com/settings/copilot/features" target="_blank" class="underline font-bold text-hive-dark hover:text-hive-yellow-hover">github.com/settings/copilot/features</a>.',
+                            'Under the <strong>Privacy</strong> heading, find the dropdown <strong>"Allow GitHub to use my data for AI model training"</strong>.',
+                            'Set it to <strong>Disabled</strong> and save.',
+                            '<em>Note:</em> opting out applies to your whole account — there is no per-repository control. If you don\'t see the option, you\'re signed in to a Business/Enterprise account (already exempt).',
+                            '<em>Pro-tip:</em> if your personal account is a member or outside collaborator of a paid organisation, your interaction data is already excluded from training.'
                         ]
                     },
                     business: {
@@ -423,8 +475,8 @@
                         name: 'Copilot Business / Enterprise',
                         privateByDefault: true,
                         steps: [
-                            '<strong>Private by default:</strong> GitHub Business and Enterprise licensing agreements automatically disable telemetry collection.',
-                            'Your proprietary codebase fragments remain isolated and are never routed to foundation model training.'
+                            '<strong>Private by default:</strong> Business and Enterprise contracts prohibit using interaction data for model training, and the training setting does not appear on these accounts.',
+                            'Proprietary code fragments are excluded from foundation-model training.'
                         ]
                     }
                 }
@@ -432,27 +484,28 @@
             jetbrains_ai: {
                 id: 'jetbrains_ai',
                 name: 'JetBrains AI Assistant',
+                lastVerified: 'June 2026',
                 icon: `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>`,
-                desc: 'JetBrains IDE integrations access codebase details. Standard telemetry settings track assistant usages.',
+                desc: 'JetBrains IDE integrations access codebase details. Standard telemetry settings track assistant usage. Verify against current JetBrains AI settings.',
                 tiers: {
                     individual: {
                         id: 'jetbrains_ai_individual',
-                        name: 'Individual Plan',
+                        name: 'Individual plan',
                         privateByDefault: false,
                         steps: [
-                            'Open your JetBrains IDE (IntelliJ, PyCharm, WebStorm, etc.) and launch the <strong>Settings / Preferences</strong> menu.',
-                            'Navigate to <strong>Tools -> AI Assistant</strong>.',
+                            'Open your JetBrains IDE (IntelliJ, PyCharm, WebStorm, etc.) and launch <strong>Settings / Preferences</strong>.',
+                            'Navigate to <strong>Tools → AI Assistant</strong>.',
                             'Locate the <strong>Data Sharing</strong> options.',
-                            '<strong>De-select / Toggle OFF</strong> the option labeled <strong>"Allow sending data to JetBrains to improve services"</strong>.'
+                            'Toggle <strong>OFF</strong> the option to <strong>send data to JetBrains to improve services</strong>.'
                         ]
                     },
                     enterprise: {
                         id: 'jetbrains_ai_enterprise',
-                        name: 'Enterprise Plan',
+                        name: 'Enterprise plan',
                         privateByDefault: true,
                         steps: [
-                            '<strong>Private by default:</strong> Enterprise workspace administration locks out telemetry data sharing out-of-the-box.',
-                            'LLM responses and IDE context arrays are discarded immediately after processing.'
+                            '<strong>Private by default:</strong> Enterprise administration disables telemetry data sharing out of the box.',
+                            'LLM responses and IDE context are discarded after processing.'
                         ]
                     }
                 }
@@ -460,37 +513,38 @@
             chatgpt: {
                 id: 'chatgpt',
                 name: 'OpenAI ChatGPT',
+                lastVerified: 'June 2026',
                 icon: `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>`,
-                desc: 'Conversations on standard personal plans are logged to train models. Web and mobile layouts are synchronized.',
+                desc: 'Conversations on personal plans are used to train models unless you opt out. Web and mobile share the same setting.',
                 tiers: {
                     free: {
                         id: 'chatgpt_free',
-                        name: 'Free Account',
+                        name: 'Free account',
                         privateByDefault: false,
                         steps: [
-                            'Log in to your account at <a href="https://chatgpt.com" target="_blank" class="underline font-bold text-hive-dark hover:text-hive-yellow-hover">chatgpt.com</a>.',
-                            'Click your <strong>Profile picture</strong> in the lower-left or top-right corner and select <strong>Settings</strong>.',
+                            'Log in at <a href="https://chatgpt.com" target="_blank" class="underline font-bold text-hive-dark hover:text-hive-yellow-hover">chatgpt.com</a>.',
+                            'Click your <strong>profile picture</strong> and select <strong>Settings</strong>.',
                             'Go to the <strong>Data Controls</strong> tab.',
-                            'Locate and <strong>toggle OFF</strong> the switch labeled <strong>"Improve the model for everyone"</strong>.',
-                            '<em>Pro-Tip:</em> When dealing with sensitive queries, select <strong>Temporary Chat</strong> for zero permanent history storage.'
+                            'Toggle <strong>OFF</strong> <strong>"Improve the model for everyone"</strong>.',
+                            '<em>Pro-tip:</em> for sensitive queries, use <strong>Temporary Chat</strong> for no permanent history.'
                         ]
                     },
                     plus: {
                         id: 'chatgpt_plus',
-                        name: 'ChatGPT Plus',
+                        name: 'ChatGPT Plus / Go / Pro',
                         privateByDefault: false,
                         steps: [
-                            'Log into <a href="https://chatgpt.com" target="_blank" class="underline font-bold text-hive-dark hover:text-hive-yellow-hover">chatgpt.com</a>.',
-                            'Open <strong>Settings -> Data Controls</strong> and <strong>toggle OFF</strong> "Improve the model for everyone".'
+                            'Log in at <a href="https://chatgpt.com" target="_blank" class="underline font-bold text-hive-dark hover:text-hive-yellow-hover">chatgpt.com</a>.',
+                            'Open <strong>Settings → Data Controls</strong> and toggle <strong>OFF</strong> "Improve the model for everyone". Paid consumer tiers are <strong>not</strong> private by default.'
                         ]
                     },
                     enterprise: {
                         id: 'chatgpt_enterprise',
-                        name: 'Team / Enterprise',
+                        name: 'Team / Enterprise / Edu',
                         privateByDefault: true,
                         steps: [
-                            '<strong>Private by default:</strong> OpenAI Enterprise, Team, and Education data is strictly isolated within your organization.',
-                            'Chats are excluded from foundation model training. No manual switches are needed.'
+                            '<strong>Private by default:</strong> Team, Enterprise and Education data is isolated within your organisation.',
+                            'Chats are excluded from foundation-model training; no manual switches are needed.'
                         ]
                     }
                 }
@@ -498,37 +552,38 @@
             claude: {
                 id: 'claude',
                 name: 'Anthropic Claude',
+                lastVerified: 'June 2026',
                 icon: `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-11.314l.707.707m11.314 11.314l.707.707" /></svg>`,
-                desc: 'Claude consumer tools save and process inputs for training unless opted out. Paid corporate setups are naturally guarded.',
+                desc: 'Since 28 Sept 2025, Claude consumer plans (Free, Pro, Max) train on your chats and coding sessions unless you opt out, with retention up to 5 years if opted in. Commercial plans are excluded.',
                 tiers: {
                     free: {
                         id: 'claude_free',
-                        name: 'Free Account',
+                        name: 'Free account',
                         privateByDefault: false,
                         steps: [
-                            'Sign in to <a href="https://claude.ai" target="_blank" class="underline font-bold text-hive-dark hover:text-hive-yellow-hover">claude.ai</a>.',
-                            'Open your user account dropdown by clicking your <strong>Profile icon</strong>.',
-                            'Click <strong>Settings</strong>.',
-                            'Select the <strong>Privacy</strong> tab in the popup.',
-                            'De-select/toggle OFF the setting labeled <strong>"Help improve Claude"</strong> (or Model Improvement).'
+                            'Sign in at <a href="https://claude.ai" target="_blank" class="underline font-bold text-hive-dark hover:text-hive-yellow-hover">claude.ai</a>.',
+                            'Click your <strong>profile icon</strong>, then <strong>Settings</strong>.',
+                            'Select the <strong>Privacy</strong> tab.',
+                            'Toggle <strong>OFF</strong> <strong>"Help improve Claude"</strong> (the model-training control).',
+                            '<em>Note:</em> opting out keeps the 30-day retention window; past training runs cannot be undone.'
                         ]
                     },
                     pro: {
                         id: 'claude_pro',
-                        name: 'Claude Pro',
+                        name: 'Claude Pro / Max',
                         privateByDefault: false,
                         steps: [
-                            'Log into <a href="https://claude.ai" target="_blank" class="underline font-bold text-hive-dark hover:text-hive-yellow-hover">claude.ai</a>.',
-                            'Open <strong>Settings -> Privacy</strong> and toggle OFF <strong>"Help improve Claude"</strong>.'
+                            'Log in at <a href="https://claude.ai" target="_blank" class="underline font-bold text-hive-dark hover:text-hive-yellow-hover">claude.ai</a>.',
+                            'Open <strong>Settings → Privacy</strong> and toggle <strong>OFF</strong> "Help improve Claude". Pro and Max are consumer plans and are <strong>not</strong> private by default.'
                         ]
                     },
                     team: {
                         id: 'claude_team',
-                        name: 'Team Account',
+                        name: 'Team / Enterprise / API',
                         privateByDefault: true,
                         steps: [
-                            '<strong>Private by default:</strong> Data shared inside Claude Team workspace boundaries is secure.',
-                            'Anthropic model policies guarantee your content is strictly excluded from all model fine-tuning and updates.'
+                            '<strong>Private by default:</strong> Claude for Work, Enterprise and API usage are governed by commercial terms.',
+                            'Content is excluded from model training; the September 2025 consumer changes do not apply.'
                         ]
                     }
                 }
@@ -536,35 +591,37 @@
             gemini: {
                 id: 'gemini',
                 name: 'Google Gemini',
+                lastVerified: 'June 2026',
                 icon: `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" /></svg>`,
-                desc: 'Gemini activity records linked to Google Accounts are subject to human review pipelines unless deactivated.',
+                desc: 'With "Keep Activity" on (the default), Gemini chats can be sampled for human review and used to improve Google AI. This applies to free and paid consumer tiers.',
                 tiers: {
                     free: {
                         id: 'gemini_free',
-                        name: 'Free Account',
+                        name: 'Free account',
                         privateByDefault: false,
                         steps: [
-                            'Access your dedicated activity configuration dashboard at <a href="https://myactivity.google.com/product/gemini" target="_blank" class="underline font-bold text-hive-dark hover:text-hive-yellow-hover">myactivity.google.com/product/gemini</a>.',
-                            'Locate the main toggle labeled <strong>"Gemini Apps Activity"</strong>.',
-                            'Click the dropdown and select <strong>"Turn off"</strong> (or "Turn off & delete activity" to wipe historic records).'
+                            'Open <a href="https://myactivity.google.com/product/gemini" target="_blank" class="underline font-bold text-hive-dark hover:text-hive-yellow-hover">myactivity.google.com/product/gemini</a>.',
+                            'Find the <strong>"Keep Activity"</strong> toggle at the top of the Gemini Apps Activity page.',
+                            'Switch it <strong>Off</strong> and confirm in the dialog.',
+                            '<em>Note:</em> even when off, chats may be kept ~72 hours for service and safety, and any conversation already seen by a human reviewer can be retained up to 3 years.'
                         ]
                     },
                     advanced: {
                         id: 'gemini_advanced',
-                        name: 'Gemini Advanced',
+                        name: 'Gemini Advanced (Google One)',
                         privateByDefault: false,
                         steps: [
-                            'Google One Advanced paid consumer tiers utilize the same data ingestion pipelines as the free version!',
-                            'You <strong>MUST</strong> still manually disable <strong>Gemini Apps Activity</strong> at <a href="https://myactivity.google.com/product/gemini" target="_blank" class="underline font-bold text-hive-dark hover:text-hive-yellow-hover">myactivity.google.com</a>.'
+                            'Paid consumer tiers use the same data pipeline as the free version.',
+                            'You <strong>must</strong> still turn off <strong>"Keep Activity"</strong> at <a href="https://myactivity.google.com/product/gemini" target="_blank" class="underline font-bold text-hive-dark hover:text-hive-yellow-hover">myactivity.google.com/product/gemini</a>.'
                         ]
                     },
                     workspace: {
                         id: 'gemini_workspace',
-                        name: 'Workspace Account',
+                        name: 'Workspace account',
                         privateByDefault: true,
                         steps: [
-                            '<strong>Private by default:</strong> Gemini inside Workspace Business, Enterprise, and Education tiers holds enterprise-grade compliance.',
-                            'Your prompts, document uploads, and reports are isolated inside your organization\'s boundaries and are never processed for training.'
+                            '<strong>Private by default:</strong> Gemini in Workspace Business, Enterprise and Education holds enterprise-grade data commitments.',
+                            'Prompts, uploads and reports stay within your organisation and are not processed for training.'
                         ]
                     }
                 }
@@ -572,16 +629,17 @@
             notebooklm: {
                 id: 'notebooklm',
                 name: 'Google NotebookLM',
+                lastVerified: 'June 2026',
                 icon: `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>`,
-                desc: 'Organizes and synthesizes personal uploaded documents. Built with robust private-by-default exclusions on all tiers.',
+                desc: 'Synthesises your uploaded documents. Sources are not used to train public models; collaboration sharing is the main exposure to watch.',
                 tiers: {
                     standard: {
                         id: 'notebooklm_standard',
-                        name: 'Standard Plan',
+                        name: 'Standard plan',
                         privateByDefault: true,
                         steps: [
-                            '<strong>Private by default:</strong> Google NotebookLM does not use your uploaded PDFs, slides, text notes, or sources to train public models.',
-                            '<em>Collaboration Note:</em> Anyone invited to a shared workspace notebook can inspect and download your uploaded raw file blocks.'
+                            '<strong>Private by default:</strong> NotebookLM does not use your uploaded PDFs, slides, notes or sources to train public models.',
+                            '<em>Collaboration note:</em> anyone invited to a shared notebook can inspect and download your uploaded source files.'
                         ]
                     },
                     workspace: {
@@ -589,8 +647,8 @@
                         name: 'Workspace Enterprise / Edu',
                         privateByDefault: true,
                         steps: [
-                            '<strong>Private by default:</strong> Governed by Google Workspace HIPAA and enterprise-grade cloud data agreements.',
-                            'All processed file vectors and text chunks are discarded, and zero telemetry is gathered for foundation model training.'
+                            '<strong>Private by default:</strong> governed by Google Workspace enterprise data agreements.',
+                            'Processed source content is not used for foundation-model training.'
                         ]
                     }
                 }
@@ -598,17 +656,18 @@
             copilot: {
                 id: 'copilot',
                 name: 'Microsoft Copilot',
+                lastVerified: 'June 2026',
                 icon: `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>`,
-                desc: 'Microsoft leverages Copilot text and voice input data to train public models on standard consumer tiers.',
+                desc: 'Microsoft can use consumer Copilot text and voice input to train models unless you opt out. Verify against current Microsoft account privacy settings.',
                 tiers: {
                     free: {
                         id: 'copilot_free',
-                        name: 'Free Account',
+                        name: 'Free account',
                         privateByDefault: false,
                         steps: [
                             'Log in at <a href="https://copilot.microsoft.com" target="_blank" class="underline font-bold text-hive-dark hover:text-hive-yellow-hover">copilot.microsoft.com</a>.',
-                            'Click your profile icon in the upper-right corner and select <strong>Privacy</strong>.',
-                            'Toggle OFF the settings for both <strong>"Model training on text"</strong> and <strong>"Model training on voice"</strong>.'
+                            'Open your profile and go to <strong>Privacy</strong> settings.',
+                            'Toggle <strong>OFF</strong> both <strong>"Model training on text"</strong> and <strong>"Model training on voice"</strong>.'
                         ]
                     },
                     pro: {
@@ -616,16 +675,16 @@
                         name: 'Copilot Pro',
                         privateByDefault: false,
                         steps: [
-                            'Access your account configurations and verify <strong>Model training on text/voice</strong> is turned off.'
+                            'Open your account privacy settings and confirm <strong>model training on text/voice</strong> is turned off.'
                         ]
                     },
                     enterprise: {
                         id: 'copilot_enterprise',
-                        name: 'M365 Enterprise',
+                        name: 'Microsoft 365 Enterprise',
                         privateByDefault: true,
                         steps: [
-                            '<strong>Private by default:</strong> Microsoft Commercial Data Protection (noted by a green shield in your layout) is active.',
-                            'Data is protected under rigorous enterprise agreements and is never logged for training.'
+                            '<strong>Private by default:</strong> Microsoft 365 Copilot enterprise data protection is active.',
+                            'Data is protected under enterprise agreements and is not used for training.'
                         ]
                     }
                 }
@@ -633,17 +692,18 @@
             mistral: {
                 id: 'mistral',
                 name: 'Mistral AI',
+                lastVerified: 'June 2026',
                 icon: `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>`,
-                desc: 'Mistral\'s European consumer interfaces enable training ingestion. API setups keep variables guarded.',
+                desc: 'Mistral\'s consumer chat (le Chat) can use conversations for training. API and enterprise plans are shielded. Verify against current Mistral settings.',
                 tiers: {
                     free: {
                         id: 'mistral_free',
                         name: 'Free (le Chat)',
                         privateByDefault: false,
                         steps: [
-                            'Log in to your account dashboard at <a href="https://chat.mistral.ai" target="_blank" class="underline font-bold text-hive-dark hover:text-hive-yellow-hover">chat.mistral.ai</a>.',
-                            'Click your Profile avatar icon in the bottom-left corner and click <strong>Settings</strong>.',
-                            'De-select/toggle OFF the configuration labeled <strong>"Use data to improve models"</strong>.'
+                            'Log in at <a href="https://chat.mistral.ai" target="_blank" class="underline font-bold text-hive-dark hover:text-hive-yellow-hover">chat.mistral.ai</a>.',
+                            'Open your profile avatar and click <strong>Settings</strong>.',
+                            'Toggle <strong>OFF</strong> <strong>"Use data to improve models"</strong>.'
                         ]
                     },
                     api: {
@@ -651,33 +711,51 @@
                         name: 'La Plateforme API / Enterprise',
                         privateByDefault: true,
                         steps: [
-                            '<strong>Private by default:</strong> API pipelines, developer playgrounds, and dedicated enterprise cloud plans are structurally shielded from any training loops.'
+                            '<strong>Private by default:</strong> API pipelines, developer playgrounds and dedicated enterprise plans are excluded from training loops.'
                         ]
                     }
                 }
             }
         };
 
-        // State Store - Configured so ONLY Gemini Workspace is selected by default
+        // State Store - ONLY Gemini Workspace selected by default (demonstrates "Secure by Default").
         let userStack = {
             gemini: { active: true, selectedTiers: ['workspace'] }
         };
 
-        // Single-checkbox verification map (Keys are tier IDs)
+        // Single-checkbox verification map (keys are tier IDs)
         let verifiedTiers = {};
 
-        // Track Current Accessibility States
+        // Accessibility states
         let isLargeText = false;
         let isHighContrast = false;
+
+        // Modal focus management
+        let lastFocusedEl = null;
 
         // On Page Load
         window.onload = function() {
             renderConfigPanel();
             updateRoadmap();
             simulateSample('database_config.py'); // Pre-populate File Sandbox
+            fixExternalLinks(document);
         };
 
-        // Render the Left Setup Panel Toggles dynamically with search and custom fallback
+        // Add rel="noopener noreferrer" and a screen-reader "opens in new tab" hint to external links.
+        function fixExternalLinks(root) {
+            const scope = root || document;
+            scope.querySelectorAll('a[target="_blank"]').forEach(a => {
+                a.setAttribute('rel', 'noopener noreferrer');
+                if (!a.querySelector('.sr-only')) {
+                    const s = document.createElement('span');
+                    s.className = 'sr-only';
+                    s.textContent = ' (opens in new tab)';
+                    a.appendChild(s);
+                }
+            });
+        }
+
+        // Render the Left Setup Panel dynamically with search and custom fallback
         function renderConfigPanel(filterTerm = '') {
             const container = document.getElementById('agent-config-list');
             const aiCtaPanel = document.getElementById('ai-analysis-cta-panel');
@@ -692,7 +770,6 @@
                 const activeState = userStack[key] ? userStack[key].active : false;
                 const activeTiers = userStack[key] ? userStack[key].selectedTiers : [];
 
-                // Filter by search text
                 if (term && !agent.name.toLowerCase().includes(term) && !agent.desc.toLowerCase().includes(term)) {
                     return;
                 }
@@ -705,37 +782,35 @@
                     const shieldBadge = tier.privateByDefault ? '👑 ' : '';
 
                     tierSelectorsHtml += `
-                        <button onclick="toggleAgentTier('${key}', '${tierKey}')" 
-                                class="flex items-center justify-between text-left border rounded-lg p-2 py-1.5 text-xs font-semibold cursor-pointer transition-all ${isSelected ? 'border-hive-dark bg-hive-dark text-hive-yellow' : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50'}"
-                                aria-label="Select ${agent.name} ${tier.name}">
+                        <button type="button" onclick="toggleAgentTier('${key}', '${tierKey}')"
+                                aria-pressed="${isSelected ? 'true' : 'false'}"
+                                class="flex items-center justify-between text-left border rounded-lg p-2 py-1.5 text-xs font-semibold cursor-pointer transition-all ${isSelected ? 'border-hive-dark bg-hive-dark text-hive-yellow' : 'border-slate-300 bg-white text-slate-700 hover:bg-slate-50'}">
                             <span class="truncate">${shieldBadge}${tier.name}</span>
-                            ${tier.privateByDefault ? '<span class="text-[9px] bg-hive-yellow text-hive-dark px-1.5 py-0.5 rounded-full font-bold uppercase tracking-wide flex-shrink-0 ml-1">Shielded</span>' : ''}
+                            ${tier.privateByDefault ? '<span class="text-[11px] bg-hive-yellow text-hive-dark px-1.5 py-0.5 rounded-full font-bold uppercase tracking-wide flex-shrink-0 ml-1">Shielded</span>' : ''}
                         </button>
                     `;
                 });
 
                 const cardHtml = `
-                    <div class="border-2 rounded-xl p-3.5 transition-all duration-300 ${activeState ? 'border-hive-yellow bg-slate-50 shadow-sm' : 'border-slate-200 opacity-60 hover:opacity-100'}">
-                        <!-- Head Bar -->
+                    <div id="agent-card-${key}" class="border-2 rounded-xl p-3.5 transition-all duration-300 ${activeState ? 'border-hive-yellow bg-slate-50 shadow-sm' : 'border-slate-200'}">
                         <div class="flex items-center justify-between mb-2">
                             <div class="flex items-center space-x-2.5 min-w-0">
-                                <div class="p-1.5 rounded-lg flex-shrink-0 ${activeState ? 'bg-hive-dark text-hive-yellow' : 'bg-slate-100 text-slate-500'}">
+                                <div class="p-1.5 rounded-lg flex-shrink-0 ${activeState ? 'bg-hive-dark text-hive-yellow' : 'bg-slate-200 text-slate-700'}" aria-hidden="true">
                                     ${agent.icon}
                                 </div>
                                 <span class="font-bold text-xs sm:text-sm text-hive-dark truncate">${agent.name}</span>
                             </div>
-                            <input type="checkbox" id="check-${key}" ${activeState ? 'checked' : ''} 
-                                   onchange="toggleAgentActive('${key}')" 
-                                   class="w-5 h-5 accent-hive-dark cursor-pointer rounded flex-shrink-0" 
+                            <input type="checkbox" id="check-${key}" ${activeState ? 'checked' : ''}
+                                   onchange="toggleAgentActive('${key}')"
+                                   class="w-5 h-5 accent-hive-dark cursor-pointer rounded flex-shrink-0"
                                    aria-label="Activate guide for ${agent.name}">
                         </div>
 
-                        <!-- Description -->
-                        <p class="text-[11px] text-slate-500 leading-normal mb-2.5 ${activeState ? 'block' : 'hidden'}">
+                        <p class="text-[12px] text-slate-600 leading-normal mb-1 ${activeState ? 'block' : 'hidden'}">
                             ${agent.desc}
                         </p>
+                        <p class="text-[11px] text-slate-500 mb-2.5 ${activeState ? 'block' : 'hidden'}">Steps last verified: ${agent.lastVerified || 'n/a'}</p>
 
-                        <!-- Tier Options Selector -->
                         <div class="grid grid-cols-1 gap-1.5 mt-2 ${activeState ? 'grid' : 'hidden'}">
                             ${tierSelectorsHtml}
                         </div>
@@ -744,28 +819,45 @@
                 container.innerHTML += cardHtml;
             });
 
-            // Handle Empty Search State / Toggle Gemini Call Option
             if (matches === 0 && filterTerm.trim().length > 0) {
                 aiCtaPanel.classList.remove('hidden');
                 targetSearchLabel.textContent = `"${filterTerm}"`;
             } else {
                 aiCtaPanel.classList.add('hidden');
             }
+
+            fixExternalLinks(container);
         }
 
-        // Handle typing in search box
         function handleSearch() {
-            const query = document.getElementById('ai-search').value;
-            renderConfigPanel(query);
+            renderConfigPanel(document.getElementById('ai-search').value);
         }
 
-        // Gemini API dynamic model parser with exponential backoff
+        function handleSearchKeydown(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                const ctaPanel = document.getElementById('ai-analysis-cta-panel');
+                if (!ctaPanel.classList.contains('hidden')) {
+                    triggerGeminiLookup();
+                }
+            }
+        }
+
+        function cleanJsonText(rawText) {
+            if (!rawText) return "{}";
+            let cleaned = rawText.trim();
+            if (cleaned.startsWith("```")) {
+                cleaned = cleaned.replace(/^```json/, "").replace(/^```/, "").replace(/```$/, "").trim();
+            }
+            return cleaned;
+        }
+
+        // Gemini API dynamic model parser with exponential backoff (1s,2s,4s,8s,16s).
         async function queryGeminiPrivacyModel(aiName) {
-            const apiKey = ""; // provided at runtime
             const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
-            
-            const systemPrompt = `You are a cybersecurity and data privacy expert specializing in AI governance. 
-Analyze the requested AI tool/plugin. Determine how to opt-out of model training for its Free/Hobby tier and Paid/Pro/Enterprise tiers. 
+
+            const systemPrompt = `You are a cybersecurity and data privacy expert specializing in AI governance.
+Analyze the requested AI tool/plugin. Determine how to opt-out of model training for its Free/Hobby tier and Paid/Pro/Enterprise tiers.
 Produce a structured JSON response matching the schema.
 For steps:
 - Free steps should provide realistic, precise click-paths or settings to toggle off training. Keep it under 5 concise steps.
@@ -782,33 +874,26 @@ Always write clean, actionable steps.`;
                     responseSchema: {
                         type: "OBJECT",
                         properties: {
-                            name: { type: "STRING", description: "The clean display name of the AI tool (e.g. Cursor Editor)" },
-                            desc: { type: "STRING", description: "A brief description (1-2 sentences) of how it uses user data" },
+                            name: { type: "STRING", description: "The clean display name of the AI tool" },
+                            desc: { type: "STRING", description: "A brief description of how it uses user data" },
                             tiers: {
                                 type: "OBJECT",
                                 properties: {
                                     free: {
                                         type: "OBJECT",
                                         properties: {
-                                            name: { type: "STRING", description: "e.g. Free Tier or Hobby Plan" },
-                                            privateByDefault: { type: "BOOLEAN", description: "Whether it is naturally secure/non-training without manual settings" },
-                                            steps: { 
-                                                type: "ARRAY", 
-                                                items: { type: "STRING" },
-                                                description: "Actionable, numbered steps explaining how to opt out of training"
-                                            }
+                                            name: { type: "STRING", description: "e.g. Free Tier" },
+                                            privateByDefault: { type: "BOOLEAN" },
+                                            steps: { type: "ARRAY", items: { type: "STRING" } }
                                         },
                                         required: ["name", "privateByDefault", "steps"]
                                     },
                                     paid: {
                                         type: "OBJECT",
                                         properties: {
-                                            name: { type: "STRING", description: "e.g. Business Plan or Enterprise" },
+                                            name: { type: "STRING", description: "e.g. Business Plan" },
                                             privateByDefault: { type: "BOOLEAN" },
-                                            steps: { 
-                                                type: "ARRAY", 
-                                                items: { type: "STRING" }
-                                            }
+                                            steps: { type: "ARRAY", items: { type: "STRING" } }
                                         },
                                         required: ["name", "privateByDefault", "steps"]
                                     }
@@ -821,9 +906,9 @@ Always write clean, actionable steps.`;
                 }
             };
 
-            // Exponential backoff logic
+            // Exponential backoff: sleeps of 1s, 2s, 4s, 8s, 16s across 6 attempts.
             let delay = 1000;
-            for (let attempt = 1; attempt <= 5; attempt++) {
+            for (let attempt = 1; attempt <= 6; attempt++) {
                 try {
                     const response = await fetch(url, {
                         method: "POST",
@@ -833,16 +918,15 @@ Always write clean, actionable steps.`;
                     if (!response.ok) throw new Error(`HTTP Error ${response.status}`);
                     const data = await response.json();
                     const rawJson = data.candidates?.[0]?.content?.parts?.[0]?.text;
-                    return JSON.parse(rawJson);
+                    return JSON.parse(cleanJsonText(rawJson));
                 } catch (error) {
-                    if (attempt === 5) throw error;
+                    if (attempt === 6) throw error;
                     await new Promise(resolve => setTimeout(resolve, delay));
-                    delay *= 2; // 1s, 2s, 4s, 8s, 16s
+                    delay *= 2;
                 }
             }
         }
 
-        // Trigger the Gemini query loader pipeline
         async function triggerGeminiLookup() {
             const query = document.getElementById('ai-search').value.trim();
             if (!query) return;
@@ -852,21 +936,19 @@ Always write clean, actionable steps.`;
 
             button.disabled = true;
             spinner.classList.remove('hidden');
-            showToast(`Consulting Gemini to analyze ${query}...`);
+            showToast(`Consulting Gemini to analyse ${query}…`);
 
             try {
                 const geminiPayload = await queryGeminiPrivacyModel(query);
-                
-                // Compile dynamic id
+
                 const customId = `custom_${Date.now()}`;
-                
-                // Add unique ID tags to steps inside payload
                 const formattedFreeId = `${customId}_free`;
                 const formattedPaidId = `${customId}_paid`;
 
                 agentData[customId] = {
                     id: customId,
                     name: geminiPayload.name,
+                    lastVerified: 'Generated now (AI — verify with vendor)',
                     icon: `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" /></svg>`,
                     desc: geminiPayload.desc,
                     tiers: {
@@ -885,36 +967,41 @@ Always write clean, actionable steps.`;
                     }
                 };
 
-                // Add to active stack & select the Free tier initially
                 userStack[customId] = { active: true, selectedTiers: ['free'] };
 
-                // Clean Search interface
                 document.getElementById('ai-search').value = '';
-                document.getElementById('custom-ai-name').value = '';
-                document.getElementById('custom-ai-desc').value = '';
-                document.getElementById('custom-ai-panel').classList.add('hidden');
+                document.getElementById('ai-analysis-cta-panel').classList.add('hidden');
 
                 renderConfigPanel();
                 updateRoadmap();
                 evaluateFileVulnerability();
-                showToast(`Dynamic playbook generated for ${geminiPayload.name}!`);
+                showToast(`Draft playbook generated for ${geminiPayload.name} — verify before relying on it.`);
+
+                setTimeout(() => {
+                    const newCard = document.getElementById(`agent-card-${customId}`);
+                    if (newCard) {
+                        newCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                        newCard.classList.add('ring-4', 'ring-hive-yellow', 'ring-offset-2');
+                        setTimeout(() => newCard.classList.remove('ring-4', 'ring-hive-yellow', 'ring-offset-2'), 2500);
+                    }
+                }, 100);
+
             } catch (err) {
-                showToast("Failed to retrieve data. Check your network context or retry.");
+                console.error("Gemini lookup error: ", err);
+                showToast("Couldn't reach the analysis service. Check the connection and try again.");
             } finally {
                 button.disabled = false;
                 spinner.classList.add('hidden');
             }
         }
 
-        // Toggle active status for agent
         function toggleAgentActive(key) {
             if (!userStack[key]) {
                 userStack[key] = { active: false, selectedTiers: [] };
             }
 
             userStack[key].active = !userStack[key].active;
-            
-            // Default to first tier if activated
+
             if (userStack[key].active && userStack[key].selectedTiers.length === 0) {
                 const defaultTier = Object.keys(agentData[key].tiers)[0];
                 userStack[key].selectedTiers.push(defaultTier);
@@ -927,7 +1014,6 @@ Always write clean, actionable steps.`;
             evaluateFileVulnerability();
         }
 
-        // Toggle specific selected tiers
         function toggleAgentTier(agentKey, tierKey) {
             if (!userStack[agentKey]) {
                 userStack[agentKey] = { active: true, selectedTiers: [] };
@@ -939,20 +1025,14 @@ Always write clean, actionable steps.`;
             } else {
                 userStack[agentKey].selectedTiers.push(tierKey);
             }
-            
-            // Adjust parent activity state based on tier selections
-            if (userStack[agentKey].selectedTiers.length === 0) {
-                userStack[agentKey].active = false;
-            } else {
-                userStack[agentKey].active = true;
-            }
+
+            userStack[agentKey].active = userStack[agentKey].selectedTiers.length > 0;
 
             renderConfigPanel(document.getElementById('ai-search').value);
             updateRoadmap();
             evaluateFileVulnerability();
         }
 
-        // Dynamic Roadmap Construction and Verification logic
         function updateRoadmap() {
             const guideContainer = document.getElementById('dynamic-guide-view');
             const emptyState = document.getElementById('empty-state-notice');
@@ -978,36 +1058,32 @@ Always write clean, actionable steps.`;
 
                     if (tier.privateByDefault) {
                         completedTiersCount++;
-                        // Auto-secured tier mockup - Private by Default
                         tiersMarkup += `
                             <div class="p-4 bg-emerald-50 border-l-4 border-hive-green rounded-r-lg my-3">
                                 <div class="flex items-start">
                                     <span class="text-xl mr-3 flex-shrink-0" aria-hidden="true">🛡️</span>
                                     <div class="text-sm text-slate-700 leading-relaxed w-full">
-                                        <div class="flex items-center justify-between">
-                                            <span class="inline-block text-[10px] font-extrabold bg-hive-green text-white px-2 py-0.5 rounded uppercase tracking-wide">
+                                        <div class="flex items-center justify-between flex-wrap gap-2">
+                                            <span class="inline-block text-[11px] font-extrabold bg-hive-green text-white px-2 py-0.5 rounded uppercase tracking-wide">
                                                 ${tier.name}
                                             </span>
-                                            <span class="text-[10px] font-bold text-hive-green uppercase tracking-wide">Secure by Default</span>
+                                            <span class="text-[11px] font-bold text-hive-green uppercase tracking-wide">Secure by default</span>
                                         </div>
                                         <p class="mt-2 font-semibold text-slate-800">${tier.steps[0]}</p>
-                                        <p class="text-xs text-slate-500 mt-1">${tier.steps[1] || ''}</p>
+                                        <p class="text-xs text-slate-600 mt-1">${tier.steps[1] || ''}</p>
                                     </div>
                                 </div>
                             </div>
                         `;
                     } else {
-                        // Manual opt-out tier - Numbered list of instructions + Single verification checkbox
                         const isVerified = verifiedTiers[tierId] || false;
-                        if (isVerified) {
-                            completedTiersCount++;
-                        }
+                        if (isVerified) completedTiersCount++;
 
                         let stepsListHtml = '';
                         tier.steps.forEach((stepText, idx) => {
                             stepsListHtml += `
                                 <li class="flex items-start text-xs sm:text-sm text-slate-700 leading-relaxed py-1.5">
-                                    <span class="font-bold text-hive-yellow mr-2.5 flex-shrink-0">${idx + 1}.</span>
+                                    <span class="font-bold text-hive-dark mr-2.5 flex-shrink-0">${idx + 1}.</span>
                                     <span>${stepText}</span>
                                 </li>
                             `;
@@ -1015,30 +1091,29 @@ Always write clean, actionable steps.`;
 
                         tiersMarkup += `
                             <div class="p-4 border border-slate-200 rounded-xl my-3 bg-slate-50 relative overflow-hidden transition-all duration-300 ${isVerified ? 'border-hive-green bg-emerald-50/40' : ''}">
-                                <div class="flex justify-between items-center mb-2 border-b border-slate-100 pb-2">
-                                    <span class="inline-block text-[10px] font-extrabold bg-amber-100 text-amber-800 px-2 py-0.5 rounded uppercase tracking-wide">
+                                <div class="flex justify-between items-center mb-2 border-b border-slate-200 pb-2 flex-wrap gap-2">
+                                    <span class="inline-block text-[11px] font-extrabold bg-amber-100 text-amber-900 px-2 py-0.5 rounded uppercase tracking-wide">
                                         ${tier.name}
                                     </span>
-                                    <span class="text-[10px] text-slate-400 font-medium">Action Required</span>
+                                    <span class="text-[11px] text-slate-600 font-semibold">Action required</span>
                                 </div>
-                                
-                                <ul class="space-y-1 my-3">
-                                    ${stepsListHtml}
-                                </ul>
 
-                                <!-- Single Checkbox verification for entire instructions block -->
-                                <div class="mt-4 pt-3 border-t border-slate-200/60 flex items-center justify-between">
+                                <ol class="space-y-1 my-3 list-none">
+                                    ${stepsListHtml}
+                                </ol>
+
+                                <div class="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between flex-wrap gap-2">
                                     <label class="flex items-center space-x-3 cursor-pointer select-none">
-                                        <input type="checkbox" 
-                                               id="verify_${tierId}" 
-                                               ${isVerified ? 'checked' : ''} 
+                                        <input type="checkbox"
+                                               id="verify_${tierId}"
+                                               ${isVerified ? 'checked' : ''}
                                                onchange="toggleTierVerified('${tierId}')"
-                                               class="w-5 h-5 accent-hive-dark border-slate-300 rounded focus:ring-hive-yellow cursor-pointer flex-shrink-0">
-                                        <span class="text-xs font-bold text-slate-700 ${isVerified ? 'text-hive-green font-extrabold' : ''}">
-                                            I have followed these instructions and opted out
+                                               class="w-5 h-5 accent-hive-dark border-slate-300 rounded focus:ring-hive-dark cursor-pointer flex-shrink-0">
+                                        <span class="text-xs font-bold ${isVerified ? 'text-hive-green' : 'text-slate-700'}">
+                                            I have followed these steps and opted out
                                         </span>
                                     </label>
-                                    ${isVerified ? '<span class="text-xs text-hive-green font-bold">✓ Active</span>' : ''}
+                                    ${isVerified ? '<span class="text-xs text-hive-green font-bold">✓ Done</span>' : ''}
                                 </div>
                             </div>
                         `;
@@ -1047,126 +1122,133 @@ Always write clean, actionable steps.`;
 
                 const blockHtml = `
                     <div class="border border-slate-200 rounded-xl overflow-hidden shadow-sm bg-white">
-                        <!-- Platform Title and Header -->
-                        <div class="bg-hive-dark text-white p-4 flex justify-between items-center border-b-2 border-hive-yellow">
+                        <div class="bg-hive-dark text-white p-4 flex justify-between items-center border-b-2 border-hive-yellow flex-wrap gap-2">
                             <div class="flex items-center space-x-3">
-                                <div class="text-hive-yellow">
-                                    ${agent.icon}
-                                </div>
-                                <h4 class="font-extrabold text-base tracking-tight">${agent.name} Playbook</h4>
+                                <div class="text-hive-yellow" aria-hidden="true">${agent.icon}</div>
+                                <h4 class="font-extrabold text-base tracking-tight">${agent.name} playbook</h4>
                             </div>
                             <span class="text-xs bg-hive-yellow text-hive-dark px-2.5 py-1 rounded font-bold" id="platform-progress-${key}">
                                 ${getPlatformProgressCount(key)}
                             </span>
                         </div>
-                        
-                        <!-- List of actionable steps -->
-                        <div class="p-3">
-                            ${tiersMarkup}
-                        </div>
+                        <div class="p-3">${tiersMarkup}</div>
                     </div>
                 `;
                 guideContainer.innerHTML += blockHtml;
             });
 
-            // Adjust layout states for empty/populated states
             if (hasActive) {
                 emptyState.classList.add('hidden');
             } else {
                 emptyState.classList.remove('hidden');
             }
 
-            // Update Progress Scoreboard Gauges
             updateProgressGauges(totalActiveTiers, completedTiersCount);
+            fixExternalLinks(guideContainer);
         }
 
-        // Helper count functions for specific platforms
         function getPlatformProgressCount(key) {
             const agent = agentData[key];
             const config = userStack[key];
             let total = 0;
             let completed = 0;
-            
+
             config.selectedTiers.forEach(tierKey => {
                 const tier = agent.tiers[tierKey];
                 total++;
-                if (tier.privateByDefault || verifiedTiers[tier.id]) {
-                    completed++;
-                }
+                if (tier.privateByDefault || verifiedTiers[tier.id]) completed++;
             });
 
-            return `${completed}/${total} Secured`;
+            return `${completed}/${total} secured`;
         }
 
-        // Handle single tier verified completion status
         function toggleTierVerified(tierId) {
             verifiedTiers[tierId] = !verifiedTiers[tierId];
             updateRoadmap();
             evaluateFileVulnerability();
-            showToast("Privacy progress updated!");
+            showToast("Privacy progress updated.");
         }
 
-        // Real-Time Progress Scoreboard Dashboard Engine
+        // Real-Time Progress Scoreboard
         function updateProgressGauges(total, completed) {
             const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
-            
+
             const gaugeBar = document.getElementById('gauge-bar');
             const gaugePercentage = document.getElementById('gauge-percentage');
             const tasksLabel = document.getElementById('tasks-completed');
             const riskRatingLabel = document.getElementById('risk-rating-label');
             const riskSummaryText = document.getElementById('risk-summary-text');
+            const srStatus = document.getElementById('sr-status');
 
             const offset = 339 - (percentage / 100) * 339;
             gaugeBar.style.strokeDashoffset = offset;
             gaugePercentage.textContent = `${percentage}%`;
-            tasksLabel.textContent = `${completed}/${total} profiles completed`;
+            tasksLabel.textContent = `${completed}/${total} tools completed`;
 
-            // Adjust colors of the progress ring based on percentage
-            if (percentage < 35) {
-                gaugeBar.setAttribute('stroke', '#E11D48'); // Coral
-            } else if (percentage < 75) {
-                gaugeBar.setAttribute('stroke', '#FFC72C'); // Honey Yellow
+            // Gauge colour thresholds per PRD 3.4: 100% green, 35-99% amber, <35% red.
+            if (percentage >= 100) {
+                gaugeBar.setAttribute('stroke', '#047857'); // Green
+            } else if (percentage >= 35) {
+                gaugeBar.setAttribute('stroke', '#FFC72C'); // Honey yellow / amber
             } else {
-                gaugeBar.setAttribute('stroke', '#059669'); // Green
+                gaugeBar.setAttribute('stroke', '#E11D48'); // Coral / red
             }
 
-            // Interactive Vulnerability Score algorithm text
             if (total === 0) {
-                riskRatingLabel.textContent = "Unconfigured Hub";
-                riskRatingLabel.className = "text-2xl font-black text-slate-500";
+                riskRatingLabel.textContent = "Unconfigured";
+                riskRatingLabel.className = "text-2xl font-black text-slate-600";
                 riskSummaryText.textContent = "Enable and configure your active AI toolset to measure codebase exposure.";
+                srStatus.textContent = "No tools configured.";
                 return;
             }
 
             const unshieldedCount = total - completed;
 
-            if (percentage === 100) {
-                riskRatingLabel.textContent = "🛡️ 100% Secured";
+            if (percentage >= 100) {
+                riskRatingLabel.textContent = "🛡️ 100% secured";
                 riskRatingLabel.className = "text-2xl font-black text-hive-green";
-                riskSummaryText.textContent = "All activated IDE plugins, consumer agents, and document synthesis notes are verified secured against model telemetry mining operations.";
+                riskSummaryText.textContent = "All active tools are verified secured against model-training collection.";
             } else if (unshieldedCount > 2) {
-                riskRatingLabel.textContent = "⚠️ Critical Risk Exposure";
+                riskRatingLabel.textContent = "⚠️ Critical risk exposure";
                 riskRatingLabel.className = "text-2xl font-black text-hive-coral";
-                riskSummaryText.textContent = "Multiple configurations are active with telemetry enabled. Code chunks, client credentials, and file structures are highly vulnerable.";
-            } else if (unshieldedCount > 0) {
-                riskRatingLabel.textContent = "⚡ Moderate Ingestion Risk";
-                riskRatingLabel.className = "text-2xl font-black text-amber-500";
-                riskSummaryText.textContent = `Partial coverage. Verify the remaining ${unshieldedCount} tool profile instructions to achieve full codebase isolation.`;
+                riskSummaryText.textContent = "Several active tools still have training enabled. Code, credentials and file structures are exposed.";
+            } else {
+                riskRatingLabel.textContent = "⚡ Moderate ingestion risk";
+                riskRatingLabel.className = "text-2xl font-black text-amber-600";
+                riskSummaryText.textContent = `Partial coverage. Complete the remaining ${unshieldedCount} tool ${unshieldedCount === 1 ? 'profile' : 'profiles'} for full isolation.`;
             }
+
+            srStatus.textContent = `${completed} of ${total} tools secured (${percentage}%). ${riskRatingLabel.textContent}.`;
         }
 
-        // Simulating the Local File Sandbox
+        // Local File Sandbox
         let activeFileName = "";
-        
+
         function triggerFileSim() {
             document.getElementById('file-uploader').click();
         }
 
-        function handleFileSelect(e) {
-            const files = e.target.files;
-            if (files.length > 0) {
-                simulateSample(files[0].name);
-            }
+        function handleFileSelect(event) {
+            const files = event.target.files;
+            if (files.length > 0) simulateSample(files[0].name);
+        }
+
+        function handleDragOver(event) {
+            event.preventDefault();
+            document.getElementById('drop-zone').classList.add('border-hive-yellow', 'bg-slate-50');
+        }
+
+        function handleDragLeave(event) {
+            event.preventDefault();
+            document.getElementById('drop-zone').classList.remove('border-hive-yellow', 'bg-slate-50');
+        }
+
+        function handleDrop(event) {
+            event.preventDefault();
+            const dz = document.getElementById('drop-zone');
+            dz.classList.remove('border-hive-yellow', 'bg-slate-50');
+            const files = event.dataTransfer ? event.dataTransfer.files : null;
+            if (files && files.length > 0) simulateSample(files[0].name);
         }
 
         function simulateSample(name) {
@@ -1174,43 +1256,39 @@ Always write clean, actionable steps.`;
             const container = document.getElementById('sandbox-output');
             container.classList.remove('hidden');
 
-            // Sensitivity and Risk Evaluation System based on mock parameters
-            let riskLevel = "LOW";
-            let riskColor = "text-hive-green bg-green-50 border-hive-green";
+            let riskLevel = "Low";
+            let riskColor = "text-hive-green bg-emerald-50 border-hive-green";
             let details = "This file appears to contain standard operational assets. Low exposure probability.";
 
             const lowerName = name.toLowerCase();
             if (lowerName.includes('forecast') || lowerName.includes('financial') || lowerName.includes('budget') || lowerName.includes('salary')) {
-                riskLevel = "HIGH RISK (FINANCIAL DATA)";
-                riskColor = "text-red-700 bg-red-50 border-red-300";
-                details = "Financial reports or corporate projections require maximum isolation. Corporate intelligence ingestion risk.";
+                riskLevel = "High risk (financial data)";
+                riskColor = "text-red-800 bg-red-50 border-red-400";
+                details = "Financial reports or projections require maximum isolation — corporate-intelligence ingestion risk.";
             } else if (lowerName.includes('pii') || lowerName.includes('customer') || lowerName.includes('contact') || lowerName.includes('user')) {
-                riskLevel = "CRITICAL (PERSONAL DETAILS)";
-                riskColor = "text-red-700 bg-red-50 border-red-300";
-                details = "Detected potential Personally Identifiable Information (PII). Regulatory breach (GDPR/HIPAA) if fed into models.";
+                riskLevel = "Critical (personal details)";
+                riskColor = "text-red-800 bg-red-50 border-red-400";
+                details = "Possible personally identifiable information (PII). Regulatory breach risk (GDPR) if fed into models.";
             } else if (lowerName.includes('secret') || lowerName.includes('api') || lowerName.includes('credential') || lowerName.includes('key') || lowerName.includes('config')) {
-                riskLevel = "CRITICAL SECURITY BREACH DANGER";
-                riskColor = "text-red-700 bg-red-50 border-red-300 font-bold";
-                details = "API keys, database connections, or AWS secret configurations. Absolute model-training exclusion required.";
+                riskLevel = "Critical (security credentials)";
+                riskColor = "text-red-800 bg-red-50 border-red-400 font-bold";
+                details = "API keys, database connections or secret configuration. Absolute model-training exclusion required.";
             }
 
             container.innerHTML = `
                 <div>
                     <div class="border-l-4 p-4 rounded-r-xl mb-4 ${riskColor}">
-                        <h4 class="text-xs font-bold uppercase tracking-wide">Sensitivity Profile: ${riskLevel}</h4>
+                        <h4 class="text-xs font-bold uppercase tracking-wide">Sensitivity profile: ${riskLevel}</h4>
                         <p class="text-base font-extrabold text-hive-dark mt-1">📄 ${name}</p>
-                        <p class="text-xs text-slate-500 mt-1">${details}</p>
+                        <p class="text-xs text-slate-700 mt-1">${details}</p>
                     </div>
-                    <div class="space-y-3" id="file-vulnerability-matrix">
-                        <!-- Loaded dynamically below -->
-                    </div>
+                    <div class="space-y-3" id="file-vulnerability-matrix"></div>
                 </div>
             `;
 
             evaluateFileVulnerability();
         }
 
-        // Evaluate File Ingestion Risk based on configuration checklist completeness
         function evaluateFileVulnerability() {
             const matrixContainer = document.getElementById('file-vulnerability-matrix');
             if (!matrixContainer) return;
@@ -1226,45 +1304,32 @@ Always write clean, actionable steps.`;
                 const config = userStack[key];
 
                 let allSecured = true;
-
                 config.selectedTiers.forEach(tierKey => {
                     const tier = agent.tiers[tierKey];
-                    
-                    if (tier.privateByDefault) {
-                        return; // Auto secure
-                    }
-
-                    if (!verifiedTiers[tier.id]) {
-                        allSecured = false;
-                    }
+                    if (tier.privateByDefault) return;
+                    if (!verifiedTiers[tier.id]) allSecured = false;
                 });
 
                 let shieldStatus = "";
                 if (allSecured) {
                     shieldStatus = `
-                        <div class="flex items-center space-x-1">
-                            <span class="text-xs text-hive-green font-bold flex items-center bg-green-50 px-2 py-1 rounded">
-                                🛡️ SECURED
-                            </span>
-                        </div>
+                        <span class="text-xs text-hive-green font-bold flex items-center bg-emerald-50 px-2 py-1 rounded">🛡️ Secured</span>
                     `;
                 } else {
                     shieldStatus = `
                         <div class="flex flex-col items-end">
-                            <span class="text-xs text-red-600 font-bold flex items-center bg-red-50 px-2 py-1 rounded animate-pulse">
-                                ⚠️ VULNERABLE TO TRAINING
-                            </span>
-                            <button onclick="scrollToPlatform('${key}')" class="text-[10px] text-hive-dark underline hover:text-hive-yellow-hover font-semibold mt-1">
-                                Complete Opt-Out
+                            <span class="text-xs text-red-700 font-bold flex items-center bg-red-50 px-2 py-1 rounded">⚠️ Vulnerable to training</span>
+                            <button type="button" onclick="scrollToPlatform('${key}')" class="text-[11px] text-hive-dark underline hover:text-hive-yellow-hover font-semibold mt-1">
+                                Complete opt-out
                             </button>
                         </div>
                     `;
                 }
 
                 matrixContainer.innerHTML += `
-                    <div class="flex items-center justify-between py-2 border-b border-slate-100">
-                        <span class="text-xs font-bold text-hive-dark flex items-center space-x-1">
-                            <span class="text-slate-400 mr-1.5" aria-hidden="true">•</span>
+                    <div class="flex items-center justify-between py-2 border-b border-slate-100 gap-2">
+                        <span class="text-xs font-bold text-hive-dark flex items-center">
+                            <span class="text-slate-500 mr-1.5" aria-hidden="true">•</span>
                             <span>${agent.name}</span>
                         </span>
                         ${shieldStatus}
@@ -1273,51 +1338,83 @@ Always write clean, actionable steps.`;
             });
 
             if (activeCount === 0) {
-                matrixContainer.innerHTML = `<p class="text-xs text-slate-400 italic">Configure at least one platform in the setup board on the left to generate your interactive model training vulnerability index.</p>`;
+                matrixContainer.innerHTML = `<p class="text-xs text-slate-600 italic">Configure at least one platform in the setup board on the left to generate your model-training vulnerability index.</p>`;
             }
         }
 
-        // Compliance Verification Modal Logic
+        // ---- Modal logic with focus management ----
+        function getModalFocusable() {
+            const card = document.getElementById('cert-modal-card');
+            return Array.from(card.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'))
+                .filter(el => !el.disabled && el.offsetParent !== null);
+        }
+
+        function modalKeydownHandler(e) {
+            if (e.key === 'Escape') {
+                e.preventDefault();
+                closeVerificationModal();
+                return;
+            }
+            if (e.key === 'Tab') {
+                const focusable = getModalFocusable();
+                if (focusable.length === 0) return;
+                const first = focusable[0];
+                const last = focusable[focusable.length - 1];
+                if (e.shiftKey && document.activeElement === first) {
+                    e.preventDefault();
+                    last.focus();
+                } else if (!e.shiftKey && document.activeElement === last) {
+                    e.preventDefault();
+                    first.focus();
+                }
+            }
+        }
+
         function openVerificationModal() {
+            lastFocusedEl = document.activeElement;
             const backdrop = document.getElementById('cert-modal-backdrop');
             const card = document.getElementById('cert-modal-card');
-            
+
             backdrop.classList.remove('hidden');
-            setTimeout(() => {
+            requestAnimationFrame(() => {
                 backdrop.classList.add('opacity-100');
                 card.classList.remove('scale-95');
                 card.classList.add('scale-100');
-            }, 10);
+            });
+
+            document.addEventListener('keydown', modalKeydownHandler);
+            setTimeout(() => { document.getElementById('auditor-name').focus(); }, 60);
         }
 
         function closeVerificationModal() {
             const backdrop = document.getElementById('cert-modal-backdrop');
             const card = document.getElementById('cert-modal-card');
-            
+
             backdrop.classList.remove('opacity-100');
             card.classList.remove('scale-100');
             card.classList.add('scale-95');
+            document.removeEventListener('keydown', modalKeydownHandler);
+
             setTimeout(() => {
                 backdrop.classList.add('hidden');
-            }, 300);
+                if (lastFocusedEl && typeof lastFocusedEl.focus === 'function') lastFocusedEl.focus();
+            }, 250);
         }
 
-        // Generate and trigger download of `.md` verification certificate
-        function generateVerificationFile(e) {
-            e.preventDefault();
+        function generateVerificationFile(event) {
+            event.preventDefault();
 
             const userName = document.getElementById('auditor-name').value.trim();
             const userEmail = document.getElementById('auditor-email').value.trim();
-            
-            let fileContent = `# HIVE IT | AI Privacy & Opt-Out Compliance Certificate\n`;
-            fileContent += `## Issued on: ${new Date().toLocaleDateString('en-GB')} at ${new Date().toLocaleTimeString('en-GB')}\n\n`;
-            fileContent += `### AUDIT SUMMARY\n`;
-            fileContent += `* **User Name:** ${userName}\n`;
-            fileContent += `* **Email Address:** ${userEmail}\n`;
-            fileContent += `* **Status:** Verified Under B-Corp Technology Integrity Framework\n\n`;
-            fileContent += `_This document serves as formal verification that your active Artificial Intelligence tools, plugins, and reference systems have been inspected and secured against telemetry training pipelines._\n\n`;
+
+            let fileContent = `# Hive IT | AI Privacy Self-Assessment Summary\n`;
+            fileContent += `## Generated: ${new Date().toLocaleDateString('en-GB')} at ${new Date().toLocaleTimeString('en-GB')}\n\n`;
+            fileContent += `### Summary\n`;
+            fileContent += `* **Name:** ${userName}\n`;
+            fileContent += `* **Email:** ${userEmail}\n`;
+            fileContent += `* **Note:** This is a self-assessment based on the steps you marked complete. It is not an independent audit or certification.\n\n`;
             fileContent += `---\n\n`;
-            fileContent += `## AUDITED TOOLSET & PRIVACY STATUS INVENTORY\n\n`;
+            fileContent += `## Toolset & privacy status\n\n`;
 
             let hasActive = false;
 
@@ -1327,103 +1424,83 @@ Always write clean, actionable steps.`;
 
                 const agent = agentData[key];
                 const config = userStack[key];
-                
-                fileContent += `### 📄 ${agent.name}\n`;
-                
+
+                fileContent += `### ${agent.name}\n`;
+                fileContent += `* Steps last verified: ${agent.lastVerified || 'n/a'}\n`;
+
                 config.selectedTiers.forEach(tierKey => {
                     const tier = agent.tiers[tierKey];
-                    fileContent += `* **License Configuration Tier:** ${tier.name}\n`;
+                    fileContent += `* **Tier:** ${tier.name}\n`;
 
                     if (tier.privateByDefault) {
-                        fileContent += `* **Security State:** 🛡️ SECURED (Business Agreement - Private by Default)\n`;
-                        fileContent += `* **Evidence / Documentation:**\n`;
+                        fileContent += `* **Status:** Secured (private by default)\n`;
+                        fileContent += `* **Detail:**\n`;
                         fileContent += `  1. ${tier.steps[0].replace(/<\/?[^>]+(>|$)/g, "")}\n`;
-                        if (tier.steps[1]) {
-                            fileContent += `  2. ${tier.steps[1].replace(/<\/?[^>]+(>|$)/g, "")}\n`;
-                        }
+                        if (tier.steps[1]) fileContent += `  2. ${tier.steps[1].replace(/<\/?[^>]+(>|$)/g, "")}\n`;
                     } else {
                         const isVerified = verifiedTiers[tier.id] || false;
-                        if (isVerified) {
-                            fileContent += `* **Security State:** 🛡️ SECURED (Manual Opt-out Complete)\n`;
-                        } else {
-                            fileContent += `* **Security State:** ⚠️ UNSECURED (Action Pending / Ingestion Vulnerability Alert)\n`;
-                        }
-                        fileContent += `* **Opt-out Verification Evidence Checklist:**\n`;
+                        fileContent += `* **Status:** ${isVerified ? 'Secured (manual opt-out marked complete)' : 'Action pending (training not yet opted out)'}\n`;
+                        fileContent += `* **Steps:**\n`;
                         tier.steps.forEach((stepText, idx) => {
                             const cleanStepText = stepText.replace(/<\/?[^>]+(>|$)/g, "");
-                            fileContent += `  [${isVerified ? 'x' : ' '}] ${idx + 1}. ${cleanStepText}\n`;
+                            fileContent += `  - [${isVerified ? 'x' : ' '}] ${idx + 1}. ${cleanStepText}\n`;
                         });
                     }
                 });
                 fileContent += `\n`;
             });
 
-            if (!hasActive) {
-                fileContent += `*No active tools configured in the stack during certificate generation.*\n`;
-            }
+            if (!hasActive) fileContent += `*No active tools were configured when this summary was generated.*\n`;
 
             fileContent += `\n---\n`;
-            fileContent += `### ABOUT HIVE IT INTEGRITY PROTOCOLS\n`;
-            fileContent += `Hive IT is a Certified B Corporation™. We partner with organisations to construct digital assets that preserve user data sovereignty, accessibility benchmarks (WCAG 2.2 AAA goals), and ethical UX governance parameters.\n`;
-            fileContent += `For privacy governance support, reach out to info@hiveit.co.uk.\n`;
+            fileContent += `### About Hive IT\n`;
+            fileContent += `Hive IT is a Certified B Corporation™ building digital products that respect data sovereignty and accessibility (WCAG 2.2 AA).\n`;
+            fileContent += `Settings change often — re-verify against each vendor's current settings page. Contact: info@hiveit.co.uk.\n`;
 
-            // Export using Blob API
             try {
                 const blob = new Blob([fileContent], { type: "text/markdown;charset=utf-8;" });
                 const link = document.createElement("a");
                 const url = URL.createObjectURL(blob);
                 link.setAttribute("href", url);
-                link.setAttribute("download", `ai_privacy_compliance_certificate.md`);
+                link.setAttribute("download", `ai_privacy_self_assessment.md`);
                 link.style.visibility = 'hidden';
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
-                
+                URL.revokeObjectURL(url);
+
                 closeVerificationModal();
-                showToast("Certificate downloaded successfully!");
+                showToast("Summary downloaded.");
             } catch (err) {
-                showToast("System error generating download blob.");
+                showToast("Couldn't generate the download. Please try again.");
             }
         }
 
-        // Smooth scroll to the checklist block
         function scrollToPlatform(key) {
             const element = document.getElementById(`platform-progress-${key}`);
-            if (element) {
-                element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }
+            if (element) element.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
 
-        // Accessibility controls for WCAG 2.2 AAA standard
+        // Accessibility controls
         function toggleAccessibility(type) {
-            const mainBody = document.getElementById('main-body');
             if (type === 'text-large') {
                 isLargeText = !isLargeText;
-                if (isLargeText) {
-                    mainBody.classList.add('text-lg');
-                    mainBody.classList.remove('text-slate-800');
-                    showToast("Large text size enabled for readability.");
-                } else {
-                    mainBody.classList.remove('text-lg');
-                    mainBody.classList.add('text-slate-800');
-                    showToast("Normal text size restored.");
-                }
+                document.documentElement.classList.toggle('txt-large', isLargeText);
+                const btn = document.getElementById('btn-text-large');
+                btn.setAttribute('aria-pressed', isLargeText ? 'true' : 'false');
+                showToast(isLargeText ? "Larger text enabled." : "Default text size restored.");
             } else if (type === 'high-contrast') {
                 isHighContrast = !isHighContrast;
-                if (isHighContrast) {
-                    mainBody.classList.add('contrast-125', 'grayscale');
-                    showToast("High contrast accessibility enabled.");
-                } else {
-                    mainBody.classList.remove('contrast-125', 'grayscale');
-                    showToast("Normal contrast restored.");
-                }
+                document.getElementById('main-body').classList.toggle('hc', isHighContrast);
+                const btn = document.getElementById('btn-high-contrast');
+                btn.setAttribute('aria-pressed', isHighContrast ? 'true' : 'false');
+                showToast(isHighContrast ? "High contrast enabled." : "Default contrast restored.");
             }
         }
 
-        // Copy entire dynamic guide in clean Markdown format (Clipboard Guardrail Safe)
         function copyRoadmapMarkdown() {
             let markdown = `# AI Privacy Blueprint | Generated by Hive IT\n`;
-            markdown += `Generated on: ${new Date().toLocaleDateString()}\n\n`;
+            markdown += `Generated: ${new Date().toLocaleDateString('en-GB')}\n\n`;
 
             let hasActive = false;
 
@@ -1431,21 +1508,20 @@ Always write clean, actionable steps.`;
                 if (!userStack[key] || !userStack[key].active) return;
                 hasActive = true;
                 const agent = agentData[key];
-                markdown += `## ${agent.name} Opt-Out Playbook\n`;
-                
+                markdown += `## ${agent.name} opt-out playbook\n`;
+                markdown += `_Steps last verified: ${agent.lastVerified || 'n/a'}_\n`;
+
                 userStack[key].selectedTiers.forEach(tierKey => {
                     const tier = agent.tiers[tierKey];
-                    markdown += `### Configuration: ${tier.name}\n`;
-                    
+                    markdown += `### ${tier.name}\n`;
+
                     if (tier.privateByDefault) {
-                        markdown += `[🛡️ Secured by Default] ${tier.steps[0]}\n`;
+                        markdown += `[Secured by default] ${tier.steps[0].replace(/<\/?[^>]+(>|$)/g, "")}\n`;
                     } else {
                         tier.steps.forEach((stepText, idx) => {
-                            const cleanText = stepText.replace(/<\/?[^>]+(>|$)/g, "");
-                            markdown += `${idx + 1}. ${cleanText}\n`;
+                            markdown += `${idx + 1}. ${stepText.replace(/<\/?[^>]+(>|$)/g, "")}\n`;
                         });
-                        const isVerified = verifiedTiers[tier.id] ? '[x] VERIFIED COMPLETED' : '[ ] NOT YET VERIFIED';
-                        markdown += `Status: ${isVerified}\n`;
+                        markdown += `Status: ${verifiedTiers[tier.id] ? '[x] Verified complete' : '[ ] Not yet verified'}\n`;
                     }
                     markdown += `\n`;
                 });
@@ -1454,14 +1530,24 @@ Always write clean, actionable steps.`;
             if (!hasActive) {
                 markdown += `No platforms active. Select your configurations on the dashboard to populate steps.`;
             } else {
-                markdown += `---\n*Compiled using Hive IT Ethics Framework. Secure user privacy today.*`;
+                markdown += `---\n*Compiled with the Hive IT Ethics Framework. Re-verify against each vendor's current settings.*`;
             }
 
             copyToClipboard(markdown);
         }
 
-        // Clipboard copier compliant with iframe sandbox restrictions
         function copyToClipboard(text) {
+            // Prefer the async Clipboard API; fall back to execCommand for sandboxed iframes.
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(text)
+                    .then(() => showToast("Markdown blueprint copied to clipboard."))
+                    .catch(() => legacyCopy(text));
+            } else {
+                legacyCopy(text);
+            }
+        }
+
+        function legacyCopy(text) {
             const textArea = document.createElement("textarea");
             textArea.value = text;
             textArea.style.position = "fixed";
@@ -1472,23 +1558,17 @@ Always write clean, actionable steps.`;
             textArea.focus();
             textArea.select();
             try {
-                const successful = document.execCommand('copy');
-                if (successful) {
-                    showToast("Markdown blueprint copied to clipboard!");
-                } else {
-                    showToast("Failed to copy. Please select steps manually.");
-                }
+                const ok = document.execCommand('copy');
+                showToast(ok ? "Markdown blueprint copied to clipboard." : "Couldn't copy — please select the steps manually.");
             } catch (err) {
-                showToast("System permissions blocked clipboard action.");
+                showToast("Clipboard access was blocked.");
             }
             document.body.removeChild(textArea);
         }
 
-        // Custom Toast Manager
         function showToast(message) {
             const toast = document.getElementById('toast');
-            const msgEl = document.getElementById('toast-message');
-            msgEl.textContent = message;
+            document.getElementById('toast-message').textContent = message;
             toast.classList.remove('opacity-0', 'translate-y-10');
             toast.classList.add('opacity-100', 'translate-y-0');
             setTimeout(() => {
