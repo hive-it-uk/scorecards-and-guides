@@ -187,6 +187,12 @@ a.card:focus-visible {
   color: rgba(14,20,40,.45);
   font-weight: 700;
 }
+.card-desc {
+  font-size: .78rem;
+  color: rgba(14,20,40,.65);
+  line-height: 1.45;
+  font-weight: 400;
+}
 
 /* ---- status / loading ---- */
 .status {
@@ -287,19 +293,22 @@ code {
     return map[ext(name)] || "File";
   }
 
-  function fetchTitle(rawUrl) {
+  function fetchMeta(rawUrl) {
     return fetch(rawUrl)
       .then(function(r) { return r.ok ? r.text() : null; })
       .then(function(html) {
-        if (!html) return null;
+        if (!html) return { title: null, desc: null };
         var headEnd = html.toLowerCase().indexOf("</head>");
         var head = headEnd !== -1 ? html.slice(0, headEnd) : html;
         var doc = new DOMParser().parseFromString(head + "</head><body></body></html>", "text/html");
-        var el = doc.querySelector("title");
-        var t = el ? el.textContent.trim() : null;
-        return t || null;
+        var titleEl = doc.querySelector("title");
+        var descEl  = doc.querySelector("meta[name='description']");
+        return {
+          title: titleEl ? titleEl.textContent.trim() || null : null,
+          desc:  descEl  ? (descEl.getAttribute("content") || "").trim() || null : null
+        };
       })
-      .catch(function() { return null; });
+      .catch(function() { return { title: null, desc: null }; });
   }
 
   function makeCard(e) {
@@ -323,6 +332,13 @@ code {
 
     a.appendChild(tag);
     a.appendChild(name);
+
+    if (e.desc) {
+      var desc = document.createElement("span");
+      desc.className = "card-desc";
+      desc.textContent = e.desc;
+      a.appendChild(desc);
+    }
 
     if (e.title && e.name !== e.displayName) {
       var fn = document.createElement("span");
@@ -418,6 +434,7 @@ code {
           name:        nm,
           displayName: nm,
           title:       null,
+          desc:        null,
           isDir:       dir,
           kind:        classify(nm, dir),
           size:        dir ? "" : formatSize(it.size),
@@ -428,13 +445,14 @@ code {
         });
       });
 
-      var titleFetches = entries.map(function(e) {
-        return e.rawUrl ? fetchTitle(e.rawUrl) : Promise.resolve(null);
+      var metaFetches = entries.map(function(e) {
+        return e.rawUrl ? fetchMeta(e.rawUrl) : Promise.resolve({ title: null, desc: null });
       });
 
-      return Promise.all(titleFetches).then(function(titles) {
-        titles.forEach(function(title, i) {
-          if (title) { entries[i].title = title; entries[i].displayName = title; }
+      return Promise.all(metaFetches).then(function(metas) {
+        metas.forEach(function(m, i) {
+          if (m.title) { entries[i].title = m.title; entries[i].displayName = m.title; }
+          if (m.desc)  { entries[i].desc = m.desc; }
         });
         return entries;
       });
