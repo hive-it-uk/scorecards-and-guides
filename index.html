@@ -329,31 +329,25 @@ code {
   function fetchFileDates(branch, filePath) {
     var base = repoBase + "/commits?sha=" + encodeURIComponent(branch) +
                "&path=" + encodeURIComponent(filePath) + "&per_page=100";
-    function fetchOldest(u, oldest) {
+    function fetchAll(u, acc) {
       return fetch(u).then(function(r) {
-        if (!r.ok) return oldest;
+        if (!r.ok) return acc;
         return r.json().then(function(commits) {
-          if (!commits.length) return oldest;
-          var last = commits[commits.length - 1];
-          var lastDt = last.commit && last.commit.committer && last.commit.committer.date || oldest;
+          commits.forEach(function(c) { acc.push(c); });
           var link = r.headers.get("Link") || "";
           var next = link.match(/<([^>]+)>;\s*rel="next"/);
-          if (next) return fetchOldest(next[1], lastDt);
-          return lastDt;
+          if (next) return fetchAll(next[1], acc);
+          return acc;
         });
-      }).catch(function() { return oldest; });
+      }).catch(function() { return acc; });
     }
-    var modifiedP = fetch(base).then(function(r) {
-      if (!r.ok) return null;
-      return r.json().then(function(commits) {
-        if (!commits.length) return null;
-        var c = commits[0];
-        return c.commit && c.commit.committer && c.commit.committer.date || null;
-      });
-    }).catch(function() { return null; });
-    var createdP = fetchOldest(base, null);
-    return Promise.all([modifiedP, createdP]).then(function(res) {
-      return { modified: res[0], created: res[1] };
+    return fetchAll(base, []).then(function(commits) {
+      if (!commits.length) return { modified: null, created: null, iterations: null };
+      var newest = commits[0];
+      var oldest = commits[commits.length - 1];
+      var modDt = newest.commit && newest.commit.committer && newest.commit.committer.date || null;
+      var creDt = oldest.commit && oldest.commit.committer && oldest.commit.committer.date || null;
+      return { modified: modDt, created: creDt, iterations: commits.length };
     });
   }
 
@@ -410,12 +404,18 @@ code {
       a.appendChild(sz);
     }
 
-    if (e.modified || e.created) {
+    if (e.modified || e.created || e.iterations) {
       var dates = document.createElement("div");
       dates.className = "card-dates";
       dates.setAttribute("aria-label",
+        (e.iterations ? e.iterations + (e.iterations === 1 ? " version. " : " versions. ") : "") +
         (e.modified ? "Last modified " + fmtDate(e.modified) + ". " : "") +
         (e.created  ? "Created " + fmtDate(e.created) + "." : ""));
+      if (e.iterations) {
+        var itr = document.createElement("span");
+        itr.innerHTML = "Versions\u2002<strong>" + e.iterations + "</strong>";
+        dates.appendChild(itr);
+      }
       if (e.modified) {
         var mod = document.createElement("span");
         mod.innerHTML = "Modified\u2002<strong>" + fmtDate(e.modified) + "</strong>";
@@ -510,6 +510,7 @@ code {
           desc:        null,
           created:     null,
           modified:    null,
+          iterations:  null,
           isDir:       dir,
           kind:        classify(nm, dir),
           size:        dir ? "" : formatSize(it.size),
@@ -537,7 +538,7 @@ code {
           if (m.desc)  { entries[i].desc = m.desc; }
         });
         dates.forEach(function(d, i) {
-          if (d) { entries[i].created = d.created; entries[i].modified = d.modified; }
+          if (d) { entries[i].created = d.created; entries[i].modified = d.modified; entries[i].iterations = d.iterations; }
         });
         return entries;
       });
