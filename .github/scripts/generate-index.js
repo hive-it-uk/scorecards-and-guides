@@ -55,6 +55,19 @@ function gitDatesAndCount(relPath) {
   }
 }
 
+function decodeEntities(str) {
+  if (!str) return str;
+  return str
+    .replace(/&amp;/g,  "&")
+    .replace(/&lt;/g,   "<")
+    .replace(/&gt;/g,   ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g,  "'")
+    .replace(/&apos;/g, "'")
+    .replace(/&#(\d+);/g, (_, code) => String.fromCharCode(parseInt(code, 10)))
+    .replace(/&#x([0-9a-f]+);/gi, (_, hex) => String.fromCharCode(parseInt(hex, 16)));
+}
+
 function extractMeta(filePath) {
   try {
     const html  = readFileSync(filePath, "utf8");
@@ -66,8 +79,8 @@ function extractMeta(filePath) {
                     || head.match(/<meta[^>]+content=["']([^"']*)["'][^>]+name=["']description["']/i);
 
     return {
-      title: titleMatch ? titleMatch[1].trim() || null : null,
-      desc:  descMatch  ? descMatch[1].trim()  || null : null
+      title: decodeEntities(titleMatch ? titleMatch[1].trim() || null : null),
+      desc:  decodeEntities(descMatch  ? descMatch[1].trim()  || null : null)
     };
   } catch {
     return { title: null, desc: null };
