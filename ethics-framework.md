@@ -1,8 +1,12 @@
 # A framework for assessing the ethics, social impact and environmental impact of online ecosystems
 
-**Version 1.3 — foundation document**
+**Version 2.1 — foundation document**
 
 This is the foundation document for the framework. It sets out the method, the criteria and the scoring logic. The separate tools (a scoring spreadsheet, a procurement version, an audit version and a public-reporting version) will be built from this document so they all work the same way.
+
+> **What changed in version 2.1.** This version responds to a peer review of version 2. It adds: a normative definition of the zero-guard in section 4 (a fixed floor of 0.01, with a rationale and sensitivity figures); a note in criterion 1 on the physical limits of Locational Marginal Emissions (narrow validity ranges and signal noise), confining LMEs to a practice signal rather than an accounting method; a functional-unit rule in criterion 13 for reasoning, multi-modal and agentic queries (one user turn, end to end, with distributions rather than single averages); a rebound-effects note in criterion 1 covering Jevons effects and the attribution of derivative-model fine-tuning; and an operational standard in criterion 9 for verification through fully open artefacts and peer-reviewed proxies, with a matching note in criterion 12 accepting community-verifiable security practices — so the verification threshold cannot penalise resource-constrained open-source developers. One review recommendation was not adopted: assigning downstream derivative-model footprints to base-model providers, which would break the count-once attribution rule — responsibility for fine-tuning stays with whoever runs it.
+
+> **What changed in version 2.** This version implements twelve recommendations from a methodological review of the framework against composite-indicator best practice (OECD and JRC, 2008) and the research on why ESG-style ratings disagree (Berg, Kölbel and Rigobon, 2022). The main changes: (1) performance and evidence are now separate axes — the evidence-quality multiplier is removed, and every score carries an assurance level that is never multiplied into it; (2) pillar scores are combined with a weighted geometric mean, with a worked example, a zero-guard and a weak-pillar flag, so a weak pillar cannot be hidden by strong ones; (3) “not applicable” is clearly separated from “not disclosed”, so a gap is never penalised twice; (4) group summaries must report medians and ranges alongside averages; (5) weighting is restated as an explicit value judgement — equal pillar weights are the default, and any custom weighting must be reported next to the equally-weighted result as a sensitivity check; (6) criterion 1 carries a standing statement on carbon-model uncertainty; (7) section 3 adds an explicit system-boundary rule with a count-once check for stack substitution and CDN splitting; (8) the criterion 9 transparency cap is kept and its special status documented, and independent benchmarks or fully open artefacts now count as verification; (9) citations are corrected — Li et al. is cited as a 2025 *Communications of the ACM* article and the Locational Marginal Emissions work (Cote and Sun) is labelled a 2025 preprint; (10) new sources are added on composite indicators, rating divergence and the science behind the carbon model; (11) vendor per-prompt figures are treated as self-reported at best, with boundary and market-versus-location caveats; (12) criterion 11 lists jurisdiction-appropriate lobbying registers. Red flags are now reported separately alongside every view of the result, rather than described as a numeric cap — they take precedence over the number in any decision. The provider scores built on this framework were last reviewed in July 2026 in a full evidence audit.
 
 > **What changed in version 1.3.** This version incorporates selected recommendations from an external implementation guide. It adds: a dual-track carbon accounting note in criterion 1 covering Locational Marginal Emissions (LME) as a more precise method for operational carbon decisions alongside standard grid-average accounting; an ISO 14046 dual-scope water footprinting framework in criterion 2 distinguishing direct on-site and indirect off-site water use; stronger language in Section 4 on the primacy of independent, adversarial sources over corporate self-disclosures; a targeted verification threshold in criterion 9 capping raw scores at 2 where no independent checking exists (scores of 3 or 4 require third-party verification); temporal and spatial workload optimisation as a scoring signal in criterion 13; and three new sources (ISO 14046, Sun et al. 2025 on LMEs, Li et al. 2023 on AI water use). Two recommendations from the guide were not adopted: integrating specific commercial products (Cyrux AI and Mashinii) into the framework method, which would create product dependencies and endorsements incompatible with a tool-neutral framework; and replacing the evidence-quality multiplier system with framework-wide hard caps on self-reported scores — instead, a targeted cap is applied to criterion 9 only, where transparency is both the subject of the criterion and the foundation for all other scores.
 
@@ -65,7 +69,7 @@ A high score does not mean something is "good" in an absolute sense. It means th
 
 The framework has **three pillars** and **thirteen criteria**. Each criterion sits in one pillar but several criteria affect each other.
 
-**Transparency runs through everything.** It is both its own criterion (criterion 9) and the basis for every other score. You can only judge water use, or military use, or labour conditions, if the provider tells you about them or an independent party checks. Where there is no information, you record a low confidence rating (see [section 4](#4-how-scoring-works)).
+**Transparency runs through everything.** It is both its own criterion (criterion 9) and the basis for every other score. You can only judge water use, or military use, or labour conditions, if the provider tells you about them or an independent party checks. Where there is no information, you record a low assurance level (see [section 4](#4-how-scoring-works)).
 
 | Pillar | Criteria |
 |---|---|
@@ -95,10 +99,11 @@ This matters for scoring because impacts are either **direct** or **inherited**.
 - **Direct impact** is caused by the thing you are assessing. For example, a CMS's own code efficiency, its accessibility, its open-source governance.
 - **Inherited impact** comes from the layers underneath. For example, a CMS has a carbon footprint, but most of it comes from the hosting provider and data centre it runs on.
 
-**Two rules keep this fair:**
+**Three rules keep this fair:**
 
 1. **Attribute, do not double count.** When you assess a CMS, score its direct impacts in full, and score its inherited impacts by looking at the choices it gives you (for example, can you choose a low-carbon region or a green host?). Do not blame the CMS for emissions that belong to the data centre — but do credit or mark it on whether it makes responsible choices possible.
 2. **Follow the chain as far as it is material.** You do not need to trace every screw. Trace the layers that carry most of the impact for the criterion in question. Section 5 says, for each criterion, which layer usually matters most.
+3. **State your system boundary, and count each impact once.** Before you score, write down which layers are inside your assessment and which are outside. When a stack score substitutes the hosting provider's value for a criterion a technology inherits, that impact now belongs to the host — do not also count it against the technology. The same rule applies when page weight is split between an origin server and content delivery networks (CDNs): assign each byte to one party and reconcile the split so the parts add back up to the whole. If an impact seems to belong to two layers at once, decide where it sits, record the decision, and check the total once at the end.
 
 ---
 
@@ -116,44 +121,56 @@ Every criterion is scored on the same five-point scale.
 | **3** | Good | Good practice is in place, backed by data, targets and regular reporting. |
 | **4** | Leading | Best practice, independently verified, with strong results and full openness. |
 
-### Confidence rating
+### Assurance level
 
-A score on its own can mislead, because providers differ hugely in how much they reveal. So every score also carries a **confidence rating** that records how good the evidence is.
+A score on its own can mislead, because providers differ hugely in how much they reveal. So every score also carries an **assurance level** that records how good the evidence is.
 
-| Rating | Meaning |
+| Assurance level | Meaning |
 |---|---|
-| **Verified** | Checked by an independent third party (for example, an audit or certification). |
-| **Self-reported** | Stated by the provider but not independently checked. |
+| **Verified** | Checked by an independent third party — an audit, certification, court or regulatory record, peer-reviewed study, established watchdog documentation, or an independent benchmark. |
+| **Self-reported** | Stated by the provider but not independently checked. Provider claims can never rate higher than this. |
 | **Estimated** | Worked out by you or a third party from indirect evidence. |
-| **Unknown** | No reliable evidence. Pair this with a score of 0. |
+| **Unknown** | No reliable evidence. Pair this with a score of 0 and flag it. |
 
-Always show the score and the confidence rating together, for example **"3 (Self-reported)"**.
+Always show the score and the assurance level together, for example **“3 (Self-reported)”**.
 
-### Adjusting scores for evidence quality
+### Performance and evidence are separate axes
 
-If you add scores up into a weighted total, a problem appears: a "4 (Self-reported)" would count the same as a "4 (Verified)". That rewards confident marketing over checked facts. To stop this, apply an **evidence-quality adjustment** when you calculate totals. Multiply each score by a factor based on its evidence rating:
+Earlier versions of this framework multiplied each score by an evidence-quality factor (Verified ×1.0, Self-reported ×0.75, Estimated ×0.5, Unknown ×0.0) before adding scores up. **Version 2 removes that multiplier, and it must not be reintroduced.** Mixing “how well does it perform?” and “how good is the evidence?” into one number hides both answers: a 3 (Verified) and a 4 (Self-reported) collapsed to the same 3.0, so a reader could no longer tell strong performance on weak evidence from weaker performance on strong evidence.
 
-| Confidence rating | Multiplier | Effect on a score of 4 |
-|---|---|---|
-| **Verified** | 1.0 | 4.0 |
-| **Self-reported** | 0.75 | 3.0 |
-| **Estimated** | 0.50 | 2.0 |
-| **Unknown** | 0.0 | 0.0 |
+In version 2 the two questions stay separate. The score records performance against the rubric; the assurance level sits beside it as a visible flag. Weak evidence is handled in three ways instead:
 
-So a provider that claims a perfect score but offers no independent proof cannot reach the top of a ranking on claims alone. The adjustment applies only to the numbers you add up — always keep the raw score and rating visible as well, so nothing is hidden.
+- the **source-priority rule** below — independent evidence can lower a self-reported score
+- the **criterion 9 cap** — self-reporting alone cannot score above 2 on transparency
+- **evidence coverage** — report the share of applicable criteria whose assurance level is not Unknown alongside any total, so thin evidence is visible
 
-These multipliers are sensible defaults, not laws of nature. Two points to keep in mind:
+**Prioritising adversarial and independent sources.** When scoring, you will often have two types of evidence in front of you: what the provider says about itself (sustainability reports, press releases, self-submitted survey responses) and what independent parties say (court filings, regulatory penalty notices, enforcement actions, audited watchdog reports, investigative journalism, peer-reviewed studies). Where these conflict, the independent source takes precedence. Corporate sustainability reports and voluntary self-disclosures are a starting point, not an end point. A high score based only on the provider's own materials should carry a Self-reported or Estimated assurance level, never Verified. A regulatory enforcement action, a court finding, or a documented report from an established watchdog can lower a self-reported score — and should. A careful estimate from an independent watchdog can be more trustworthy than a cherry-picked self-report; where that is the case, record your reason and base the score on the independent evidence, marked Verified. Record which sources you used and flag any significant conflicts between them.
 
-- The defaults assume a provider's own data is usually more reliable than an outside estimate. That is not always true. A careful estimate from an independent watchdog can be more trustworthy than a cherry-picked self-report. Where that is the case, record your reason and treat the independent estimate as "Verified" or raise its multiplier.
-- You can change the multipliers to match how cautious your decision needs to be. A high-stakes procurement may discount unverified claims harder.
+### Weighting: an explicit value judgement
 
-**Prioritising adversarial and independent sources.** When scoring, you will often have two types of evidence in front of you: what the provider says about itself (sustainability reports, press releases, self-submitted survey responses) and what independent parties say (court filings, regulatory penalty notices, enforcement actions, audited watchdog reports, investigative journalism). Where these conflict, the independent source takes precedence. Corporate sustainability reports and voluntary self-disclosures are a starting point, not an end point. A high score based only on the provider's own materials should carry an Estimated or Self-reported confidence rating, not Verified. A regulatory enforcement action, a court finding, or a documented report from an established watchdog can lower a self-reported score — and should. Record which sources you used and flag any significant conflicts between them.
+Weights are value judgements, not measurements. There is no scientific way to prove that carbon matters exactly twice as much as privacy — any weighting encodes a view about what matters. Version 2 makes that explicit with three rules.
 
-### Weighting
+- **Within each pillar, all criteria carry equal weight.** The criteria in a pillar are different lenses on the same concern; ranking them against each other adds false precision.
+- **Across pillars, equal weights are the default.** Earlier versions of the tools built from this framework used a 40/30/30 split, which implied a precision the evidence cannot support. If your decision genuinely warrants different pillar weights — for example, a deployment in a water-stressed region that weights the environmental pillar higher — you may set them, but record the weights and the reason, so the result can be understood and repeated.
+- **Always report the equally-weighted result alongside any custom weighting.** This is the framework's standing sensitivity check. If the two figures differ a lot, the result depends heavily on the weighting choice, and the pillar profile is the more honest guide.
 
-Not every criterion matters equally for every decision. The framework lets you set a **weight** for each criterion (for example, 0 to 3) before you add up scores. A team choosing an AI model for a sensitive use might weight military use and transparency highly. A team choosing a CMS for a public website might weight accessibility and carbon highly.
+### Combining scores: the weighted geometric mean
 
-Record your weights and the reason for them, so the result can be understood and repeated.
+Combine scores in two stages.
+
+1. **Pillar score.** Each pillar's score is the plain average (arithmetic mean) of its applicable criteria, on the 0–4 scale. Criteria marked not applicable — or inherited, where no host is in scope — are left out. A pillar with no applicable criteria returns no score and is excluded from the overall, with the remaining pillar weights scaled up.
+2. **Overall score.** Combine the pillar scores with a **weighted geometric mean** — multiply them together, each raised to the power of its weight share, instead of averaging them — then express the result as a percentage of the maximum 4.
+
+A worked example, with equal weights. A provider scores Environmental 3.2, Social 2.5, Governance 1.0.
+
+- Arithmetic mean: (3.2 + 2.5 + 1.0) ÷ 3 = 2.23, or 56%.
+- Geometric mean: (3.2 × 2.5 × 1.0) to the power of one third = 8.0 to the power of one third = 2.0, or 50%.
+
+The geometric mean is lower because the weak governance pillar pulls the result down — which is the point. Under an arithmetic mean, a provider can buy back a serious governance weakness with a strong environmental score. Under a geometric mean, it cannot be fully hidden.
+
+**The zero-guard and the weak-pillar flag.** A true zero would make any geometric mean zero, wiping out all other information. So a pillar score of 0 is floored at 0.01 before the calculation, and the result is flagged as having a **weak pillar**. The overall score degrades sharply but stays readable, and the flag makes the cause visible. Tools built from this framework must show the flag wherever they show the score.
+
+The zero-guard is a **floor, not a shift**: only a pillar scoring exactly 0 is raised to 0.01, and non-zero pillars are never adjusted. The value 0.01 is **fixed and normative** — every tool built from this framework must use it, or results stop being comparable. Why 0.01: on the 0–4 scale it is severe without being absurd. With equal weights, a provider scoring 3, 3 and 0 across the three pillars gets a geometric mean of 0.45, which is 11% of the maximum — a heavy, non-compensatory penalty — where an arithmetic mean would award 50%. A larger floor of 0.1 would soften that to 24%; a smaller floor of 0.001 would harshen it to 5%. Because every zero pillar is also flagged, the exact constant affects how far the number falls, never whether the problem is visible: the flag, not the decimal, is what a decision should turn on.
 
 ### Materiality: which criteria matter most for which layer
 
@@ -179,11 +196,11 @@ Some criteria apply strongly to some layers and only indirectly to others. The t
 
 ⚠ **Note on criteria 4 and 5 for AI models.** Both repairability and conflict minerals are inherited from the underlying GPU and server hardware, which AI models do not control directly. When comparing AI providers specifically, most will cluster at similar low-to-mid scores because the differentiation is at the hardware layer, not the model layer. Consider weighting these criteria lower, or treating them as context, when AI providers are your primary focus. They remain fully applicable when assessing hosting providers and hardware-heavy services.
 
-When a criterion is genuinely not relevant to what you are assessing, mark it **"Not applicable"** and leave it out of the total, rather than scoring it 0. Record why.
+**Not applicable is not the same as not disclosed — and a gap is never penalised twice.** When a criterion genuinely does not apply to what you are assessing, mark it **“Not applicable”** and leave it out of the total entirely; record why. When a criterion does apply but the provider discloses nothing, score it **0 with an assurance level of Unknown**, keep it in the total, and flag it — the silence is a finding. Each gap is treated one way or the other, never both: it either reduces the score (not disclosed) or is excluded from the calculation (not applicable).
 
 ### Red flags: when a high average is not enough
 
-An overall average can hide a serious problem. So the framework uses **red flags**. A red flag is a finding so serious that it caps the overall result no matter how strong the other scores are. You should set your own red-flag list before you start. Common examples:
+An overall average can hide a serious problem. So the framework uses **red flags**. A red flag is a finding so serious that it must take precedence over the numerical result in any decision, no matter how strong the other scores are. It is reported separately and prominently, alongside every view of the result — never blended into the number, so a single number can never hide it. You should set your own red-flag list before you start. Common examples:
 
 - credible evidence of complicity in serious human rights abuses
 - directly enabling weapons to select or attack human targets without meaningful human control, or systems knowingly used to target civilians
@@ -205,12 +222,13 @@ A single unverified allegation is not enough on its own. Record which standard w
 
 For each assessment you produce:
 
-- a **score and confidence rating** for each criterion
-- a short **note** explaining each score, with sources
-- any **red flags**
-- an **overall picture** — either a weighted average, a simple profile across the three pillars, or both
+- a **score and assurance level** for each criterion
+- a short **note** explaining each score, with dated sources
+- any **red flags**, shown alongside the result
+- an **overall picture** — the profile across the three pillars, plus the weighted geometric mean shown under your chosen weights and under equal weights
+- **evidence coverage** — the share of applicable criteria whose assurance level is not Unknown
 
-Avoid reducing everything to a single number where that would hide important detail. A profile across the three pillars is usually clearer than one grand total.
+Avoid reducing everything to a single number where that would hide important detail. A profile across the three pillars is usually clearer than one grand total. **When you summarise a group of providers, report the median and the range as well as the average** — an average alone can be dragged by a single outlier, and it hides how spread out the group really is.
 
 ---
 
@@ -225,6 +243,8 @@ Each criterion below follows the same shape: what it means, why it matters, what
 **What it means.** The greenhouse gases released because the thing exists and runs — measured as carbon dioxide equivalent (CO2e).
 
 **Why it matters.** Computing is a fast-growing source of emissions. Training and running AI models, and powering data centres, use large and rising amounts of electricity.
+
+**A standing note on uncertainty.** Every carbon figure in this framework is an estimate built on a chain of models, and the honest uncertainty is large. Digital carbon models are **attributional**: they allocate a share of past, measured emissions to an activity. They do not predict how total emissions would change if you acted differently — that is a consequential question these models cannot answer. Published estimates for the same digital activity can differ by several orders of magnitude, depending on system boundaries and assumptions. As one marker of how far settled-looking numbers can move: when the Sustainable Web Design model moved from version 3 to version 4, its headline energy-per-byte figure fell by roughly two-thirds. Treat all carbon figures as indicative, state the model and version used, and never present a single figure without its assumptions.
 
 **What to look at.**
 
@@ -249,9 +269,13 @@ Each criterion below follows the same shape: what it means, why it matters, what
 
 **A note on Locational Marginal Emissions (LMEs).** Annual average grid intensity figures are adequate for compliance reporting, but they can misrepresent the real carbon consequence of adding computational load to the grid at a specific time and place. Locational Marginal Emissions (LMEs) measure the carbon cost of the *next unit* of electricity at a specific point on the grid, accounting for which generators are actually dispatched and the physical constraints of transmission. LME values vary by hour, day, season, and grid node — a data centre that looks clean by annual average may be drawing on coal capacity at peak demand, while a facility in a region with abundant wind or hydro may be genuinely low-carbon in real time.
 
-For scoring purposes, the distinction matters most when assessing providers who claim real-time or near-real-time carbon optimisation — routing workloads to lower-LME regions or shifting non-latency-sensitive tasks to off-peak hours. A provider who uses LME signals for operational decisions is doing something substantively different and more rigorous than one who simply purchases annual renewable energy certificates. If a provider can demonstrate LME-aware workload scheduling, treat this as evidence of stronger practice under criterion 3 (efficiency) as well as criterion 1. For a more technical treatment, see: Sun et al. (2025), *Locational Marginal Emissions for Carbon-Aware Data Center Operations in Large-Scale Power Grids*, arXiv:2512.18819.
+For scoring purposes, the distinction matters most when assessing providers who claim real-time or near-real-time carbon optimisation — routing workloads to lower-LME regions or shifting non-latency-sensitive tasks to off-peak hours. A provider who uses LME signals for operational decisions is doing something substantively different and more rigorous than one who simply purchases annual renewable energy certificates. If a provider can demonstrate LME-aware workload scheduling, treat this as evidence of stronger practice under criterion 3 (efficiency) as well as criterion 1. For a more technical treatment, see: Cote and Sun (2025), *Locational Marginal Emissions for Carbon-Aware Data Center Operations in Large-Scale Power Grids*, arXiv:2512.18819 — a preprint, not yet peer reviewed.
+
+**The physical limits of marginal accounting.** LME factors are derived for small changes in load and are highly localised: under grid congestion their validity window can narrow to a few megawatts, and a large workload shift changes the grid's dispatch order, invalidating the pre-calculated factor. LME signals are also far noisier than prices. For these reasons the framework uses LMEs as a **practice signal, not an accounting method**: verified LME-aware scheduling is evidence of operational rigour under criteria 1, 3 and 13, but a vendor's LME-derived *carbon numbers* carry the same self-reported scepticism as any other unverified figure, and totals must still be reported against standard attributional methods (GHG Protocol location-based and market-based).
 
 **A note for AI models.** Separate the **training footprint** (the large, one-off cost of building the model) from the **inference footprint** (the ongoing cost of running it for users). A model can look clean on a per-query basis while hiding a very large training footprint that has not yet been "earned back" through use. Ask for both figures, and ask how the training footprint is spread across expected use. A small, efficient model reused widely may be far better than a giant model trained at great cost and used little.
+
+**Rebound effects and derivative models.** Efficiency gains can increase total consumption by making use cheaper and easier — the Jevons effect — so falling per-query figures do not by themselves mean falling total impact; judge totals as well as intensities. Open-weight models also spawn large ecosystems of fine-tuned derivatives whose cumulative training cost can rival the original. The framework's count-once rule still applies: fine-tuning compute belongs to whoever runs it, on the infrastructure they chose. An assessor scoring a fine-tuned model counts the fine-tuning as that model's direct training footprint, plus the base model's amortised share where the provider discloses it. Responsibility for downstream derivatives is not assigned to the base-model provider.
 
 **Scoring signals.** A high score (3–4) means full three-scope reporting including embodied carbon, both training and inference footprints disclosed for AI, science-based targets, real cuts and hour-by-hour clean energy, independently verified. A low score (0–1) means no emissions data, or vague claims resting mainly on offsets.
 
@@ -286,7 +310,7 @@ When reviewing a provider's water data, check whether they are reporting both sc
 - [ISO 14046:2014 — Environmental Management: Water Footprint](https://www.iso.org/standard/43263.html) — the international standard for life-cycle water footprinting, covering both direct and indirect scopes, impact categories beyond volume (including scarcity and eutrophication), and the principles for regional weighting.
 - [ISO/IEC 30134-9:2022 — Water Usage Effectiveness (WUE)](https://www.iso.org/standard/79342.html) — the standard data-centre water metric for on-site direct use.
 - [EU data-centre reporting scheme — Delegated Regulation (EU) 2024/1364](https://eur-lex.europa.eu/eli/reg_del/2024/1364/oj) — requires larger EU data centres to report water and energy data, under the [Energy Efficiency Directive (EU) 2023/1791](https://eur-lex.europa.eu/eli/dir/2023/1791/oj).
-- Li, P., Yang, J., Islam, M. A., & Ren, S. (2023). *Making AI Less "Thirsty": Uncovering and Addressing the Secret Water Footprint of AI Models*. arXiv:2304.03271. — estimates per-query water consumption across AI providers.
+- Li, P., Yang, J., Islam, M. A. and Ren, S. (2025). *Making AI Less “Thirsty”: Uncovering and Addressing the Secret Water Footprint of AI Models*. Communications of the ACM, 68(7). Originally arXiv:2304.03271 (2023). — estimates per-query water consumption across AI providers.
 - For background on local and indirect water impacts, see the [World Economic Forum on data-centre water circularity](https://www.weforum.org/stories/2025/11/data-centres-and-water-circularity/) and the [Lincoln Institute analysis of land and water impacts](https://www.lincolninst.edu/publications/land-lines-magazine/articles/land-water-impacts-data-centers/).
 
 **How it varies by layer.** Hosting providers and data centres are where water use is direct. AI models, CMSs and frameworks inherit it — judge them on the hosts and regions they let you choose. For AI models specifically, per-query water estimates are now available from some providers (see criterion 13) and should be used alongside site-level figures.
@@ -488,7 +512,15 @@ When reviewing a provider's water data, check whether they are reporting both sc
 
 **How it varies by layer.** Transparency is direct and central at every layer. Always score it for the thing itself.
 
-**Note on scoring threshold for this criterion.** Because transparency is both a criterion in its own right and the foundation for every other score, it carries a stronger verification requirement than other criteria. A score of 3 or 4 on criterion 9 requires independent verification — not just self-report. This means an audit by a credible third party, a regulatory finding, or documentation from an established watchdog, not simply a provider's own sustainability report or press release. A provider with detailed, consistent self-reporting but no independent checking should score no higher than 2 on this criterion, however thorough its disclosures appear. This is the one place in the framework where the evidence-quality multiplier system is supplemented by a threshold rule: the multiplier still applies when calculating totals, but the raw score itself is capped at 2 where independent verification is absent.
+**Note on the scoring threshold for this criterion.** Because transparency is both a criterion in its own right and the foundation for every other score, it carries a stronger verification requirement than the other criteria. This is the only hard cap in the framework, and it is deliberate. A raw score of 3 or 4 on criterion 9 requires independent verification. What counts as verification: an audit by a credible third party; a regulatory finding; documentation from an established watchdog; an independent transparency benchmark (for example, the Stanford Foundation Model Transparency Index); or fully open artefacts — weights, training data and code all released — that independent parties can inspect directly. A provider with detailed, consistent self-reporting but no independent checking of any kind scores no higher than 2 on this criterion, however thorough its disclosures appear. The cap exists because self-described transparency is exactly the claim that most needs outside confirmation: rewarding it on the provider's word alone would let confident marketing stand in for openness — the failure this criterion exists to catch.
+
+**Verification without audits.** Independent verification does not require money. The framework accepts three routes that cost a developer nothing beyond openness itself:
+
+1. **Fully open artefacts** — an OSI-approved or equivalent licence; the weights, the training data or a complete data statement, and the training and evaluation code, all public; with documentation sufficient for an independent party to reproduce or meaningfully inspect the claims. Open weights alone do not qualify.
+2. **An independent benchmark or index** that has assessed the provider — for example, the Stanford Foundation Model Transparency Index.
+3. **A published peer-reviewed evaluation, or a documented third-party reproduction,** of the provider's claims.
+
+These routes exist so the cap rewards openness rather than audit budgets: a small open project that publishes everything can reach 3 or 4, while a well-funded lab that publishes only marketing cannot.
 
 **Scoring signals.** 4 = full, regular reporting independently audited or certified; clear and honest AI or software documentation; open governance; proactive disclosure of problems and limits. 3 = substantive reporting with some independent verification (for example, a single third-party audit or a recognised certification, even if not covering all areas). 2 = detailed self-reporting without independent verification — the ceiling where no third-party checking exists. 1 = limited or patchy disclosure with no checking. 0 = no meaningful disclosure.
 
@@ -544,8 +576,12 @@ Broader support (logistics, communications, intelligence analysis, general cloud
 **Evidence and standards.**
 
 - [EU Transparency Register](https://transparency-register.europa.eu/) — record of organisations seeking to influence EU policy.
-- [UK Consultant Lobbying Register](https://www.gov.uk/guidance/consultant-lobbying-register) and the registers of members' interests.
-- [OpenSecrets](https://www.opensecrets.org/) — data on United States lobbying and political spending.
+- [UK: Office of the Registrar of Consultant Lobbyists](https://registrarofconsultantlobbyists.org.uk/) — the statutory UK register — together with the parliamentary registers of members' interests.
+- [US: Lobbying Disclosure Act filings](https://lda.senate.gov/) — the statutory federal register — with [OpenSecrets](https://www.opensecrets.org/) for analysis of US lobbying and political spending.
+- [Canada: Registry of Lobbyists](https://lobbycanada.gc.ca/) — the federal register maintained by the Office of the Commissioner of Lobbying.
+- [OECD Principles for Transparency and Integrity in Lobbying](https://www.oecd.org/en/topics/lobbying.html) — the international reference where no national register exists.
+
+Use the register for the jurisdiction whose influence you are assessing. A provider active in several markets should be checked in each.
 
 **How it varies by layer.** This sits with the **organisation** behind a product, so it applies most to the large firms that own AI models and hosting platforms. A small open-source CMS or framework usually has little political footprint — but check who funds and controls it.
 
@@ -576,6 +612,8 @@ Broader support (logistics, communications, intelligence analysis, general cloud
 
 - [General Data Protection Regulation (EU) 2016/679 (GDPR)](https://eur-lex.europa.eu/eli/reg/2016/679/oj) and, in the United Kingdom, the [Data Protection Act 2018](https://www.legislation.gov.uk/ukpga/2018/12/contents).
 - [ISO/IEC 27001](https://www.iso.org/standard/27001) — the standard for information security management.
+
+Where formal certification is disproportionate — for small open-source projects and non-profits — recognised community-verifiable practices count as evidence: a published security policy and disclosure process, reproducible builds, public issue tracking, and dependency audits using open tooling.
 - [EU AI Act — Regulation (EU) 2024/1689](https://eur-lex.europa.eu/eli/reg/2024/1689/oj) — includes data-governance duties for higher-risk and general-purpose AI.
 
 **How it varies by layer.** Privacy and data governance are direct at every layer that touches personal data — which is most of them. Always assess it.
@@ -604,7 +642,11 @@ Broader support (logistics, communications, intelligence analysis, general cloud
 - [Green Software Foundation — Software Carbon Intensity (SCI), ISO/IEC 21031:2024](https://greensoftware.foundation/standards/sci/) — a per-use carbon measure that can be applied at query level.
 - Google's published per-prompt environmental data and methodology (the most detailed publicly available set, using median text prompt as the functional unit) — see [Google Cloud blog](https://cloud.google.com/blog/products/infrastructure/measuring-the-environmental-impact-of-ai-inference/) and the associated [research paper](https://arxiv.org/abs/2508.15734).
 - Mistral's peer-reviewed lifecycle assessment (ADEME and Carbone 4, ISO 14040/44) — publishes 1.14 g CO₂e and 45 mL per 400-token response for Large 2, the most independently verified per-inference figures available as of 2026.
-- Sam Altman's January 2024 post citing ~0.34 Wh and ~0.32 mL per average ChatGPT query — the only published figures from OpenAI, with no peer review or carbon figure.
+- Sam Altman's June 2025 blog post citing ~0.34 Wh and ~0.32 mL per average ChatGPT query — the only published figures from OpenAI, with no peer review, no carbon figure and no defined prompt type.
+
+**Treat vendor per-prompt figures as self-reported at best.** Published per-prompt numbers are not comparable at face value. Check the boundary: most exclude training, networking beyond the data centre, and end-user devices. Check the accounting: a market-based carbon figure (backed by purchased certificates) can be several times lower than the location-based figure for the same prompt on the same grid — Google's own 2025 paper shows roughly a threefold gap. Check the functional unit: a “median text prompt” is not an “average query” and neither is a 400-token response. A vendor figure with a clear methodology is still self-reported unless that methodology has been independently or peer reviewed; only a peer-reviewed lifecycle assessment reaches Verified.
+
+**The functional unit for reasoning, multi-modal and agentic queries.** A single “average query” figure loses its meaning when one user request triggers many model calls behind the interface. The functional unit for this criterion is **one user turn, end to end**: every model call, tool call, retrieval and generation step triggered by that turn, however many sub-queries the system runs. Figures measured per single completion should be labelled as such and treated as a lower bound for reasoning, multi-modal and agentic products. Because turn costs are highly skewed, providers should disclose the distribution — at least the median and a high percentile (for example the 95th) — rather than a single mean, and should report reasoning or extended-thinking modes separately.
 
 **How it varies by layer.** This criterion is direct for AI models and the providers who run inference. It is lower materiality for CMSs and frameworks (which do not run inference), though they should still consider the per-query cost of any AI features they embed.
 
@@ -627,12 +669,12 @@ Work through these steps. The later tools will follow the same order.
 
 1. **Define the scope.** Name exactly what you are assessing and why. Choose a "functional unit" so comparisons are fair — for example, "per 1,000 users a month" or "per AI query."
 2. **Map the layers.** List what the thing depends on (see [section 3](#3-the-layered-nature-of-online-ecosystems)). Decide how far down to trace each criterion.
-3. **Set weights and materiality.** Decide which criteria matter most for your decision, mark any that are not applicable, and record your reasons.
+3. **Set weights and materiality.** Equal pillar weights are the default. If your decision genuinely warrants different weights, record them and the reason — and plan to report the equally-weighted result alongside as a sensitivity check. Mark any criteria that are not applicable, and record why.
 4. **Agree red flags.** Write down, before you start, the findings that would cap the result no matter what.
 5. **Gather evidence.** Collect reports, standards, audits and independent sources. Note the source and date for every fact.
-6. **Score and rate confidence.** Give each criterion a 0–4 score and a confidence rating (Verified, Self-reported, Estimated or Unknown). Write a short note for each.
+6. **Score and rate confidence.** Give each criterion a 0–4 score and a assurance level (Verified, Self-reported, Estimated or Unknown). Write a short note for each.
 7. **Apply red flags.** Check whether any were triggered. If so, report them prominently.
-8. **Summarise.** Produce a profile across the three pillars, and a weighted total if useful. Keep important detail visible rather than hidden in one number.
+8. **Summarise.** Produce the profile across the three pillars and the weighted geometric mean, shown under your chosen weights and under equal weights. When summarising a group of providers, report the median and range as well as the average. Keep important detail visible rather than hidden in one number.
 9. **Record and date it.** Save your sources and set a review date — standards and providers change, so an assessment goes stale. **Treat 12 months as the maximum life of an assessment**, after which it should be redone. Use a shorter window for fast-moving things (for example, an AI model that updates often or a data centre whose energy mix is changing), and only a longer one with a clear, recorded reason.
 
 A short worked summary for one criterion might read:
@@ -681,8 +723,26 @@ All links were checked against official or recognised sources. Standards are upd
 
 **Per-prompt efficiency and AI environmental impact**
 
-- Li, P., Yang, J., Islam, M. A., & Ren, S. (2023). *Making AI Less "Thirsty": Uncovering and Addressing the Secret Water Footprint of AI Models*. arXiv:2304.03271. [https://arxiv.org/abs/2304.03271](https://arxiv.org/abs/2304.03271) — estimates per-query water consumption across AI providers and distinguishes direct and indirect water scopes.
-- Sun, X., et al. (2025). *Locational Marginal Emissions for Carbon-Aware Data Center Operations in Large-Scale Power Grids*. arXiv:2512.18819. [https://arxiv.org/abs/2512.18819](https://arxiv.org/abs/2512.18819) — presents LME methodology for data-centre carbon accounting at grid-node level, with accuracy comparisons against annual grid averages.
+- Li, P., Yang, J., Islam, M. A. and Ren, S. (2025). *Making AI Less “Thirsty”: Uncovering and Addressing the Secret Water Footprint of AI Models*. Communications of the ACM, 68(7). Originally arXiv:2304.03271 (2023). [https://arxiv.org/abs/2304.03271](https://arxiv.org/abs/2304.03271) — estimates per-query water consumption across AI providers and distinguishes direct and indirect water scopes.
+- Cote, N. and Sun, X. (2025). *Locational Marginal Emissions for Carbon-Aware Data Center Operations in Large-Scale Power Grids*. arXiv:2512.18819. [https://arxiv.org/abs/2512.18819](https://arxiv.org/abs/2512.18819) — a preprint, not yet peer reviewed; presents LME methodology for data-centre carbon accounting at grid-node level, with accuracy comparisons against annual grid averages.
+- Google (2025). *Measuring the environmental impact of delivering AI at Google Scale*. arXiv:2508.15734. [https://arxiv.org/abs/2508.15734](https://arxiv.org/abs/2508.15734) — Google's per-prompt methodology; self-reported (not independently verified) and market-based, with a stated boundary that excludes training, external networking and end-user devices.
+- Mistral AI, ADEME and Carbone 4 (2025). *Our contribution to a global environmental standard for AI*. [https://mistral.ai/news/our-contribution-to-a-global-environmental-standard-for-ai/](https://mistral.ai/news/our-contribution-to-a-global-environmental-standard-for-ai/) — the peer-reviewed lifecycle assessment (ISO 14040/44) behind the most independently verified per-inference figures available.
+
+**Composite indicators and rating divergence**
+
+- OECD and European Commission Joint Research Centre (2008). *Handbook on Constructing Composite Indicators: Methodology and User Guide*. OECD Publishing. [https://www.oecd.org/en/publications/handbook-on-constructing-composite-indicators-methodology-and-user-guide_9789264043466-en.html](https://www.oecd.org/en/publications/handbook-on-constructing-composite-indicators-methodology-and-user-guide_9789264043466-en.html) — the standard reference for weighting, aggregation and sensitivity analysis in composite scores; the basis for the geometric-mean and sensitivity rules in section 4.
+- Berg, F., Kölbel, J. F. and Rigobon, R. (2022). *Aggregate Confusion: The Divergence of ESG Ratings*. Review of Finance, 26(6). [https://doi.org/10.1093/rof/rfac033](https://doi.org/10.1093/rof/rfac033) — shows that ESG-style ratings disagree mainly because of measurement and scope choices; the reason this framework keeps its scoring rules explicit and repeatable.
+
+**The science behind the carbon model**
+
+- Masanet, E., Shehabi, A., Lei, N., Smith, S. and Koomey, J. (2020). *Recalibrating global data center energy-use estimates*. Science, 367(6481). — the benchmark bottom-up estimate of global data-centre energy use.
+- Freitag, C., Berners-Lee, M., Widdicks, K., Knowles, B., Blair, G. and Friday, A. (2021). *The real climate and transformative impact of ICT: A critique of estimates, trends, and regulations*. Patterns, 2(9). — why ICT carbon estimates diverge and how to read them.
+- Mytton, D. and Ashtine, M. (2022). *Sources of data center energy estimates: A comprehensive review*. Joule, 6(9). — reviews 258 estimates and finds only two credible global models.
+- *Network energy use not directly proportional to data volume: the power model approach for more reliable network energy consumption calculations* (2024). Journal of Industrial Ecology. Co-authored by D. Mytton. — why per-byte network energy models overstate marginal use; directly relevant to page-weight carbon models.
+- Malmodin, J., Lövehagen, N., Bergmark, P. and Lundén, D. (2024). *ICT sector electricity consumption and greenhouse gas emissions — 2020 outcome*. Telecommunications Policy, 48(2). — the measured (rather than modelled) sector footprint.
+- Aslan, J., Mayers, K., Koomey, J. G. and France, C. (2018). *Electricity intensity of Internet data transmission: Untangling the estimates*. Journal of Industrial Ecology, 22(4). — the halving-every-two-years finding for network energy intensity.
+- Coroama, V. C. and Hilty, L. M. (2014). *Assessing Internet energy intensity: A review of methods and results*. Environmental Impact Assessment Review, 45. — foundational review of why internet energy estimates differ by orders of magnitude.
+- Sustainable Web Design model, version 4 (2024). [https://sustainablewebdesign.org/](https://sustainablewebdesign.org/) — the per-byte web-carbon model used by Hive IT's calculators; note the large downward revision from version 3 described in criterion 1.
 
 **Hardware, repair and e-waste**
 
@@ -755,13 +815,15 @@ All links were checked against official or recognised sources. Standards are upd
 
 **CMS (content management system)** — software used to create and run websites and digital content.
 
-**Evidence-quality adjustment** — a multiplier applied to a score, based on how good the evidence is, when adding scores into a total. It stops unverified claims from counting as much as checked facts. Multipliers: Verified ×1.0, Self-reported ×0.75, Estimated ×0.50, Unknown ×0.0. Previously called "confidence discount".
+**Assurance level** — a rating shown next to every score recording how good the evidence is: Verified, Self-reported, Estimated or Unknown. It is a visible flag on the evidence and is never multiplied into the score. (Versions 1.1 to 1.3 used an “evidence-quality adjustment” that multiplied scores by 1.0, 0.75, 0.5 or 0.0; version 2 removes it — see section 4.)
 
 **Dual-use technology** — technology with both civilian and military uses.
 
 **Embodied carbon** — the emissions from making something (such as hardware), as opposed to running it.
 
 **Functional unit** — the unit you measure impact against, so comparisons are fair (for example, per user or per query).
+
+**Geometric mean (weighted)** — a way of combining pillar scores by multiplying them together, each raised to its weight share, instead of averaging them. A weak pillar pulls the result down and cannot be fully offset by strong pillars. Used for the overall score from version 2. See section 4 for a worked example.
 
 **GPAI (general-purpose AI)** — an AI model that can be used for many different tasks, such as a large language model.
 
@@ -777,6 +839,10 @@ All links were checked against official or recognised sources. Standards are upd
 
 **PUE (power usage effectiveness)** — how much total energy a data centre uses for every unit that reaches the computing equipment. Lower is better.
 
+**Sensitivity check (equal weights)** — reporting the equally-weighted overall score alongside any custom weighting. A large gap between the two shows the result depends heavily on the weighting choice, and the pillar profile is then the more honest guide.
+
+**SWD (Sustainable Web Design model)** — a published model for estimating the carbon of loading web pages from the data transferred. Version 4 (2024) revised the model's energy-per-byte figure down by roughly two-thirds compared with version 3 — a marker of how uncertain digital carbon figures are.
+
 **SaaS infrastructure locking** — when a managed service (software as a service) ties you to the vendor's own data centres, hardware and replacement cycles, so you cannot choose greener or more ethical infrastructure yourself. This is why such services are judged on the vendor's choices directly.
 
 **Scope 1, 2 and 3 emissions** — direct emissions (1), emissions from bought energy (2), and all other supply-chain and use emissions (3).
@@ -789,6 +855,8 @@ All links were checked against official or recognised sources. Standards are upd
 
 **Training footprint** — the large, one-off carbon cost of building (training) an AI model, as opposed to the ongoing cost of running it.
 
+**Weak-pillar flag** — a warning shown whenever any pillar scores 0. The zero is floored at 0.01 in the geometric mean, so the overall score degrades sharply rather than collapsing to nothing, and the flag makes the cause visible.
+
 **WCAG (Web Content Accessibility Guidelines)** — the international standard for making digital content usable by people with disabilities.
 
 **WUE (water usage effectiveness)** — a standard measure of how much water a data centre uses for its computing work.
@@ -797,6 +865,6 @@ All links were checked against official or recognised sources. Standards are upd
 
 ---
 
-*End of foundation document, version 1.3. The scoring spreadsheet, procurement version, audit version and public-reporting version will each be built from this document as separate tools.*
+*End of foundation document, version 2.1. The scoring spreadsheet, procurement version, audit version and public-reporting version will each be built from this document as separate tools.*
 
 *Released under [Creative Commons Zero v1.0 Universal (CC0)](https://creativecommons.org/publicdomain/zero/1.0/) — no rights reserved. You may copy, modify, distribute and use this work without permission.*
