@@ -915,6 +915,12 @@ footer .meth-trigger:hover{color:#fff}
   </div>
  </div>
 
+ <div class="cmp-banner" id="cmp-banner" role="status">
+  <div class="cmp-banner-inner">
+   <strong id="cmp-banner-text">0 technologies in comparison</strong>
+   <a href="#view-cmp" id="cmp-banner-link">View comparison ↓</a>
+  </div>
+ </div>
  <nav class="cat-jumps" id="cat-jump-bar" aria-label="Jump to category" hidden></nav>
  <div id="cats"></div>
 </section>
@@ -1479,13 +1485,13 @@ function render(){
        +(inh>0?`<p class="note-inline" style="font-size:.7rem;margin:.2rem .85rem .3rem;opacity:.7">${inh} criteria inherited from host</p>`:"")       +`<div class="pc-actions">`
        +`<button type="button" class="pc-btn primary" data-act="detail" aria-haspopup="dialog">Details</button>`
        +`<button type="button" class="pc-btn" data-act="stack" data-id="${p.id}">Add to stack</button>`
-       +`<button type="button" class="pc-btn" data-act="cmp" data-id="${p.id}">Compare</button></div>`;
+       +`<button type="button" class="pc-btn" data-act="cmp" data-id="${p.id}" aria-pressed="${cmp.includes(p.id)?'true':'false'}" aria-label="${cmp.includes(p.id)?'Remove '+p.name+' from comparison':'Add '+p.name+' to comparison'}">${cmp.includes(p.id)?'\u2713 Comparing':'Compare'}</button></div>`;
       grid.appendChild(card);
       card.addEventListener("click",e=>{if(e.target.closest(".pc-actions"))return;openReason(p);});
       card.addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&!e.target.closest(".pc-actions")){e.preventDefault();openReason(p);}});
       card.querySelector('[data-act="detail"]').addEventListener("click",e=>{e.stopPropagation();openReason(p);});
       card.querySelector('[data-act="stack"]').addEventListener("click",e=>{e.stopPropagation();addStack(p.id);});
-      card.querySelector('[data-act="cmp"]').addEventListener("click",e=>{e.stopPropagation();addCmp(p.id);switchView("cmp");});
+      card.querySelector('[data-act="cmp"]').addEventListener("click",e=>{e.stopPropagation();toggleCmp(p.id);});
     });
     // toggle button handler
     catBand.querySelector(".cat-head").addEventListener("click",function(){
@@ -1980,12 +1986,24 @@ function fmtNum(n){
 // ---- comparison + radar ----
 let cmp=[null,null,null];
 const CMP_COLOURS=["var(--pal)","var(--lap)","var(--grn)"];
-function addCmp(id){const i=cmp.indexOf(null);if(cmp.includes(id))return;if(i>=0)cmp[i]=id;else cmp[2]=id;syncCmpSelects();cmpRender();}
+function cmpCount(){return cmp.filter(Boolean).length;}
+function updateCmpBanner(){
+  const n=cmpCount();const b=document.getElementById("cmp-banner");const t=document.getElementById("cmp-banner-text");
+  if(!b)return;
+  if(n>0){b.classList.add("visible");t.textContent=n+" "+(n===1?"technology":"technologies")+" in comparison";}
+  else b.classList.remove("visible");
+}
+function addCmp(id){const i=cmp.indexOf(null);if(cmp.includes(id))return;if(i>=0)cmp[i]=id;else cmp[2]=id;syncCmpSelects();cmpRender();updateCmpBanner();}
+function toggleCmp(id){
+  if(cmp.includes(id)){cmp=cmp.map(x=>x===id?null:x);}
+  else{const i=cmp.indexOf(null);if(i<0){alert("You can compare up to three technologies at once. Remove one first.");return;}cmp[i]=id;}
+  syncCmpSelects();cmpRender();updateCmpBanner();render();
+}
 function initCmp(){
   [0,1,2].forEach(i=>{const sel=$("#cmp"+i);sel.append(new Option("None",""));
     Object.keys(CATS).forEach(cat=>{const og=document.createElement("optgroup");og.label=CATS[cat];
       PROV.filter(p=>p.category===cat).sort((a,b)=>a.name.localeCompare(b.name)).forEach(p=>og.append(new Option(p.name,p.id)));sel.append(og);});
-    sel.addEventListener("change",()=>{cmp[i]=sel.value||null;cmpRender();});
+    sel.addEventListener("change",()=>{cmp[i]=sel.value||null;cmpRender();updateCmpBanner();render();});
   });
 }
 function syncCmpSelects(){[0,1,2].forEach(i=>{$("#cmp"+i).value=cmp[i]||"";});}
@@ -2041,6 +2059,12 @@ function initAbout(){
 }
 
 // ---- views ----
+function initCmpBanner(){
+  const lnk=document.getElementById("cmp-banner-link");if(!lnk)return;
+  lnk.addEventListener("click",e=>{e.preventDefault();switchView("cmp");
+    const h=document.querySelector("#view-cmp h2");if(h){h.setAttribute("tabindex","-1");h.focus();}
+    const vc=document.getElementById("view-cmp");if(vc.scrollIntoView)vc.scrollIntoView({behavior:"smooth",block:"start"});});
+}
 function switchView(v){
   const map={rank:"view-rank",stack:"view-stack",cmp:"view-cmp",about:"view-about"};
   Object.entries(map).forEach(([k,id])=>{$("#"+id).hidden=(k!==v);$("#tab-"+k).setAttribute("aria-selected",k===v);});
@@ -2407,7 +2431,7 @@ function initCRP(){
 }
 
 // ---- init ----
-initFootprint();initControls();initStack();initPresets();initStackControls();initImpact();initCRP();initCmp();initAbout();initTabs();
+initFootprint();initControls();initStack();initPresets();initStackControls();initImpact();initCRP();initCmp();initCmpBanner();initAbout();initTabs();
 render();stackRender();cmpRender();
 })();
 </script>
