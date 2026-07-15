@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,7 +16,7 @@
             hive: {
               deep: '#1E252D',      /* Hive IT Dark Slate */
               gold: '#FDB913',      /* Hive IT Honeycomb Gold */
-              goldDark: '#B27F00',  /* High-contrast gold for text on light backgrounds */
+              goldDark: '#8A6300',  /* Darkened gold: 5.4:1 on white/paper for WCAG 2.2 AA text */
               light: '#F4F6F8',     /* Soft material background */
               accent: '#2563EB',    /* Vibrant accent blue */
               accentLight: '#EFF6FF'
@@ -40,7 +40,7 @@
       }
     };
   </script>
-  <script src="https://cdn.tailwindcss.com/npm/mathjax@3/es5/tex-mml-chtml.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" defer></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
     body {
@@ -168,7 +168,7 @@
                 </div>
               </div>
               <p class="text-slate-600 leading-relaxed text-sm sm:text-base">
-                Think of this as a student learning with a teacher who provides an answer key. The computer is shown millions of examples with their correct "labels" (such as pictures of buildings labeled "historic" or "modern"). Over time, the model figures out the underlying rules so it can accurately label brand-new, unseen pictures.
+                Think of this as a student learning with a teacher who provides an answer key. The computer is shown millions of examples with their correct "labels" (such as pictures of buildings labelled "historic" or "modern"). Over time, the model figures out the underlying rules so it can accurately label brand-new, unseen pictures.
               </p>
               
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -198,13 +198,13 @@
                   <div class="p-4 rounded-2xl bg-white border border-slate-200 flex items-start gap-3 shadow-sm">
                     <div>
                       <h5 class="text-xs sm:text-sm font-bold text-slate-900">Credit Risk Assessment</h5>
-                      <p class="text-xs text-slate-600 mt-1">Banks analyze your past financial history against historical defaults to predict your probability of repaying a loan.</p>
+                      <p class="text-xs text-slate-600 mt-1">Banks analyse your past financial history against historical defaults to predict your probability of repaying a loan.</p>
                     </div>
                   </div>
                   <div class="p-4 rounded-2xl bg-white border border-slate-200 flex items-start gap-3 shadow-sm">
                     <div>
                       <h5 class="text-xs sm:text-sm font-bold text-slate-900">Medical Scan Screening</h5>
-                      <p class="text-xs text-slate-600 mt-1">Radiology tools identify tiny, difficult-to-see tumors by comparing lung scans with millions of pre-labeled clinical samples.</p>
+                      <p class="text-xs text-slate-600 mt-1">Radiology tools identify tiny, difficult-to-see tumors by comparing lung scans with millions of pre-labelled clinical samples.</p>
                     </div>
                   </div>
                 </div>
@@ -219,7 +219,7 @@
                 <span class="px-2.5 py-1 rounded bg-hive-accent/10 text-hive-accent text-[10px] font-black uppercase tracking-widest font-mono">Atlas UX Mapping</span>
                 <h4 class="text-sm font-black text-hive-deep uppercase tracking-wider">Supervised 4-Layer Execution Path</h4>
               </div>
-              <p class="text-[11px] text-slate-500 font-mono">Tracing labeled datasets via standard patterns</p>
+              <p class="text-[11px] text-slate-600 font-mono">Tracing labelled datasets via standard patterns</p>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <div class="p-4 rounded-xl border border-blue-100 bg-blue-50/10 space-y-2">
@@ -228,9 +228,9 @@
                 </div>
                 <div class="flex flex-wrap gap-1">
                   <span class="px-1.5 py-0.5 rounded bg-white border text-[9px] font-semibold text-slate-700 font-mono">Read Record</span>
-                  <span class="px-1.5 py-0.5 rounded bg-white border text-[9px] font-semibold text-slate-700 font-mono font-mono">Extract</span>
+                  <span class="px-1.5 py-0.5 rounded bg-white border text-[9px] font-semibold text-slate-700 font-mono">Extract</span>
                 </div>
-                <p class="text-[10px] text-slate-500 leading-normal">Ingests input variables $X$ from pre-labeled records, formatting clean feature vectors.</p>
+                <p class="text-[10px] text-slate-600 leading-normal">Ingests input variables $X$ from pre-labelled records, formatting clean feature vectors.</p>
               </div>
               <div class="p-4 rounded-xl border border-indigo-100 bg-indigo-50/10 space-y-2">
                 <div class="flex items-center gap-1.5 text-indigo-600">
@@ -240,7 +240,7 @@
                   <span class="px-1.5 py-0.5 rounded bg-white border text-[9px] font-semibold text-slate-700 font-mono">Classify</span>
                   <span class="px-1.5 py-0.5 rounded bg-white border text-[9px] font-semibold text-slate-700 font-mono">Regress</span>
                 </div>
-                <p class="text-[10px] text-slate-500 leading-normal">Maps parameters through weighted nodes to calculate precise classification margin values.</p>
+                <p class="text-[10px] text-slate-600 leading-normal">Maps parameters through weighted nodes to calculate precise classification margin values.</p>
               </div>
               <div class="p-4 rounded-xl border border-emerald-100 bg-emerald-50/10 space-y-2">
                 <div class="flex items-center gap-1.5 text-emerald-600">
@@ -250,17 +250,17 @@
                   <span class="px-1.5 py-0.5 rounded bg-white border text-[9px] font-semibold text-slate-700 font-mono">API Call</span>
                   <span class="px-1.5 py-0.5 rounded bg-white border text-[9px] font-semibold text-slate-700 font-mono">Send Alert</span>
                 </div>
-                <p class="text-[10px] text-slate-500 leading-normal">Pushes verified categorical classifications downstream to connected UI tables or alerts.</p>
+                <p class="text-[10px] text-slate-600 leading-normal">Pushes verified categorical classifications downstream to connected UI tables or alerts.</p>
               </div>
               <div class="p-4 rounded-xl border border-rose-100 bg-rose-50/10 space-y-2">
                 <div class="flex items-center gap-1.5 text-rose-600">
                   <span class="text-[10px] font-black uppercase tracking-wider font-mono">Interactive (Acting)</span>
                 </div>
                 <div class="flex flex-wrap gap-1">
-                  <span class="px-1.5 py-0.5 rounded bg-white border text-[9px] font-semibold text-slate-700 font-mono font-mono">Review &amp; Approve</span>
-                  <span class="px-1.5 py-0.5 rounded bg-white border text-[9px] font-semibold text-slate-700 font-mono font-mono">Validate</span>
+                  <span class="px-1.5 py-0.5 rounded bg-white border text-[9px] font-semibold text-slate-700 font-mono">Review &amp; Approve</span>
+                  <span class="px-1.5 py-0.5 rounded bg-white border text-[9px] font-semibold text-slate-700 font-mono">Validate</span>
                 </div>
-                <p class="text-[10px] text-slate-500 leading-normal">Enables human sign-off on borderline scores before writing records to database logs.</p>
+                <p class="text-[10px] text-slate-600 leading-normal">Enables human sign-off on borderline scores before writing records to database logs.</p>
               </div>
             </div>
           </div>
@@ -310,13 +310,13 @@
                   <div class="p-4 rounded-2xl bg-white border border-slate-200 flex items-start gap-3 shadow-sm">
                     <div>
                       <h5 class="text-xs sm:text-sm font-bold text-slate-900">E-Commerce Customer Personas</h5>
-                      <p class="text-xs text-slate-600 mt-1">Grouping shoppers into distinct clusters based on browsing habits to dynamically customize promotional offers.</p>
+                      <p class="text-xs text-slate-600 mt-1">Grouping shoppers into distinct clusters based on browsing habits to dynamically customise promotional offers.</p>
                     </div>
                   </div>
                   <div class="p-4 rounded-2xl bg-white border border-slate-200 flex items-start gap-3 shadow-sm">
                     <div>
                       <h5 class="text-xs sm:text-sm font-bold text-slate-900">Acoustic Discovery</h5>
-                      <p class="text-xs text-slate-600 mt-1">Analyzing the acoustic makeup (tempo, mood, key) of millions of tracks to suggest new songs you'll enjoy.</p>
+                      <p class="text-xs text-slate-600 mt-1">Analysing the acoustic makeup (tempo, mood, key) of millions of tracks to suggest new songs you'll enjoy.</p>
                     </div>
                   </div>
                 </div>
@@ -331,7 +331,7 @@
                 <span class="px-2.5 py-1 rounded bg-hive-accent/10 text-hive-accent text-[10px] font-black uppercase tracking-widest font-mono">Atlas UX Mapping</span>
                 <h4 class="text-sm font-black text-hive-deep uppercase tracking-wider">Unsupervised 4-Layer Execution Path</h4>
               </div>
-              <p class="text-[11px] text-slate-500 font-mono">Tracing unlabeled datasets via standard patterns</p>
+              <p class="text-[11px] text-slate-600 font-mono">Tracing unlabeled datasets via standard patterns</p>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <div class="p-4 rounded-xl border border-blue-100 bg-blue-50/10 space-y-2">
@@ -342,27 +342,27 @@
                   <span class="px-1.5 py-0.5 rounded bg-white border text-[9px] font-semibold text-slate-700 font-mono">Retrieve</span>
                   <span class="px-1.5 py-0.5 rounded bg-white border text-[9px] font-semibold text-slate-700 font-mono">Read Record</span>
                 </div>
-                <p class="text-[10px] text-slate-500 leading-normal">Ingests raw, unstructured coordinate datasets without taxonomical categories.</p>
+                <p class="text-[10px] text-slate-600 leading-normal">Ingests raw, unstructured coordinate datasets without taxonomical categories.</p>
               </div>
               <div class="p-4 rounded-xl border border-indigo-100 bg-indigo-50/10 space-y-2">
                 <div class="flex items-center gap-1.5 text-indigo-600">
                   <span class="text-[10px] font-black uppercase tracking-wider font-mono">Internal (Reasoning)</span>
                 </div>
                 <div class="flex flex-wrap gap-1">
-                  <span class="px-1.5 py-0.5 rounded bg-white border text-[9px] font-semibold text-slate-700 font-mono font-mono font-mono">Cluster</span>
+                  <span class="px-1.5 py-0.5 rounded bg-white border text-[9px] font-semibold text-slate-700 font-mono">Cluster</span>
                   <span class="px-1.5 py-0.5 rounded bg-white border text-[9px] font-semibold text-slate-700 font-mono">Compress</span>
                 </div>
-                <p class="text-[10px] text-slate-500 leading-normal">Computes distances in multidimensional vector space to isolate hidden group densities.</p>
+                <p class="text-[10px] text-slate-600 leading-normal">Computes distances in multidimensional vector space to isolate hidden group densities.</p>
               </div>
               <div class="p-4 rounded-xl border border-emerald-100 bg-emerald-50/10 space-y-2">
                 <div class="flex items-center gap-1.5 text-emerald-600">
                   <span class="text-[10px] font-black uppercase tracking-wider font-mono">Outbound (Expressing)</span>
                 </div>
                 <div class="flex flex-wrap gap-1">
-                  <span class="px-1.5 py-0.5 rounded bg-white border text-[9px] font-semibold text-slate-700 font-mono font-mono">Transform</span>
-                  <span class="px-1.5 py-0.5 rounded bg-white border text-[9px] font-semibold text-slate-700 font-mono font-mono font-mono">Export File</span>
+                  <span class="px-1.5 py-0.5 rounded bg-white border text-[9px] font-semibold text-slate-700 font-mono">Transform</span>
+                  <span class="px-1.5 py-0.5 rounded bg-white border text-[9px] font-semibold text-slate-700 font-mono">Export File</span>
                 </div>
-                <p class="text-[10px] text-slate-500 leading-normal">Compiles cluster vectors and formats them into visual relative coordinates or segment files.</p>
+                <p class="text-[10px] text-slate-600 leading-normal">Compiles cluster vectors and formats them into visual relative coordinates or segment files.</p>
               </div>
               <div class="p-4 rounded-xl border border-rose-100 bg-rose-50/10 space-y-2">
                 <div class="flex items-center gap-1.5 text-rose-600">
@@ -370,9 +370,9 @@
                 </div>
                 <div class="flex flex-wrap gap-1">
                   <span class="px-1.5 py-0.5 rounded bg-white border text-[9px] font-semibold text-slate-700 font-mono">Adapt</span>
-                  <span class="px-1.5 py-0.5 rounded bg-white border text-[9px] font-semibold text-slate-700 font-mono font-mono">Flag Content</span>
+                  <span class="px-1.5 py-0.5 rounded bg-white border text-[9px] font-semibold text-slate-700 font-mono">Flag Content</span>
                 </div>
-                <p class="text-[10px] text-slate-500 leading-normal">Allows operators to shift cluster parameters or manually rename detected customer clusters.</p>
+                <p class="text-[10px] text-slate-600 leading-normal">Allows operators to shift cluster parameters or manually rename detected customer clusters.</p>
               </div>
             </div>
           </div>
@@ -401,7 +401,7 @@
                     Trial and Error Loops
                   </h4>
                   <p class="text-slate-600 text-xs sm:text-sm leading-relaxed">
-                    Constantly testing movements, measuring output, and updating the master game-plan to maximize future points.
+                    Constantly testing movements, measuring output, and updating the master game-plan to maximise future points.
                   </p>
                 </div>
                 <div class="p-5 rounded-2xl bg-hive-light border border-slate-200">
@@ -427,7 +427,7 @@
                   </div>
                   <div class="p-4 rounded-2xl bg-white border border-slate-200 flex items-start gap-3 shadow-sm">
                     <div>
-                      <h5 class="text-xs sm:text-sm font-bold text-hive-deep font-bold">Cooling Optimization</h5>
+                      <h5 class="text-xs sm:text-sm font-bold text-hive-deep font-bold">Cooling Optimisation</h5>
                       <p class="text-xs text-slate-600 mt-1">An AI constantly turns cooling fans up or down, slashing massive server farm energy costs by millions of dollars.</p>
                     </div>
                   </div>
@@ -443,7 +443,7 @@
                 <span class="px-2.5 py-1 rounded bg-hive-accent/10 text-hive-accent text-[10px] font-black uppercase tracking-widest font-mono">Atlas UX Mapping</span>
                 <h4 class="text-sm font-black text-hive-deep uppercase tracking-wider">Reinforcement 4-Layer Execution Path</h4>
               </div>
-              <p class="text-[11px] text-slate-500 font-mono">Tracing trial &amp; feedback loops via standard patterns</p>
+              <p class="text-[11px] text-slate-600 font-mono">Tracing trial &amp; feedback loops via standard patterns</p>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <div class="p-4 rounded-xl border border-blue-100 bg-blue-50/10 space-y-2">
@@ -454,17 +454,17 @@
                   <span class="px-1.5 py-0.5 rounded bg-white border text-[9px] font-semibold text-slate-700 font-mono">Monitor</span>
                   <span class="px-1.5 py-0.5 rounded bg-white border text-[9px] font-semibold text-slate-700 font-mono">Detect</span>
                 </div>
-                <p class="text-[10px] text-slate-500 leading-normal">Continually polls environmental metrics (speed, temperature, coordinates) as a structured state.</p>
+                <p class="text-[10px] text-slate-600 leading-normal">Continually polls environmental metrics (speed, temperature, coordinates) as a structured state.</p>
               </div>
               <div class="p-4 rounded-xl border border-indigo-100 bg-indigo-50/10 space-y-2">
                 <div class="flex items-center gap-1.5 text-indigo-600">
                   <span class="text-[10px] font-black uppercase tracking-wider font-mono">Internal (Reasoning)</span>
                 </div>
                 <div class="flex flex-wrap gap-1">
-                  <span class="px-1.5 py-0.5 rounded bg-white border text-[9px] font-semibold text-slate-700 font-mono font-mono font-mono font-mono">Forecast</span>
-                  <span class="px-1.5 py-0.5 rounded bg-white border text-[9px] font-semibold text-slate-700 font-mono font-mono font-mono font-mono font-mono">Logic Gate</span>
+                  <span class="px-1.5 py-0.5 rounded bg-white border text-[9px] font-semibold text-slate-700 font-mono">Forecast</span>
+                  <span class="px-1.5 py-0.5 rounded bg-white border text-[9px] font-semibold text-slate-700 font-mono">Logic Gate</span>
                 </div>
-                <p class="text-[10px] text-slate-500 leading-normal">Calculates upcoming trajectory steps and routes choices safely inside predefined operational limits.</p>
+                <p class="text-[10px] text-slate-600 leading-normal">Calculates upcoming trajectory steps and routes choices safely inside predefined operational limits.</p>
               </div>
               <div class="p-4 rounded-xl border border-emerald-100 bg-emerald-50/10 space-y-2">
                 <div class="flex items-center gap-1.5 text-emerald-600">
@@ -472,9 +472,9 @@
                 </div>
                 <div class="flex flex-wrap gap-1">
                   <span class="px-1.5 py-0.5 rounded bg-white border text-[9px] font-semibold text-slate-700 font-mono">API Call</span>
-                  <span class="px-1.5 py-0.5 rounded bg-white border text-[9px] font-semibold text-slate-700 font-mono font-mono font-mono">Create Record</span>
+                  <span class="px-1.5 py-0.5 rounded bg-white border text-[9px] font-semibold text-slate-700 font-mono">Create Record</span>
                 </div>
-                <p class="text-[10px] text-slate-500 leading-normal">Applies physical actions or micro-adjustments directly to connected mechanical components.</p>
+                <p class="text-[10px] text-slate-600 leading-normal">Applies physical actions or micro-adjustments directly to connected mechanical components.</p>
               </div>
               <div class="p-4 rounded-xl border border-rose-100 bg-rose-50/10 space-y-2">
                 <div class="flex items-center gap-1.5 text-rose-600">
@@ -482,9 +482,9 @@
                 </div>
                 <div class="flex flex-wrap gap-1">
                   <span class="px-1.5 py-0.5 rounded bg-white border text-[9px] font-semibold text-slate-700 font-mono">Plan</span>
-                  <span class="px-1.5 py-0.5 rounded bg-white border text-[9px] font-semibold text-slate-700 font-mono font-mono">Adapt</span>
+                  <span class="px-1.5 py-0.5 rounded bg-white border text-[9px] font-semibold text-slate-700 font-mono">Adapt</span>
                 </div>
-                <p class="text-[10px] text-slate-500 leading-normal">Modifies future decision policies using rewards received from humans or physical sensors.</p>
+                <p class="text-[10px] text-slate-600 leading-normal">Modifies future decision policies using rewards received from humans or physical sensors.</p>
               </div>
             </div>
           </div>
@@ -500,11 +500,11 @@
                 </span>
                 <div>
                   <h3 class="text-xl sm:text-2xl font-extrabold text-hive-deep">Generative AI</h3>
-                  <span class="text-xs font-bold text-hive-goldDark uppercase tracking-wider block font-mono">Synthesizing New Creative Assets</span>
+                  <span class="text-xs font-bold text-hive-goldDark uppercase tracking-wider block font-mono">Synthesising New Creative Assets</span>
                 </div>
               </div>
               <p class="text-slate-600 leading-relaxed text-sm sm:text-base">
-                Inspired by the complex, layered networks inside the human brain, Deep Learning uses multi-layered "neural networks" to process immense amounts of information. Generative AI builds on this to go a step further: it doesn't just analyze data—it creates entirely new things, synthesizing text, images, music, and software code from scratch.
+                Inspired by the complex, layered networks inside the human brain, Deep Learning uses multi-layered "neural networks" to process immense amounts of information. Generative AI builds on this to go a step further: it doesn't just analyse data—it creates entirely new things, synthesising text, images, music, and software code from scratch.
               </p>
 
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -521,7 +521,7 @@
                     Creative Synthesis
                   </h4>
                   <p class="text-slate-600 text-xs sm:text-sm leading-relaxed">
-                    Taking text prompts and synthesizing photorealistic graphics, professional voiceovers, or functional web code.
+                    Taking text prompts and synthesising photorealistic graphics, professional voiceovers, or functional web code.
                   </p>
                 </div>
               </div>
@@ -555,7 +555,7 @@
                 <span class="px-2.5 py-1 rounded bg-hive-accent/10 text-hive-accent text-[10px] font-black uppercase tracking-widest font-mono">Atlas UX Mapping</span>
                 <h4 class="text-sm font-black text-hive-deep uppercase tracking-wider">Generative 4-Layer Execution Path</h4>
               </div>
-              <p class="text-[11px] text-slate-500 font-mono">Tracing synthetic creation via standard patterns</p>
+              <p class="text-[11px] text-slate-600 font-mono">Tracing synthetic creation via standard patterns</p>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <div class="p-4 rounded-xl border border-blue-100 bg-blue-50/10 space-y-2">
@@ -564,19 +564,19 @@
                 </div>
                 <div class="flex flex-wrap gap-1">
                   <span class="px-1.5 py-0.5 rounded bg-white border text-[9px] font-semibold text-slate-700 font-mono">Type Input</span>
-                  <span class="px-1.5 py-0.5 rounded bg-white border text-[9px] font-semibold text-slate-700 font-mono font-mono font-mono">Retrieve</span>
+                  <span class="px-1.5 py-0.5 rounded bg-white border text-[9px] font-semibold text-slate-700 font-mono">Retrieve</span>
                 </div>
-                <p class="text-[10px] text-slate-500 leading-normal">Parses unstructured text inputs while retrieving context records for the prompt window.</p>
+                <p class="text-[10px] text-slate-600 leading-normal">Parses unstructured text inputs while retrieving context records for the prompt window.</p>
               </div>
               <div class="p-4 rounded-xl border border-indigo-100 bg-indigo-50/10 space-y-2">
                 <div class="flex items-center gap-1.5 text-indigo-600">
                   <span class="text-[10px] font-black uppercase tracking-wider font-mono">Internal (Reasoning)</span>
                 </div>
                 <div class="flex flex-wrap gap-1">
-                  <span class="px-1.5 py-0.5 rounded bg-white border text-[9px] font-semibold text-slate-700 font-mono">Synthesize</span>
-                  <span class="px-1.5 py-0.5 rounded bg-white border text-[9px] font-semibold text-slate-700 font-mono font-mono">Semantic Cache</span>
+                  <span class="px-1.5 py-0.5 rounded bg-white border text-[9px] font-semibold text-slate-700 font-mono">Synthesise</span>
+                  <span class="px-1.5 py-0.5 rounded bg-white border text-[9px] font-semibold text-slate-700 font-mono">Semantic Cache</span>
                 </div>
-                <p class="text-[10px] text-slate-500 leading-normal">Runs cross-attention calculations, retrieving cached logical mappings for repeating tokens.</p>
+                <p class="text-[10px] text-slate-600 leading-normal">Runs cross-attention calculations, retrieving cached logical mappings for repeating tokens.</p>
               </div>
               <div class="p-4 rounded-xl border border-emerald-100 bg-emerald-50/10 space-y-2">
                 <div class="flex items-center gap-1.5 text-emerald-600">
@@ -584,9 +584,9 @@
                 </div>
                 <div class="flex flex-wrap gap-1">
                   <span class="px-1.5 py-0.5 rounded bg-white border text-[9px] font-semibold text-slate-700 font-mono">Generate</span>
-                  <span class="px-1.5 py-0.5 rounded bg-white border text-[9px] font-semibold text-slate-700 font-mono font-mono font-mono">Transform</span>
+                  <span class="px-1.5 py-0.5 rounded bg-white border text-[9px] font-semibold text-slate-700 font-mono">Transform</span>
                 </div>
-                <p class="text-[10px] text-slate-500 leading-normal">Assembles newly formulated language paragraphs or visual arrays directly into target documents.</p>
+                <p class="text-[10px] text-slate-600 leading-normal">Assembles newly formulated language paragraphs or visual arrays directly into target documents.</p>
               </div>
               <div class="p-4 rounded-xl border border-rose-100 bg-rose-50/10 space-y-2">
                 <div class="flex items-center gap-1.5 text-rose-600">
@@ -594,9 +594,9 @@
                 </div>
                 <div class="flex flex-wrap gap-1">
                   <span class="px-1.5 py-0.5 rounded bg-white border text-[9px] font-semibold text-slate-700 font-mono">State Manager</span>
-                  <span class="px-1.5 py-0.5 rounded bg-white border text-[9px] font-semibold text-slate-700 font-mono font-mono font-mono font-mono">Review &amp; Approve</span>
+                  <span class="px-1.5 py-0.5 rounded bg-white border text-[9px] font-semibold text-slate-700 font-mono">Review &amp; Approve</span>
                 </div>
-                <p class="text-[10px] text-slate-500 leading-normal">Maintains long-term session memory threads and offers explicit buttons for human edits.</p>
+                <p class="text-[10px] text-slate-600 leading-normal">Maintains long-term session memory threads and offers explicit buttons for human edits.</p>
               </div>
             </div>
           </div>
@@ -633,7 +633,7 @@
             <span class="text-xs font-black text-hive-accent uppercase tracking-wider font-mono">Interactive Layering</span>
           </div>
           <h3 class="text-lg font-black text-hive-deep">The 4-Layer Architecture</h3>
-          <p class="text-slate-500 text-xs mt-1 leading-relaxed font-normal">Sensing (Inbound), Reasoning (Internal), Expressing (Outbound), and Acting (Interactive). Learn details at <span class="text-hive-accent underline font-semibold font-mono">ai-interaction.com/atlas</span>.</p>
+          <p class="text-slate-600 text-xs mt-1 leading-relaxed font-normal">Sensing (Inbound), Reasoning (Internal), Expressing (Outbound), and Acting (Interactive). Learn details at <span class="text-hive-accent underline font-semibold font-mono">ai-interaction.com/atlas</span>.</p>
         </button>
 
         <button onclick="toggleAtlasSubView('dimensions')" id="btn-atlas-dimensions" class="p-6 rounded-m3 text-left border border-slate-200 bg-white hover:border-slate-300 shadow-sm transition-all focus:ring-2 focus:ring-hive-accent cursor-pointer group">
@@ -644,7 +644,7 @@
             <span class="text-xs font-black text-hive-goldDark uppercase tracking-wider font-mono">Six Dimensions</span>
           </div>
           <h3 class="text-lg font-black text-hive-deep">Six System Dimensions</h3>
-          <p class="text-slate-500 text-xs mt-1 leading-relaxed font-normal flex flex-wrap gap-1">The essential grammar elements designed to align interface logic with human responsibility.</p>
+          <p class="text-slate-600 text-xs mt-1 leading-relaxed font-normal flex flex-wrap gap-1">The essential grammar elements designed to align interface logic with human responsibility.</p>
         </button>
       </div>
 
@@ -653,17 +653,17 @@
         <div class="bg-white rounded-m3 border border-slate-200 p-6 md:p-8 shadow-sm">
           <div class="mb-6">
             <h3 class="text-xl font-extrabold text-hive-deep">The 4-Layer Pipeline</h3>
-            <p class="text-xs text-slate-500 mt-1 leading-relaxed font-normal">
+            <p class="text-xs text-slate-600 mt-1 leading-relaxed font-normal">
               Layers define the scope of system tasks. They are not strictly chronological, often looping dynamically. Refer to the formal framework at 
               <a href="https://ai-interaction.com/atlas" target="_blank" rel="noopener noreferrer" class="text-hive-accent font-bold hover:underline font-mono">ai-interaction.com/atlas</a>.
             </p>
           </div>
 
           <!-- Horizontal pipeline representing Inbound -> Internal -> Outbound -> Interactive -->
-          <div class="grid grid-cols-1 lg:grid-cols-4 gap-4 relative">
+          <div id="layer-card-group" role="group" aria-label="AI Interaction Atlas layers. Select a layer to view its details below." class="grid grid-cols-1 lg:grid-cols-4 gap-4 relative">
             
             <!-- Layer 1: Inbound -->
-            <div onclick="selectLayer('inbound')" id="layer-card-inbound" class="p-5 rounded-2xl border-2 border-hive-accent bg-hive-accentLight/30 cursor-pointer transition-all hover:shadow-md relative group">
+            <div onclick="selectLayer('inbound')" id="layer-card-inbound" role="button" tabindex="0" aria-pressed="true" aria-label="Show details for the Inbound (Sensing) layer" class="layer-card p-5 rounded-2xl border-2 border-hive-accent bg-hive-accentLight/30 cursor-pointer transition-all hover:shadow-md relative group">
               <div class="flex items-center justify-between mb-3">
                 <span class="text-xs font-extrabold text-hive-accent uppercase font-mono">Layer 01</span>
                 <span class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center text-hive-accent font-bold text-xs">Sensing</span>
@@ -672,15 +672,15 @@
               <p class="text-slate-600 text-xs mt-1.5 leading-relaxed">How the system perceives the user and environment, transforming raw signals into structured signals.</p>
               <div class="mt-4 flex flex-wrap gap-1">
                 <span class="px-2 py-0.5 rounded bg-slate-100 border text-[10px] text-slate-700 font-mono">Detect</span>
-                <span class="px-2 py-0.5 rounded bg-slate-100 border text-[10px] text-slate-700 font-mono font-mono">Extract</span>
-                <span class="px-2 py-0.5 rounded bg-slate-100 border text-[10px] text-slate-700 font-mono font-mono">Monitor</span>
+                <span class="px-2 py-0.5 rounded bg-slate-100 border text-[10px] text-slate-700 font-mono">Extract</span>
+                <span class="px-2 py-0.5 rounded bg-slate-100 border text-[10px] text-slate-700 font-mono">Monitor</span>
               </div>
             </div>
 
             <!-- Layer 2: Internal -->
-            <div onclick="selectLayer('internal')" id="layer-card-internal" class="p-5 rounded-2xl border border-slate-200 bg-white cursor-pointer transition-all hover:shadow-md relative group">
+            <div onclick="selectLayer('internal')" id="layer-card-internal" role="button" tabindex="0" aria-pressed="false" aria-label="Show details for the Internal (Reasoning) layer" class="layer-card p-5 rounded-2xl border border-slate-200 bg-white cursor-pointer transition-all hover:shadow-md relative group">
               <div class="flex items-center justify-between mb-3">
-                <span class="text-xs font-extrabold text-slate-400 uppercase font-mono">Layer 02</span>
+                <span class="text-xs font-extrabold text-slate-600 uppercase font-mono">Layer 02</span>
                 <span class="w-8 h-8 rounded-lg bg-indigo-50 flex items-center justify-center text-indigo-600 font-bold text-xs">Reason</span>
               </div>
               <h4 class="font-bold text-hive-deep group-hover:text-hive-accent transition-colors">Internal</h4>
@@ -693,24 +693,24 @@
             </div>
 
             <!-- Layer 3: Outbound -->
-            <div onclick="selectLayer('outbound')" id="layer-card-outbound" class="p-5 rounded-2xl border border-slate-200 bg-white cursor-pointer transition-all hover:shadow-md relative group">
+            <div onclick="selectLayer('outbound')" id="layer-card-outbound" role="button" tabindex="0" aria-pressed="false" aria-label="Show details for the Outbound (Expressing) layer" class="layer-card p-5 rounded-2xl border border-slate-200 bg-white cursor-pointer transition-all hover:shadow-md relative group">
               <div class="flex items-center justify-between mb-3">
-                <span class="text-xs font-extrabold text-slate-400 uppercase font-mono">Layer 03</span>
+                <span class="text-xs font-extrabold text-slate-600 uppercase font-mono">Layer 03</span>
                 <span class="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center text-emerald-600 font-bold text-xs">Express</span>
               </div>
               <h4 class="font-bold text-hive-deep group-hover:text-hive-accent transition-colors">Outbound</h4>
               <p class="text-slate-600 text-xs mt-1.5 leading-relaxed">How the system produces content, transforms signals, issues APIs, or communicates recommendations back to humans.</p>
               <div class="mt-4 flex flex-wrap gap-1">
-                <span class="px-2 py-0.5 rounded bg-slate-100 border text-[10px] text-slate-700 font-mono font-mono">Generate</span>
-                <span class="px-2 py-0.5 rounded bg-slate-100 border text-[10px] text-slate-700 font-mono font-mono font-mono">Transform</span>
+                <span class="px-2 py-0.5 rounded bg-slate-100 border text-[10px] text-slate-700 font-mono">Generate</span>
+                <span class="px-2 py-0.5 rounded bg-slate-100 border text-[10px] text-slate-700 font-mono">Transform</span>
                 <span class="px-2 py-0.5 rounded bg-slate-100 border text-[10px] text-slate-700 font-mono">API Call</span>
               </div>
             </div>
 
             <!-- Layer 4: Interactive -->
-            <div onclick="selectLayer('interactive')" id="layer-card-interactive" class="p-5 rounded-2xl border border-slate-200 bg-white cursor-pointer transition-all hover:shadow-md relative group">
+            <div onclick="selectLayer('interactive')" id="layer-card-interactive" role="button" tabindex="0" aria-pressed="false" aria-label="Show details for the Interactive (Acting) layer" class="layer-card p-5 rounded-2xl border border-slate-200 bg-white cursor-pointer transition-all hover:shadow-md relative group">
               <div class="flex items-center justify-between mb-3">
-                <span class="text-xs font-extrabold text-slate-400 uppercase font-mono">Layer 04</span>
+                <span class="text-xs font-extrabold text-slate-600 uppercase font-mono">Layer 04</span>
                 <span class="w-8 h-8 rounded-lg bg-rose-50 flex items-center justify-center text-rose-600 font-bold text-xs">Act</span>
               </div>
               <h4 class="font-bold text-hive-deep group-hover:text-hive-accent transition-colors">Interactive</h4>
@@ -725,7 +725,7 @@
           </div>
 
           <!-- Dynamic details box for active Layer -->
-          <div id="layer-details-panel" class="mt-8 p-6 bg-hive-light border border-slate-200 rounded-2xl space-y-4 shadow-sm">
+          <div id="layer-details-panel" role="region" aria-live="polite" aria-label="Selected layer details" class="mt-8 p-6 bg-hive-light border border-slate-200 rounded-2xl space-y-4 shadow-sm">
             <div class="flex items-center gap-3">
               <span id="layer-details-icon-box" class="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center text-hive-accent">
                 <i class="fa-solid fa-cloud-arrow-down text-lg"></i>
@@ -753,7 +753,7 @@
         <div class="bg-white rounded-m3 border border-slate-200 p-6 md:p-8 shadow-sm">
           <div class="mb-6">
             <h3 class="text-xl font-extrabold text-hive-deep">The Six System Dimensions</h3>
-            <p class="text-xs text-slate-500 mt-1 leading-relaxed font-normal">Together, these form the grammar of human-centered AI systems, aligning probabilistic machine capacity with explicit human responsibility.</p>
+            <p class="text-xs text-slate-600 mt-1 leading-relaxed font-normal">Together, these form the grammar of human-centered AI systems, aligning probabilistic machine capacity with explicit human responsibility.</p>
           </div>
 
           <!-- 6-grid display -->
@@ -766,7 +766,7 @@
                 </span>
                 <h4 class="font-extrabold text-hive-deep text-sm">AI Patterns (Probabilistic)</h4>
               </div>
-              <p class="text-slate-600 text-xs leading-relaxed">Capabilities modeled on probability (e.g., detect, classify, synthesize, generate). These are treated as <em>tools, not absolute intelligence</em>, meaning they have built-in margins of error.</p>
+              <p class="text-slate-600 text-xs leading-relaxed">Capabilities modeled on probability (e.g., detect, classify, synthesise, generate). These are treated as <em>tools, not absolute intelligence</em>, meaning they have built-in margins of error.</p>
             </div>
 
             <!-- 2. Human Actions -->
@@ -835,35 +835,35 @@
               <i class="fa-solid fa-code-fork text-hive-accent"></i>
               Interactive System Blueprint Simulator
             </h3>
-            <p class="text-xs text-slate-500 mt-1 font-mono">Trace a scenario's execution loop mapped directly to formal Atlas taxonomy.</p>
+            <p class="text-xs text-slate-600 mt-1 font-mono">Trace a scenario's execution loop mapped directly to formal Atlas taxonomy.</p>
           </div>
           <!-- Redesigned non-scrolling, wrapping button container -->
           <div class="flex flex-wrap gap-2 justify-start lg:justify-end max-w-full">
-            <button onclick="selectSim('medical')" id="btn-sim-medical" class="sim-btn px-4 py-2 rounded-full border border-hive-accent bg-hive-accentLight/60 text-xs font-bold text-hive-accent transition-all whitespace-nowrap cursor-pointer">
+            <button onclick="selectSim('medical')" id="btn-sim-medical" aria-pressed="false" class="sim-btn px-4 py-2 rounded-full border border-hive-accent bg-hive-accentLight/60 text-xs font-bold text-hive-accent transition-all whitespace-nowrap cursor-pointer">
               Medical Screening
             </button>
-            <button onclick="selectSim('writing')" id="btn-sim-writing" class="sim-btn px-4 py-2 rounded-full border border-slate-200 hover:border-slate-300 text-xs font-bold text-slate-700 transition-all whitespace-nowrap cursor-pointer">
+            <button onclick="selectSim('writing')" id="btn-sim-writing" aria-pressed="false" class="sim-btn px-4 py-2 rounded-full border border-slate-200 hover:border-slate-300 text-xs font-bold text-slate-700 transition-all whitespace-nowrap cursor-pointer">
               Writing Copilot
             </button>
-            <button onclick="selectSim('agentic')" id="btn-sim-agentic" class="sim-btn px-4 py-2 rounded-full border border-slate-200 hover:border-slate-300 text-xs font-bold text-slate-700 transition-all whitespace-nowrap cursor-pointer">
+            <button onclick="selectSim('agentic')" id="btn-sim-agentic" aria-pressed="false" class="sim-btn px-4 py-2 rounded-full border border-slate-200 hover:border-slate-300 text-xs font-bold text-slate-700 transition-all whitespace-nowrap cursor-pointer">
               Agentic Automation
             </button>
-            <button onclick="selectSim('programming')" id="btn-sim-programming" class="sim-btn px-4 py-2 rounded-full border border-slate-200 hover:border-slate-300 text-xs font-bold text-slate-700 transition-all whitespace-nowrap cursor-pointer">
+            <button onclick="selectSim('programming')" id="btn-sim-programming" aria-pressed="false" class="sim-btn px-4 py-2 rounded-full border border-slate-200 hover:border-slate-300 text-xs font-bold text-slate-700 transition-all whitespace-nowrap cursor-pointer">
               Programming Co-pilot
             </button>
-            <button onclick="selectSim('research')" id="btn-sim-research" class="sim-btn px-4 py-2 rounded-full border border-slate-200 hover:border-slate-300 text-xs font-bold text-slate-700 transition-all whitespace-nowrap cursor-pointer">
+            <button onclick="selectSim('research')" id="btn-sim-research" aria-pressed="false" class="sim-btn px-4 py-2 rounded-full border border-slate-200 hover:border-slate-300 text-xs font-bold text-slate-700 transition-all whitespace-nowrap cursor-pointer">
               Research &amp; Summarise
             </button>
           </div>
         </div>
 
         <!-- Simulator Blueprint Display -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4" role="region" aria-live="polite" aria-label="Blueprint for the selected scenario">
           <!-- Inbound -->
           <div class="p-4 bg-hive-light rounded-xl border border-slate-200 space-y-3">
             <div class="flex items-center justify-between border-b border-slate-200 pb-2">
-              <span class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest font-mono">01 / Inbound</span>
-              <i class="fa-solid fa-cloud-arrow-down text-slate-400"></i>
+              <span class="text-[10px] font-extrabold text-slate-600 uppercase tracking-widest font-mono">01 / Inbound</span>
+              <i class="fa-solid fa-cloud-arrow-down text-slate-600"></i>
             </div>
             <div id="sim-col-inbound" class="space-y-2">
               <!-- Dynamically populated -->
@@ -873,8 +873,8 @@
           <!-- Internal -->
           <div class="p-4 bg-hive-light rounded-xl border border-slate-200 space-y-3">
             <div class="flex items-center justify-between border-b border-slate-200 pb-2">
-              <span class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest font-mono">02 / Internal</span>
-              <i class="fa-solid fa-gears text-slate-400"></i>
+              <span class="text-[10px] font-extrabold text-slate-600 uppercase tracking-widest font-mono">02 / Internal</span>
+              <i class="fa-solid fa-gears text-slate-600"></i>
             </div>
             <div id="sim-col-internal" class="space-y-2">
               <!-- Dynamically populated -->
@@ -884,8 +884,8 @@
           <!-- Outbound -->
           <div class="p-4 bg-hive-light rounded-xl border border-slate-200 space-y-3">
             <div class="flex items-center justify-between border-b border-slate-200 pb-2">
-              <span class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest font-mono">03 / Outbound</span>
-              <i class="fa-solid fa-paper-plane text-slate-400"></i>
+              <span class="text-[10px] font-extrabold text-slate-600 uppercase tracking-widest font-mono">03 / Outbound</span>
+              <i class="fa-solid fa-paper-plane text-slate-600"></i>
             </div>
             <div id="sim-col-outbound" class="space-y-2">
               <!-- Dynamically populated -->
@@ -895,8 +895,8 @@
           <!-- Interactive -->
           <div class="p-4 bg-hive-light rounded-xl border border-slate-200 space-y-3">
             <div class="flex items-center justify-between border-b border-slate-200 pb-2">
-              <span class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest font-mono">04 / Interactive</span>
-              <i class="fa-solid fa-rotate text-slate-400"></i>
+              <span class="text-[10px] font-extrabold text-slate-600 uppercase tracking-widest font-mono">04 / Interactive</span>
+              <i class="fa-solid fa-rotate text-slate-600"></i>
             </div>
             <div id="sim-col-interactive" class="space-y-2">
               <!-- Dynamically populated -->
@@ -907,15 +907,15 @@
         <!-- Highlight of dimensions under play -->
         <div class="mt-6 p-4 rounded-xl bg-slate-50 border border-slate-200 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <div>
-            <span class="text-[9px] font-black uppercase text-slate-500 block tracking-widest font-mono font-mono">Primary Human Action (Agency)</span>
+            <span class="text-[9px] font-black uppercase text-slate-600 block tracking-widest font-mono">Primary Human Action (Agency)</span>
             <p id="sim-dim-human" class="text-xs font-bold text-hive-deep mt-0.5">Review &amp; Approve</p>
           </div>
           <div>
-            <span class="text-[9px] font-black uppercase text-slate-500 block tracking-widest font-mono font-mono">Critical Constraints</span>
-            <p id="sim-dim-constraints" class="text-xs font-bold text-hive-deep mt-0.5">High accuracy requirement, strict privacy boundaries (HIPAA)</p>
+            <span class="text-[9px] font-black uppercase text-slate-600 block tracking-widest font-mono">Critical Constraints</span>
+            <p id="sim-dim-constraints" class="text-xs font-bold text-hive-deep mt-0.5">High accuracy requirement, strict privacy boundaries (UK GDPR / DPA 2018)</p>
           </div>
           <div>
-            <span class="text-[9px] font-black uppercase text-slate-500 block tracking-widest font-mono font-mono">Deterministic System Op</span>
+            <span class="text-[9px] font-black uppercase text-slate-600 block tracking-widest font-mono">Deterministic System Op</span>
             <p id="sim-dim-system" class="text-xs font-bold text-hive-deep mt-0.5">Immutable clinical sign-off audit logs</p>
           </div>
         </div>
@@ -988,6 +988,10 @@
                 </h4>
                 <ul class="text-xs text-slate-600 space-y-1.5 list-disc pl-4">
                   <li>
+                    McCarthy, J., Minsky, M., Rochester, N., &amp; Shannon, C. (1955). "A Proposal for the Dartmouth Summer Research Project on Artificial Intelligence" &mdash; the 1956 workshop that coined the term.
+                    <a href="https://en.wikipedia.org/wiki/Dartmouth_workshop" target="_blank" rel="noopener noreferrer" class="text-hive-accent hover:underline inline-flex items-center gap-0.5 font-semibold">Dartmouth Workshop <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i></a>
+                  </li>
+                  <li>
                     Turing, A. M. (1950). "Computing Machinery and Intelligence." <em>Mind</em>, LIX (236), 433–460. 
                     <a href="https://en.wikipedia.org/wiki/Computing_Machinery_and_Intelligence" target="_blank" rel="noopener noreferrer" class="text-hive-accent hover:underline inline-flex items-center gap-0.5 font-semibold">Mind Archive <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i></a>
                   </li>
@@ -1009,7 +1013,7 @@
                 <div class="p-4 bg-white border border-slate-200 rounded-xl shadow-sm">
                   <span class="font-extrabold text-xs text-hive-deep uppercase tracking-wider block mb-1 text-hive-goldDark font-mono">Key Discoveries</span>
                   <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                    Alan Turing's Turing Test posing "Can machines think?", Rosenblatt's single-layer Perceptron, and the mathematical framework of Backpropagation for optimizing layered network weights $W$ and biases $b$:
+                    The <strong>1956 Dartmouth workshop</strong>, which coined the term "artificial intelligence"; Alan Turing's Turing Test posing "Can machines think?"; Rosenblatt's single-layer Perceptron; and the mathematical framework of Backpropagation for optimising layered network weights $W$ and biases $b$:
                     $$\frac{\partial L}{\partial W^{[l]}} = \delta^{[l]} (A^{[l-1]})^T$$
                   </p>
                 </div>
@@ -1020,7 +1024,7 @@
                   </p>
                 </div>
                 <div class="p-4 bg-white border border-slate-200 rounded-xl shadow-sm">
-                  <span class="font-extrabold text-xs text-hive-deep uppercase tracking-wider block mb-1 text-hive-goldDark font-mono font-mono">Societal Outcome</span>
+                  <span class="font-extrabold text-xs text-hive-deep uppercase tracking-wider block mb-1 text-hive-goldDark font-mono">Societal Outcome</span>
                   <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
                     Initial over-hype followed by severe funding pullbacks (the first "AI Winter") because computing hardware was too weak to process complex, real-world tasks.
                   </p>
@@ -1082,9 +1086,9 @@
               <h4 class="text-xs font-bold uppercase tracking-wider text-hive-deep font-mono">Era Breakdown</h4>
               <div class="space-y-3">
                 <div class="p-4 bg-white border border-slate-200 rounded-xl shadow-sm">
-                  <span class="font-extrabold text-xs text-hive-deep uppercase tracking-wider block mb-1 text-hive-goldDark font-mono font-mono">Key Discoveries</span>
+                  <span class="font-extrabold text-xs text-hive-deep uppercase tracking-wider block mb-1 text-hive-goldDark font-mono">Key Discoveries</span>
                   <p class="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
-                    Refining Support Vector Machines (SVMs) optimized via convex quadratic programming:
+                    Refining Support Vector Machines (SVMs) optimised via convex quadratic programming:
                     $$\min_{w, b} \frac{1}{2} \|w\|^2 + C \sum_{i} \xi_i$$
                     alongside decision tree ensembles like Random Forests.
                   </p>
@@ -1147,8 +1151,12 @@
                     <a href="https://www.nature.com/articles/nature16961" target="_blank" rel="noopener noreferrer" class="text-hive-accent hover:underline inline-flex items-center gap-0.5">Nature AlphaGo Paper <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i></a>
                   </li>
                   <li>
-                    Vaswani, A., et al. (2017). "Attention Is All You Need." <em>NeurIPS</em>.
-                    <a href="https://arxiv.org/abs/1706.03762" target="_blank" rel="noopener noreferrer" class="text-hive-accent hover:underline inline-flex items-center gap-0.5">arXiv Transformer Paper <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i></a>
+                    Goodfellow, I., et al. (2014). "Generative Adversarial Nets." <em>NeurIPS</em>.
+                    <a href="https://arxiv.org/abs/1406.2661" target="_blank" rel="noopener noreferrer" class="text-hive-accent hover:underline inline-flex items-center gap-0.5">arXiv GAN Paper <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i></a>
+                  </li>
+                  <li>
+                    Silver, D., et al. (2018). "A general reinforcement learning algorithm that masters chess, shogi, and Go through self-play." <em>Science</em>, 362(6419), 1140–1144.
+                    <a href="https://doi.org/10.1126/science.aar6404" target="_blank" rel="noopener noreferrer" class="text-hive-accent hover:underline inline-flex items-center gap-0.5">Science AlphaZero Paper <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i></a>
                   </li>
                 </ul>
               </div>
@@ -1159,15 +1167,15 @@
               <div class="space-y-3">
                 <div class="p-4 bg-white border border-slate-200 rounded-xl shadow-sm">
                   <span class="font-extrabold text-xs text-hive-deep uppercase tracking-wider block mb-1 text-hive-goldDark font-mono">Key Discoveries</span>
-                  <p class="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal font-normal">
-                    The <strong>ImageNet competition (2012)</strong> proving deep convolutional neural networks crush hand-coded features, and Google's discovery of the self-attention <strong>Transformer network architecture (2017)</strong> based on:
+                  <p class="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
+                    The <strong>ImageNet competition (2012)</strong> proving deep convolutional neural networks crush hand-coded features, <strong>Generative Adversarial Networks (2014)</strong> pioneering photorealistic image synthesis, and Google's discovery of the self-attention <strong>Transformer network architecture (2017)</strong> based on:
                     $$\text{Attention}(Q,K,V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V$$
                   </p>
                 </div>
                 <div class="p-4 bg-white border border-slate-200 rounded-xl shadow-sm">
                   <span class="font-extrabold text-xs text-hive-deep uppercase tracking-wider block mb-1 text-hive-goldDark font-mono">Signature Products</span>
                   <p class="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
-                    DeepMind's <strong>AlphaGo (2016)</strong> defeating Go champion Lee Sedol, Siri/Alexa voice transcription, and advanced facial recognition locks.
+                    DeepMind's <strong>AlphaGo (2016)</strong> defeating Go champion Lee Sedol and its successor <strong>AlphaZero (2017)</strong> mastering chess, shogi and Go from self-play alone, Siri/Alexa voice transcription, and advanced facial recognition locks.
                   </p>
                 </div>
                 <div class="p-4 bg-white border border-slate-200 rounded-xl shadow-sm font-normal">
@@ -1195,7 +1203,7 @@
                 </div>
               </div>
               <p class="text-slate-600 leading-relaxed text-sm sm:text-base">
-                Armed with transformer models, AI moved from analyzing information to producing entirely new, custom assets. By learning patterns in massive, global text and image databases, these models could instantly write essays, design illustrations, draft websites, and generate functional programming code from simple English commands.
+                Armed with transformer models, AI moved from analysing information to producing entirely new, custom assets. By learning patterns in massive, global text and image databases, these models could instantly write essays, design illustrations, draft websites, and generate functional programming code from simple English commands.
               </p>
               
               <div class="p-5 bg-hive-light border border-slate-200 rounded-2xl space-y-2 shadow-inner">
@@ -1315,7 +1323,7 @@
                   </p>
                 </div>
                 <div class="p-4 bg-white border border-slate-200 rounded-xl shadow-sm">
-                  <span class="font-extrabold text-xs text-hive-deep uppercase tracking-wider block mb-1 text-hive-goldDark font-mono font-mono">Societal Outcome</span>
+                  <span class="font-extrabold text-xs text-hive-deep uppercase tracking-wider block mb-1 text-hive-goldDark font-mono">Societal Outcome</span>
                   <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
                     The emergence of reliable "digital employees" that can autonomously run advertising campaigns, write and deploy entire software apps, or assist in rapid scientific analysis.
                   </p>
@@ -1333,7 +1341,7 @@
       <div class="text-center md:text-left mb-10">
         <h2 id="scientific-discoveries-heading" class="text-2xl sm:text-3.5xl font-black text-hive-deep tracking-tight flex items-center gap-2 justify-center md:justify-start">
           <span class="w-2 h-8 bg-hive-gold rounded-full" aria-hidden="true"></span>
-          Breakthroughs Discovered VIA AI &amp; ML
+          Breakthroughs Discovered via AI &amp; ML
         </h2>
         <p class="text-slate-600 text-sm sm:text-base mt-2">
           Historically, AI was a parser of existing data. Today, it is an active discoverer of brand-new scientific truths. Explore actual peer-reviewed, high-impact scientific discoveries made *by* deep-learning systems.
@@ -1356,11 +1364,11 @@
               </div>
             </div>
             <p class="text-slate-600 text-xs sm:text-sm leading-relaxed">
-              For half a century, biologists struggled to predict how strings of amino acids folded into three-dimensional protein shapes. Google DeepMind's <strong>AlphaFold 2 &amp; 3</strong> solved this, predicting configurations for 200 million+ proteins, leading directly to the 2024 Nobel Prize in Chemistry.
+              For half a century, biologists struggled to predict how strings of amino acids folded into three-dimensional protein shapes. Google DeepMind's <strong>AlphaFold 2 &amp; 3</strong> solved this, predicting configurations for 200 million+ proteins. Demis Hassabis and John Jumper shared half of the 2024 Nobel Prize in Chemistry for this work (David Baker received the other half for protein design).
             </p>
           </div>
           <div class="mt-6 pt-4 border-t border-slate-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-            <span class="text-[9px] text-slate-500 font-black block uppercase font-mono">Nature • 2024 Nobel Prize</span>
+            <span class="text-[9px] text-slate-600 font-black block uppercase font-mono">Nature • 2024 Nobel Prize</span>
             <a href="https://www.nature.com/articles/s41586-021-03819-2" target="_blank" rel="noopener noreferrer" class="text-xs font-bold text-hive-accent hover:underline flex items-center gap-1">
               Read Paper <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
             </a>
@@ -1375,23 +1383,23 @@
                 <i class="fa-solid fa-vial text-lg"></i>
               </span>
               <div>
-                <h4 class="font-extrabold text-hive-deep text-base">2.2 Million Stable Crystalline Shapes</h4>
-                <span class="text-xs text-hive-goldDark font-black uppercase tracking-wider block font-mono font-mono">Materials Science</span>
+                <h4 class="font-extrabold text-hive-deep text-base">2.2 Million New Crystal Structures</h4>
+                <span class="text-xs text-hive-goldDark font-black uppercase tracking-wider block font-mono">Materials Science</span>
               </div>
             </div>
             <p class="text-slate-600 text-xs sm:text-sm leading-relaxed">
-              Modern microchips and battery nodes depend on novel stable materials. Using Graph Networks for Materials Exploration (<strong>GNoME</strong>), deep learning isolated $2.2$ million stable crystals, bypassing 800 years of traditional human physical trials, with $380,000$ now ready for synthesis.
+              Modern microchips and battery nodes depend on novel stable materials. Using Graph Networks for Materials Exploration (<strong>GNoME</strong>), deep learning predicted $2.2$ million new crystal structures, of which about $380,000$ were flagged as stable candidates for synthesis &mdash; what DeepMind framed as roughly 800 years' worth of discovery. Note: the stability and novelty of these predictions have since been contested by materials scientists.
             </p>
           </div>
           <div class="mt-6 pt-4 border-t border-slate-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-            <span class="text-[9px] text-slate-500 font-black block uppercase font-mono">DeepMind • Nature (2023)</span>
+            <span class="text-[9px] text-slate-600 font-black block uppercase font-mono">DeepMind • Nature (2023)</span>
             <a href="https://www.nature.com/articles/s41586-023-06735-9" target="_blank" rel="noopener noreferrer" class="text-xs font-bold text-hive-accent hover:underline flex items-center gap-1">
               Read Paper <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
             </a>
           </div>
         </div>
 
-        <!-- Discovery 3: Deep Clinical De-Extinction (APEX Antibiotics) -->
+        <!-- Discovery 3: Molecular De-Extinction (extinct-organism antibiotics) -->
         <div class="bg-hive-light border border-slate-200 p-6 rounded-m3 hover:border-hive-gold hover:shadow-md transition-all flex flex-col justify-between shadow-inner">
           <div class="space-y-4">
             <div class="flex items-center gap-2.5">
@@ -1399,23 +1407,47 @@
                 <i class="fa-solid fa-capsules text-lg"></i>
               </span>
               <div>
-                <h4 class="font-extrabold text-hive-deep text-base">APEX Molecular De-Extinction</h4>
+                <h4 class="font-extrabold text-hive-deep text-base">Molecular De-Extinction</h4>
                 <span class="text-xs text-blue-700 font-black uppercase tracking-wider block font-mono">Clinical Therapeutics</span>
               </div>
             </div>
-            <p class="text-slate-600 text-xs sm:text-sm leading-relaxed font-normal">
-              Using the <strong>APEX 1.1</strong> deep-learning model to mine the genetic "extinctome" (e.g., woolly mammoth genomes) and human disease-related prion structures, scientists discovered 1,179 brand-new bacteria-fighting peptides (like <em>prionins</em> and <em>mammuthusin</em>) to combat superbugs.
+            <p class="text-slate-600 text-xs sm:text-sm leading-relaxed">
+              Deep-learning models mined the proteomes of extinct organisms &mdash; from the woolly mammoth to the giant elk &mdash; screening about 10.3 million peptides. They predicted 37,176 antimicrobial candidates (11,035 absent from living species) and confirmed activity for lead compounds such as <em>mammuthusin</em> in animal infection models, offering a new route to antibiotics against resistant superbugs.
             </p>
           </div>
           <div class="mt-6 pt-4 border-t border-slate-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-            <span class="text-[9px] text-slate-500 font-black block uppercase font-mono">UPenn • Nature Microb. (2026)</span>
-            <a href="https://delafuentelab.seas.upenn.edu/ai-discovers-antibiotics-in-extinct-organisms/" target="_blank" rel="noopener noreferrer" class="text-xs font-bold text-hive-accent hover:underline flex items-center gap-1">
+            <span class="text-[9px] text-slate-600 font-black block uppercase font-mono">UPenn • Nature Biomed. Eng. (2024)</span>
+            <a href="https://doi.org/10.1038/s41551-024-01201-x" target="_blank" rel="noopener noreferrer" class="text-xs font-bold text-hive-accent hover:underline flex items-center gap-1">
               Read Paper <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
             </a>
           </div>
         </div>
 
-        <!-- Discovery 4: Pure Mathematics (AlphaGeometry) -->
+        <!-- Discovery 4: Prionins (APEX 1.1) -->
+        <div class="bg-hive-light border border-slate-200 p-6 rounded-m3 hover:border-hive-gold hover:shadow-md transition-all flex flex-col justify-between shadow-inner">
+          <div class="space-y-4">
+            <div class="flex items-center gap-2.5">
+              <span class="w-10 h-10 rounded-xl bg-blue-50 border border-blue-300 flex items-center justify-center text-blue-600">
+                <i class="fa-solid fa-disease text-lg"></i>
+              </span>
+              <div>
+                <h4 class="font-extrabold text-hive-deep text-base">Antibiotics Hidden in Prions</h4>
+                <span class="text-xs text-blue-700 font-black uppercase tracking-wider block font-mono">Clinical Therapeutics</span>
+              </div>
+            </div>
+            <p class="text-slate-600 text-xs sm:text-sm leading-relaxed">
+              The <strong>APEX 1.1</strong> deep-learning platform scanned 19.3 million short fragments drawn from 2,897 prion and prion-like proteins &mdash; sequences normally linked to brain disease, not immunity. It identified 1,179 candidate antimicrobial peptides, named <em>prionins</em>; of 75 synthesised, most inhibited bacterial pathogens and two reduced infection in mice.
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-slate-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+            <span class="text-[9px] text-slate-600 font-black block uppercase font-mono">UPenn • Nature Microbiology (2026)</span>
+            <a href="https://doi.org/10.1038/s41564-026-02408-1" target="_blank" rel="noopener noreferrer" class="text-xs font-bold text-hive-accent hover:underline flex items-center gap-1">
+              Read Paper <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Discovery 5: Pure Mathematics (AlphaGeometry) -->
         <div class="bg-hive-light border border-slate-200 p-6 rounded-m3 hover:border-hive-gold hover:shadow-md transition-all flex flex-col justify-between shadow-inner">
           <div class="space-y-4">
             <div class="flex items-center gap-2.5">
@@ -1432,14 +1464,14 @@
             </p>
           </div>
           <div class="mt-6 pt-4 border-t border-slate-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-            <span class="text-[9px] text-slate-500 font-black block uppercase font-mono">DeepMind • Nature (2024)</span>
+            <span class="text-[9px] text-slate-600 font-black block uppercase font-mono">DeepMind • Nature (2024)</span>
             <a href="https://www.nature.com/articles/s41586-023-06747-5" target="_blank" rel="noopener noreferrer" class="text-xs font-bold text-hive-accent hover:underline flex items-center gap-1">
               Read Paper <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
             </a>
           </div>
         </div>
 
-        <!-- Discovery 5: Climate Intelligence (Spherical DYffusion) -->
+        <!-- Discovery 6: Climate Intelligence (Spherical DYffusion) -->
         <div class="bg-hive-light border border-slate-200 p-6 rounded-m3 hover:border-hive-gold hover:shadow-md transition-all flex flex-col justify-between shadow-inner">
           <div class="space-y-4">
             <div class="flex items-center gap-2.5">
@@ -1447,23 +1479,23 @@
                 <i class="fa-solid fa-earth-americas text-lg"></i>
               </span>
               <div>
-                <h4 class="font-extrabold text-hive-deep text-base">100-Year Climate Modeling in 25 Hours</h4>
-                <span class="text-xs text-teal-700 font-black uppercase tracking-wider block font-mono font-mono">Climate Forecasting</span>
+                <h4 class="font-extrabold text-hive-deep text-base">100-Year Climate Modelling in 25 Hours</h4>
+                <span class="text-xs text-teal-700 font-black uppercase tracking-wider block font-mono">Climate Forecasting</span>
               </div>
             </div>
             <p class="text-slate-600 text-xs sm:text-sm leading-relaxed">
-              Traditional physics climate forecasting takes weeks on expensive supercomputers. UC San Diego and the Allen Institute developed **Spherical DYffusion**, combining generative neural mapping with physics fluid dynamics to project 100 years of global climate patterns 25 times faster.
+              Traditional physics climate forecasting takes weeks on expensive supercomputers. UC San Diego and the Allen Institute developed <strong>Spherical DYffusion</strong>, combining generative neural mapping with physics fluid dynamics to project 100 years of global climate patterns in about 25 hours &mdash; roughly 25 times faster.
             </p>
           </div>
           <div class="mt-6 pt-4 border-t border-slate-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-            <span class="text-[9px] text-slate-500 font-black block uppercase font-mono">UCSD / Allen Inst • (2025)</span>
+            <span class="text-[9px] text-slate-600 font-black block uppercase font-mono">UCSD / Allen Inst • NeurIPS (2024)</span>
             <a href="https://today.ucsd.edu/story/nine-breakthroughs-made-possible-by-ai" target="_blank" rel="noopener noreferrer" class="text-xs font-bold text-hive-accent hover:underline flex items-center gap-1">
               Read News <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
             </a>
           </div>
         </div>
 
-        <!-- Discovery 6: Non-Invasive Cardiovascular Reconstructions -->
+        <!-- Discovery 7: Non-Invasive Cardiovascular Reconstructions -->
         <div class="bg-hive-light border border-slate-200 p-6 rounded-m3 hover:border-hive-gold hover:shadow-md transition-all flex flex-col justify-between shadow-inner">
           <div class="space-y-4">
             <div class="flex items-center gap-2.5">
@@ -1475,14 +1507,134 @@
                 <span class="text-xs text-red-700 font-black uppercase tracking-wider block font-mono">Cardiology Bioengineering</span>
               </div>
             </div>
-            <p class="text-slate-600 text-xs sm:text-sm leading-relaxed font-normal font-normal">
+            <p class="text-slate-600 text-xs sm:text-sm leading-relaxed font-normal">
               Monitoring internal cellular signals inside live heart cells typically requires invasive physical penetration. By recording external, non-invasive skin arrays and using deep recurrent algorithms, bioengineers reconstructed internal cell electrical communications with unmatched precision.
             </p>
           </div>
           <div class="mt-6 pt-4 border-t border-slate-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-            <span class="text-[9px] text-slate-500 font-black block uppercase font-mono font-mono">UC San Diego • (2025)</span>
+            <span class="text-[9px] text-slate-600 font-black block uppercase font-mono">UC San Diego • (2025)</span>
             <a href="https://today.ucsd.edu/story/nine-breakthroughs-made-possible-by-ai" target="_blank" rel="noopener noreferrer" class="text-xs font-bold text-hive-accent hover:underline flex items-center gap-1">
               Read News <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Discovery 8: Faster Matrix Multiplication (AlphaTensor) -->
+        <div class="bg-hive-light border border-slate-200 p-6 rounded-m3 hover:border-hive-gold hover:shadow-md transition-all flex flex-col justify-between shadow-inner">
+          <div class="space-y-4">
+            <div class="flex items-center gap-2.5">
+              <span class="w-10 h-10 rounded-xl bg-indigo-50 border border-indigo-300 flex items-center justify-center text-indigo-600">
+                <i class="fa-solid fa-table-cells text-lg"></i>
+              </span>
+              <div>
+                <h4 class="font-extrabold text-hive-deep text-base">Faster Matrix Multiplication</h4>
+                <span class="text-xs text-indigo-700 font-black uppercase tracking-wider block font-mono">Algorithms &amp; Maths</span>
+              </div>
+            </div>
+            <p class="text-slate-600 text-xs sm:text-sm leading-relaxed">
+              Matrix multiplication underpins almost all computing, yet its most efficient form stayed an open question. Built on AlphaZero, <strong>AlphaTensor</strong> reframed the search as a single-player game and found thousands of correct algorithms &mdash; including one that beat Strassen's 1969 method for 4&times;4 matrices in a finite field for the first time in over 50 years.
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-slate-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+            <span class="text-[9px] text-slate-600 font-black block uppercase font-mono">DeepMind • Nature (2022)</span>
+            <a href="https://doi.org/10.1038/s41586-022-05172-4" target="_blank" rel="noopener noreferrer" class="text-xs font-bold text-hive-accent hover:underline flex items-center gap-1">
+              Read Paper <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Discovery 9: Faster Sorting Algorithms (AlphaDev) -->
+        <div class="bg-hive-light border border-slate-200 p-6 rounded-m3 hover:border-hive-gold hover:shadow-md transition-all flex flex-col justify-between shadow-inner">
+          <div class="space-y-4">
+            <div class="flex items-center gap-2.5">
+              <span class="w-10 h-10 rounded-xl bg-cyan-50 border border-cyan-300 flex items-center justify-center text-cyan-600">
+                <i class="fa-solid fa-arrow-down-short-wide text-lg"></i>
+              </span>
+              <div>
+                <h4 class="font-extrabold text-hive-deep text-base">Faster Sorting Algorithms</h4>
+                <span class="text-xs text-cyan-700 font-black uppercase tracking-wider block font-mono">Algorithms &amp; Computing</span>
+              </div>
+            </div>
+            <p class="text-slate-600 text-xs sm:text-sm leading-relaxed">
+              Sorting routines run trillions of times a day. <strong>AlphaDev</strong>, also built on AlphaZero, searched at the assembly-code level and found shorter routines &mdash; up to 70% faster for short sequences. They became the first change to the LLVM libc++ standard sorting library in more than a decade.
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-slate-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+            <span class="text-[9px] text-slate-600 font-black block uppercase font-mono">DeepMind • Nature (2023)</span>
+            <a href="https://doi.org/10.1038/s41586-023-06004-9" target="_blank" rel="noopener noreferrer" class="text-xs font-bold text-hive-accent hover:underline flex items-center gap-1">
+              Read Paper <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Discovery 10: Medium-Range Weather Forecasting (GraphCast) -->
+        <div class="bg-hive-light border border-slate-200 p-6 rounded-m3 hover:border-hive-gold hover:shadow-md transition-all flex flex-col justify-between shadow-inner">
+          <div class="space-y-4">
+            <div class="flex items-center gap-2.5">
+              <span class="w-10 h-10 rounded-xl bg-sky-50 border border-sky-300 flex items-center justify-center text-sky-600">
+                <i class="fa-solid fa-cloud-sun-rain text-lg"></i>
+              </span>
+              <div>
+                <h4 class="font-extrabold text-hive-deep text-base">Medium-Range Weather Forecasting</h4>
+                <span class="text-xs text-sky-700 font-black uppercase tracking-wider block font-mono">Weather &amp; Earth Systems</span>
+              </div>
+            </div>
+            <p class="text-slate-600 text-xs sm:text-sm leading-relaxed">
+              Trained on decades of reanalysis data, <strong>GraphCast</strong> produces a 10-day global forecast in under a minute on a single machine, and was more accurate than the ECMWF's operational HRES model on roughly 90% of the variables and lead times tested &mdash; with better prediction of cyclones and atmospheric rivers.
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-slate-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+            <span class="text-[9px] text-slate-600 font-black block uppercase font-mono">DeepMind • Science (2023)</span>
+            <a href="https://doi.org/10.1126/science.adi2336" target="_blank" rel="noopener noreferrer" class="text-xs font-bold text-hive-accent hover:underline flex items-center gap-1">
+              Read Paper <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Discovery 11: A Novel Antibiotic (Halicin) -->
+        <div class="bg-hive-light border border-slate-200 p-6 rounded-m3 hover:border-hive-gold hover:shadow-md transition-all flex flex-col justify-between shadow-inner">
+          <div class="space-y-4">
+            <div class="flex items-center gap-2.5">
+              <span class="w-10 h-10 rounded-xl bg-blue-50 border border-blue-300 flex items-center justify-center text-blue-600">
+                <i class="fa-solid fa-pills text-lg"></i>
+              </span>
+              <div>
+                <h4 class="font-extrabold text-hive-deep text-base">A Novel Antibiotic (Halicin)</h4>
+                <span class="text-xs text-blue-700 font-black uppercase tracking-wider block font-mono">Clinical Therapeutics</span>
+              </div>
+            </div>
+            <p class="text-slate-600 text-xs sm:text-sm leading-relaxed">
+              A deep neural network screened over 107 million molecules and flagged <strong>halicin</strong> &mdash; structurally unlike existing antibiotics. It proved active against a broad range of pathogens, including drug-resistant strains, and cleared <em>Clostridioides difficile</em> and pan-resistant <em>Acinetobacter baumannii</em> infections in mice.
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-slate-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+            <span class="text-[9px] text-slate-600 font-black block uppercase font-mono">MIT • Cell (2020)</span>
+            <a href="https://doi.org/10.1016/j.cell.2020.01.021" target="_blank" rel="noopener noreferrer" class="text-xs font-bold text-hive-accent hover:underline flex items-center gap-1">
+              Read Paper <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Discovery 12: Controlling Fusion Plasma (Tokamak RL) -->
+        <div class="bg-hive-light border border-slate-200 p-6 rounded-m3 hover:border-hive-gold hover:shadow-md transition-all flex flex-col justify-between shadow-inner">
+          <div class="space-y-4">
+            <div class="flex items-center gap-2.5">
+              <span class="w-10 h-10 rounded-xl bg-orange-50 border border-orange-300 flex items-center justify-center text-orange-600">
+                <i class="fa-solid fa-atom text-lg"></i>
+              </span>
+              <div>
+                <h4 class="font-extrabold text-hive-deep text-base">Controlling Fusion Plasma</h4>
+                <span class="text-xs text-orange-700 font-black uppercase tracking-wider block font-mono">Nuclear Fusion &amp; Physics</span>
+              </div>
+            </div>
+            <p class="text-slate-600 text-xs sm:text-sm leading-relaxed">
+              Confining plasma in a tokamak needs thousands of tiny magnet adjustments a second. DeepMind and EPFL's Swiss Plasma Center trained a reinforcement-learning controller and ran it on the real TCV reactor, holding a range of shapes &mdash; including 'snowflake' and twin 'droplet' configurations &mdash; one of the hardest real-world systems RL has controlled.
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-slate-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+            <span class="text-[9px] text-slate-600 font-black block uppercase font-mono">DeepMind / EPFL • Nature (2022)</span>
+            <a href="https://doi.org/10.1038/s41586-021-04301-9" target="_blank" rel="noopener noreferrer" class="text-xs font-bold text-hive-accent hover:underline flex items-center gap-1">
+              Read Paper <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
             </a>
           </div>
         </div>
@@ -1496,7 +1648,7 @@
       
       <div class="max-w-3xl mx-auto">
         <div class="text-center mb-8">
-          <span class="px-3 py-1 rounded-full bg-hive-gold text-hive-deep text-xs font-bold border border-hive-gold/40 font-mono font-mono">
+          <span class="px-3 py-1 rounded-full bg-hive-gold text-hive-deep text-xs font-bold border border-hive-gold/40 font-mono">
             Interactive Scenario Check
           </span>
           <h2 id="quiz-heading" class="text-2xl sm:text-3xl font-black text-hive-deep mt-3">Test your knowledge</h2>
@@ -1527,7 +1679,7 @@
           </div>
 
           <!-- Custom Feedback Bar (WCAG Compliant + Color Blind Supportive) -->
-          <div id="quiz-feedback" class="hidden p-4 rounded-xl flex items-start gap-3 border-2 transition-all" role="alert" aria-live="polite">
+          <div id="quiz-feedback" class="hidden p-4 rounded-xl flex items-start gap-3 border-2 transition-all" role="status" aria-live="polite">
             <div id="quiz-feedback-icon" class="text-xl mt-0.5" aria-hidden="true"></div>
             <div>
               <h4 id="quiz-feedback-title" class="text-xs font-extrabold uppercase tracking-wider font-mono">Correct Decision!</h4>
@@ -1556,7 +1708,7 @@
             </p>
           </div>
           <div class="py-4 px-6 rounded-xl bg-white inline-block border border-slate-200 shadow-sm">
-            <span class="text-slate-500 text-xs block font-bold uppercase tracking-wider font-mono">Verified Score</span>
+            <span class="text-slate-600 text-xs block font-bold uppercase tracking-wider font-mono">Verified Score</span>
             <span id="quiz-final-score" class="text-3xl font-black text-hive-deep tracking-tight">0 / 0</span>
           </div>
           <div>
@@ -1579,7 +1731,7 @@
         <img src="Main-horizontal-logo-logotype--light-background.png" alt="Hive IT Logo" class="h-8 w-auto" onerror="this.onerror=null; this.src='https://placehold.co/120x36/FDB913/1E252D?text=hive+it';">
         <span class="text-hive-deep font-extrabold text-xs">AI &amp; ML Educational Platform</span>
       </div>
-      <p>&copy; 2026 Interactive Companion. Mapped in direct reference with open source specifications on <a href="https://ai-interaction.com/atlas" target="_blank" rel="noopener noreferrer" class="text-hive-accent hover:underline font-semibold font-mono">ai-interaction.com/atlas</a>. WCAG 2.2 AA compliant.</p>
+      <p>&copy; 2026 Interactive Companion. Mapped in direct reference with open source specifications on <a href="https://ai-interaction.com/atlas" target="_blank" rel="noopener noreferrer" class="text-hive-accent hover:underline font-semibold font-mono">ai-interaction.com/atlas</a>. Designed to meet WCAG 2.2 AA.</p>
     </div>
   </footer>
 
@@ -1691,7 +1843,7 @@
         colorClass: "bg-emerald-100 text-emerald-600",
         description: "Outbound patterns dictate how system calculations are translated back into creative assets, content feeds, or machine-to-machine instructions. Because generative patterns are probabilistic, outbound layers require careful formatting structures to guarantee reliability and safe consumption by human operators.",
         patterns: [
-          { name: "Generate", desc: "Synthesize novel text, images, or assets" },
+          { name: "Generate", desc: "Synthesise novel text, images, or assets" },
           { name: "Transform", desc: "Re-format content layout while keeping semantics" },
           { name: "Translate", desc: "Convert statements across human or code languages" },
           { name: "Edit Content", desc: "In-place modifications of provided segments" },
@@ -1705,10 +1857,10 @@
         title: "Interactive: Acting & Learning",
         subtitle: "How systems manage feedback loops & build alignment",
         colorClass: "bg-rose-100 text-rose-600",
-        description: "Interactive patterns represent the closed-loop behaviors that occur over time. This includes gathering explicit feedback from user inputs, logging diagnostic metrics, tracking drift, and optimizing agents' policies dynamically. It defines how human agency interacts with machine learning over multiple sessions.",
+        description: "Interactive patterns represent the closed-loop behaviours that occur over time. This includes gathering explicit feedback from user inputs, logging diagnostic metrics, tracking drift, and optimising agents' policies dynamically. It defines how human agency interacts with machine learning over multiple sessions.",
         patterns: [
           { name: "Plan", desc: "Decompose a multi-step mission into milestones" },
-          { name: "Adapt", desc: "Optimize future system parameters using behavior" },
+          { name: "Adapt", desc: "Optimise future system parameters using behaviour" },
           { name: "Feedback Loop", desc: "Collect implicit clicks or explicit thumbs-up" },
           { name: "Review & Approve", desc: "Ask human operators to sign off before taking action" },
           { name: "Validate Data", desc: "Crosscheck database inputs against static rules" },
@@ -1720,15 +1872,17 @@
     };
 
     function selectLayer(layerId) {
-      // Toggle card borders
+      // Toggle card borders + state
       ['inbound', 'internal', 'outbound', 'interactive'].forEach(id => {
         const card = document.getElementById(`layer-card-${id}`);
         if (id === layerId) {
-          card.className = "p-5 rounded-2xl border-2 border-hive-accent bg-hive-accentLight/30 cursor-pointer transition-all hover:shadow-md relative group";
+          card.className = "layer-card p-5 rounded-2xl border-2 border-hive-accent bg-hive-accentLight/30 cursor-pointer transition-all hover:shadow-md relative group";
           card.querySelector('span:first-child').className = "text-xs font-extrabold text-hive-accent uppercase font-mono";
+          card.setAttribute('aria-pressed', 'true');
         } else {
-          card.className = "p-5 rounded-2xl border border-slate-200 bg-white cursor-pointer transition-all hover:shadow-md relative group";
-          card.querySelector('span:first-child').className = "text-xs font-extrabold text-slate-400 uppercase font-mono";
+          card.className = "layer-card p-5 rounded-2xl border border-slate-200 bg-white cursor-pointer transition-all hover:shadow-md relative group";
+          card.querySelector('span:first-child').className = "text-xs font-extrabold text-slate-600 uppercase font-mono";
+          card.setAttribute('aria-pressed', 'false');
         }
       });
 
@@ -1753,7 +1907,7 @@
         div.className = "p-3 rounded-xl bg-white border border-slate-200 shadow-sm";
         div.innerHTML = `
           <h5 class="text-xs font-bold text-hive-deep font-mono">${p.name}</h5>
-          <p class="text-[10px] text-slate-500 mt-1 leading-normal font-normal">${p.desc}</p>
+          <p class="text-[10px] text-slate-600 mt-1 leading-normal font-normal">${p.desc}</p>
         `;
         grid.appendChild(div);
       });
@@ -1770,12 +1924,12 @@
         outbound: ["API Call (EMR writeback)", "Generate (Draft summary report)", "Send Alert (Radiologist notification)"],
         interactive: ["Review & Approve (By physician)", "Validate Data (Scan resolution checks)", "Model Monitor (Detecting signal drift)"],
         human: "Review & Approve (Clinical signoff)",
-        constraints: "Strict HIPAA/GDPR data compliance, near-zero false negative threshold",
+        constraints: "Strict UK GDPR / DPA 2018 data compliance, near-zero false negative threshold",
         system: "Immutable clinician sign-off logs, secure HL7 server integration"
       },
       writing: {
         inbound: ["Type Input (User prompt)", "Connect Integration (Active doc context)", "Read Record (Style guides)"],
-        internal: ["Synthesize (Contextual meanings)", "Semantic Cache (Instant phrases)", "Format Conversion (Markdown parse)"],
+        internal: ["Synthesise (Contextual meanings)", "Semantic Cache (Instant phrases)", "Format Conversion (Markdown parse)"],
         outbound: ["Generate (Draft blocks)", "Transform (Adjust tone of prompt)", "Edit Content (Inline revisions)"],
         interactive: ["Feedback Loop (Accept/reject counts)", "Adapt (Tailor style to writer)", "Flag Content (Check harmful language)"],
         human: "Configure & Inline Edit (Direct output control)",
@@ -1784,7 +1938,7 @@
       },
       agentic: {
         inbound: ["Webhook Listener (Git commits)", "Read Record (Issue tracker databases)", "Monitor (Server system health)"],
-        internal: ["Orchestrate Workflow", "Forecast (Regression failures)", "Verify (Synthesized logic verification)"],
+        internal: ["Orchestrate Workflow", "Forecast (Regression failures)", "Verify (Synthesised logic verification)"],
         outbound: ["API Call (Github push)", "Create Record (Task status logs)", "Send Alert (Dev Slack warnings)"],
         interactive: ["Plan (Create multi-step path)", "Act (Run terminal test builds)", "State Manager (Save context over steps)"],
         human: "Delegate Authority & Define Constraints",
@@ -1793,7 +1947,7 @@
       },
       programming: {
         inbound: ["Type Input (Code/Prompt)", "Read Record (Repo Context)", "Retrieve (AST Trees)"],
-        internal: ["Synthesize (Token probabilities)", "Verify (Syntax constraints)", "Semantic Cache (API definitions)"],
+        internal: ["Synthesise (Token probabilities)", "Verify (Syntax constraints)", "Semantic Cache (API definitions)"],
         outbound: ["Generate (Code block completion)", "Transform (Refactor code)", "Export file (Save workspace)"],
         interactive: ["Review & Approve (By developer)", "Feedback Loop (Inline acceptance)", "Validate Data (Run local tests)"],
         human: "Review, edit, accept or reject inline generation code",
@@ -1815,9 +1969,11 @@
       // Toggle button states
       document.querySelectorAll('.sim-btn').forEach(btn => {
         btn.className = "sim-btn px-4 py-2 rounded-full border border-slate-200 hover:border-slate-300 text-xs font-bold text-slate-700 transition-all whitespace-nowrap cursor-pointer";
+        btn.setAttribute('aria-pressed', 'false');
       });
       const activeBtn = document.getElementById(`btn-sim-${simId}`);
       activeBtn.className = "sim-btn px-4 py-2 rounded-full border border-hive-accent bg-hive-accentLight/60 text-xs font-bold text-hive-accent transition-all whitespace-nowrap cursor-pointer";
+      activeBtn.setAttribute('aria-pressed', 'true');
 
       const data = simScenarios[simId];
 
@@ -1847,14 +2003,14 @@
     const quizQuestions = [
       {
         title: "A hospital has stored over one million lung scans that top radiologists previously marked as either 'healthy' or 'requiring clinical attention.' Which paradigm best screens new scans?",
-        desc: "Scenario Analysis: Note the role of the expert labeled database during configuration.",
+        desc: "Scenario Analysis: Note the role of the expert labelled database during configuration.",
         options: [
           { text: "Unsupervised Clustering", correct: false },
           { text: "Supervised Learning (Classification)", correct: true },
           { text: "Reinforcement Feedback loops", correct: false },
           { text: "Generative Content Platforms", correct: false }
         ],
-        explanation: "Since you have expert-labeled historic examples ('healthy' vs 'attention'), you are using Supervised Learning to train the system to make correct class classifications."
+        explanation: "Since you have expert-labelled historic examples ('healthy' vs 'attention'), you are using Supervised Learning to train the system to make correct class classifications."
       },
       {
         title: "In which historical era did IBM's Deep Blue defeat world chess champion Garry Kasparov, proving that probability and search-based programming could match human strategy?",
@@ -1926,7 +2082,7 @@
         btn.className = "w-full text-left p-4 rounded-2xl bg-white hover:bg-slate-100 border border-slate-300 hover:border-slate-400 text-xs sm:text-sm font-semibold text-slate-800 transition-all flex items-center justify-between group focus:outline-none focus:ring-2 focus:ring-hive-deep focus:ring-offset-1 cursor-pointer font-normal";
         btn.innerHTML = `
           <span>${opt.text}</span>
-          <i class="fa-regular fa-circle text-slate-400 group-hover:text-slate-600" aria-hidden="true"></i>
+          <i class="fa-regular fa-circle text-slate-600 group-hover:text-slate-600" aria-hidden="true"></i>
         `;
         btn.onclick = () => selectOption(btn, opt);
         optionsContainer.appendChild(btn);
@@ -1999,6 +2155,49 @@
     }
 
     renderQuestion();
+  </script>
+  <!-- Keyboard accessibility: tablists + Atlas layer cards (WCAG 2.2 AA, 2.1.1 Keyboard) -->
+  <script>
+    (function () {
+      // Roving arrow-key navigation for all tablists (paradigms + timeline eras)
+      document.querySelectorAll('[role="tablist"]').forEach(function (list) {
+        var tabs = Array.prototype.slice.call(list.querySelectorAll('[role="tab"]'));
+        list.addEventListener('keydown', function (e) {
+          var i = tabs.indexOf(document.activeElement);
+          if (i === -1) return;
+          var n = null;
+          if (e.key === 'ArrowRight' || e.key === 'ArrowDown') n = (i + 1) % tabs.length;
+          else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') n = (i - 1 + tabs.length) % tabs.length;
+          else if (e.key === 'Home') n = 0;
+          else if (e.key === 'End') n = tabs.length - 1;
+          if (n === null) return;
+          e.preventDefault();
+          tabs[n].focus();
+          tabs[n].click(); // existing onclick manages aria-selected + roving tabindex
+        });
+      });
+
+      // Atlas layer cards: activate with Enter/Space, move with arrows
+      var cards = Array.prototype.slice.call(document.querySelectorAll('.layer-card'));
+      cards.forEach(function (card) {
+        card.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
+            e.preventDefault();
+            card.click();
+            return;
+          }
+          var i = cards.indexOf(card), n = null;
+          if (e.key === 'ArrowRight' || e.key === 'ArrowDown') n = (i + 1) % cards.length;
+          else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') n = (i - 1 + cards.length) % cards.length;
+          else if (e.key === 'Home') n = 0;
+          else if (e.key === 'End') n = cards.length - 1;
+          if (n === null) return;
+          e.preventDefault();
+          cards[n].focus();
+          cards[n].click();
+        });
+      });
+    })();
   </script>
 </body>
 </html>
