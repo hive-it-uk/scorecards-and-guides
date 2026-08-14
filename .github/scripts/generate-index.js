@@ -99,18 +99,19 @@ for (const name of items) {
 
   const absPath = join(dir, name);
   const relPath = FOLDER ? `${FOLDER}/${name}` : name;
-  const stat    = statSync(absPath);
-  const isDir   = stat.isDirectory();
-  const isHtml  = !isDir && HTML_EXTS.has(extname(name).toLowerCase());
+  const stat  = statSync(absPath);
+  if (stat.isDirectory()) continue; // dirs excluded from listing
+
+  const isHtml = HTML_EXTS.has(extname(name).toLowerCase());
 
   const dates = gitDatesAndCount(relPath);
   const meta  = isHtml ? extractMeta(absPath) : { title: null, desc: null };
 
   files.push({
     name,
-    isDir,
+    isDir: false,
     kind:      classify(name),
-    size:      isDir ? null : formatSize(stat.size),
+    size:      formatSize(stat.size),
     title:     meta.title,
     desc:      meta.desc,
     modified:  dates.modified,
