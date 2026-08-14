@@ -533,3 +533,21 @@ footer .meth-trigger:hover{color:#fff}
 .pc-score-box .pc-score-den { color: rgba(255,255,255,.65); font-size: .62rem; font-weight: 700; }
 
 .h1-hl{color:var(--saf);}
+
+/* Mobile controls (14 Aug 2026, Martin's UI ruling): on small screens the
+   sticky search-and-filter panel is hidden by default behind a slim bar -
+   logo, location, and a Search & filter toggle (aria-expanded). Desktop is
+   unchanged: the slim bar does not exist above 720px. */
+.ctrl-slim{display:none}
+@media(max-width:720px){
+  .ctrl-slim{display:flex;align-items:center;gap:.55rem;max-width:none;margin:0;padding:.4rem var(--pad);background:var(--pal)}
+  .ctrl-slim .slim-brand{display:flex;align-items:center;flex:none}
+  .ctrl-slim .loc-switch{display:flex;gap:.25rem;margin-left:auto}
+  .ctrl-slim .loc-btn{font-size:.68rem;padding:.3rem .45rem;min-height:34px;border:2px solid #fff;background:var(--wht);cursor:pointer;font-family:inherit}
+  .ctrl-slim .loc-btn[aria-pressed="true"]{background:var(--ink);color:#fff}
+  .ctrl-toggle{flex:none;font-family:inherit;font-weight:700;font-size:.74rem;min-height:34px;padding:.35rem .65rem;border:2px solid var(--ink);background:var(--saf);color:var(--ink);cursor:pointer}
+  .ctrl-toggle::after{content:"▾";display:inline-block;margin-left:.35rem;font-size:.85em;transition:transform .15s}
+  .ctrl-toggle[aria-expanded="true"]{background:var(--ink);color:#fff}
+  .ctrl-toggle[aria-expanded="true"]::after{transform:rotate(180deg)}
+  .ctrl-bar:not(.open) .ctrl-inner{display:none}
+}
