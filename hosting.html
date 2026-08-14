@@ -22,6 +22,12 @@
 /* ── HOSTING SCORECARD: saffron header — WCAG 2.2 AA ──────── */
 /* Ink on yellow = 11.60:1 ✓ all text. White = 1.58:1 ✗ unusable. */
 .mast{background:var(--saf);border-bottom-color:var(--ink)}
+/* Slim mobile bar matches this saffron masthead (14 Aug 2026); the gold
+   logo and saffron toggle would vanish on it, so both take ink/white. */
+.ctrl-slim{background:var(--saf)!important}
+.ctrl-slim .slim-brand svg path{fill:var(--ink)}
+.ctrl-slim .ctrl-toggle{background:var(--wht)}
+.ctrl-slim .loc-btn{border-color:var(--ink)!important}
 .mast-top{border-bottom-color:rgba(14,20,40,.15)}
 .mast-top svg path{fill:#000}
 .wordmark{color:#000}
@@ -89,7 +95,7 @@
    <div class="mast-left">
     <p class="mast-kicker">Applied research · Cloud &amp; hosting ecosystem ethics</p>
     <h1 class="mast-h1">Cloud &amp; hosting, scored on <span class="h1-hl">ethics</span>, <span class="h1-hl">environment</span> &amp; <span class="h1-hl">society</span></h1>
-    <p class="mast-lede">Eight cloud and hosting providers measured against our thirteen-criterion framework — with close attention to <strong>data sovereignty, carbon, water use and community impact</strong>. Every score shows its evidence quality.</p>
+    <p class="mast-lede">Fourteen cloud and hosting providers measured against our thirteen-criterion framework — with close attention to <strong>data sovereignty, carbon, water use and community impact</strong>. Every score shows its evidence quality.</p>
    </div>
  
   <div class="footprint" role="region" aria-label="Environmental cost of generating this work">
@@ -97,18 +103,18 @@
      <span class="fp-kicker">Footprint of making this scorecard (estimate)</span>
     </div>
     <div class="fp-stats">
-     <div class="fp-stat"><span class="fp-lbl">Energy</span><span class="fp-num">400 Wh</span><span class="fp-eq">≈ microwave 24 min</span></div>
-     <div class="fp-stat"><span class="fp-lbl">Water</span><span class="fp-num">430 mL</span><span class="fp-eq">≈ a large can</span></div>
-     <div class="fp-stat"><span class="fp-lbl">Carbon</span><span class="fp-num">50 g</span><span class="fp-eq">CO₂e · driving 290 m</span></div>
+     <div class="fp-stat"><span class="fp-lbl">Energy</span><span class="fp-num">3.2 kWh</span><span class="fp-eq">≈ microwave 2.7 h</span></div>
+     <div class="fp-stat"><span class="fp-lbl">Water</span><span class="fp-num">3.5 L</span><span class="fp-eq">≈ two large bottles</span></div>
+     <div class="fp-stat"><span class="fp-lbl">Carbon</span><span class="fp-num">~400 g</span><span class="fp-eq">CO₂e · driving 2.7 km</span></div>
     </div>
     <details class="fp-more">
      <summary>Show maths &amp; sources</summary>
      <div class="fp-body">
       <table>
-       <tr><th scope="row">Generations</th><td>~55 substantial outputs (research, scoring, build for 14 providers)</td></tr>
+       <tr><th scope="row">Generations</th><td>~450 substantial outputs — the original build for 14 providers, the v4 rethink and the August 2026 evidence programme, cumulative</td></tr>
        <tr><th scope="row">Weight per generation</th><td>~30× a median text prompt</td></tr>
        <tr><th scope="row">Per-prompt basis</th><td>0.24 Wh · 0.26 mL · 0.03 g CO₂e — <a href="https://cloud.google.com/blog/products/infrastructure/measuring-the-environmental-impact-of-ai-inference/" target="_blank" rel="noopener">Google published figures ↗</a></td></tr>
-       <tr><th scope="row">Plausible range</th><td>100–600 Wh · 100–900 mL · 12–70 g. <a href="https://mistral.ai/news/our-contribution-to-a-global-environmental-standard-for-ai" target="_blank" rel="noopener">Mistral peer-reviewed LCA ↗</a> puts one response at 1.14 g CO₂e + 45 mL.</td></tr>
+       <tr><th scope="row">Plausible range</th><td>0.8–4.5 kWh · 0.9–4.9 L · 90–560 g. <a href="https://mistral.ai/news/our-contribution-to-a-global-environmental-standard-for-ai" target="_blank" rel="noopener">Mistral peer-reviewed LCA ↗</a> puts one response at 1.14 g CO₂e + 45 mL. Restated 14 Aug 2026 for the cumulative work; earlier copies of this page showed the first build only.</td></tr>
       </table>
      </div>
     </details>
@@ -136,7 +142,17 @@
 
 <!-- CONTROLS -->
 <div class="ctrl-bar" role="search" aria-label="Filter and sort controls">
- <div class="ctrl-inner">
+ <div class="ctrl-slim">
+  <a href="https://www.hiveit.co.uk" class="slim-brand" aria-label="Hive IT"><svg id="Layer_2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 236.13 236.13" aria-hidden="true" focusable="false" width="26" height="26"><g id="Layer_6"><path fill="#ffc600" d="m176.4,141.91l-52.53,30.5c-3.19,1.85-8.42,1.85-11.61,0l-52.53-30.5c-3.19-1.85-5.81-.35-5.81,3.34v3.13c0,3.69,2.62,8.22,5.81,10.07l52.51,30.32c3.2,1.85,8.43,1.85,11.63,0l52.51-30.32c3.2-1.85,5.81-6.38,5.81-10.07v-3.13c0-3.69-2.61-5.2-5.81-3.34Zm-24.16,26.43c-1.95,1.12-3.53.22-3.54-2.01,0-2.24,1.57-4.96,3.51-6.08,1.95-1.12,3.53-.22,3.53,2.02,0,2.24-1.57,4.96-3.51,6.08Z"/><path fill="#ffc600" d="m63.37,82.3l48.88,28.38c3.19,1.85,8.42,1.85,11.61,0l48.88-28.38c3.19-1.85,3.19-4.88,0-6.73l-48.87-28.21c-3.2-1.85-8.43-1.85-11.63,0l-48.87,28.21c-3.2,1.85-3.2,4.87,0,6.73Z"/><path fill="#ffc600" d="m176.4,115.06l-52.53,30.5c-3.19,1.85-8.42,1.85-11.61,0l-52.53-30.5c-3.19-1.85-5.81-.35-5.81,3.34v5.41c0,3.69,2.61,8.23,5.81,10.09l52.53,30.5c3.19,1.85,8.42,1.85,11.61,0l52.53-30.5c3.19-1.85,5.81-6.39,5.81-10.09v-5.41c0-3.69-2.61-5.2-5.81-3.34Z"/><path fill="#ffc600" d="m176.4,88.2l-52.53,30.5c-3.19,1.85-8.42,1.85-11.61,0l-52.53-30.5c-3.19-1.85-5.81-.35-5.81,3.34v5.41c0,3.69,2.61,8.23,5.81,10.09l52.53,30.5c3.19,1.85,8.42,1.85,11.61,0l52.53-30.5c3.19-1.85,5.81-6.39,5.81-10.09v-5.41c0-3.69-2.61-5.2-5.81-3.34Z"/><path fill="#ffc600" d="m118.06,0C52.86,0,0,52.86,0,118.06s52.86,118.06,118.06,118.06c65.21,0,118.06-52.86,118.06-118.06C236.13,52.86,183.27,0,118.06,0Zm75.33,154.84c0,3.69-2.62,8.22-5.81,10.07l-63.7,36.78c-3.2,1.85-8.43,1.85-11.63,0l-63.7-36.78c-3.2-1.85-5.81-6.38-5.81-10.07v-73.56c0-3.69,2.62-8.22,5.81-10.07l63.7-36.78c3.2-1.85,8.43-1.85,11.63,0l63.7,36.78c3.2,1.85,5.81,6.38,5.81,10.07v73.56Z"/></g></svg></a>
+  <span role="group" aria-label="Your location" class="loc-switch slim-loc">
+   <button type="button" class="loc-btn" data-loc="UK" aria-pressed="true">🇬🇧 UK</button>
+   <button type="button" class="loc-btn" data-loc="EU" aria-pressed="false">🇪🇺 EU</button>
+   <button type="button" class="loc-btn" data-loc="US" aria-pressed="false">🇺🇸 US</button>
+  </span>
+  <button type="button" class="ctrl-toggle" id="ctrl-toggle" aria-expanded="false" aria-controls="ctrl-panel">Search &amp; filter</button>
+ </div>
+ 
+ <div class="ctrl-inner" id="ctrl-panel">
   <div class="ctrl-row">
    <div class="fld"><label for="q">Search</label><input type="search" id="q" placeholder="Provider, vendor or country…"></div>
    <div class="fld"><label for="sort">Rank by</label><select id="sort"></select></div>
@@ -1086,9 +1102,12 @@ window.addEventListener("DOMContentLoaded",()=>{
   document.getElementById("reset")?.addEventListener("click",reset);
   document.getElementById("comp-toggle")?.addEventListener("click",()=>setComposite(!state.composite));
   syncCompositeToggle();
+  // Mobile: the filter panel hides behind the Search & filter toggle
+  // (Martin's UI ruling, 14 Aug 2026); the slim bar keeps logo + location.
+  const ctrlT=document.getElementById("ctrl-toggle"),ctrlB=document.querySelector(".ctrl-bar");
+  if(ctrlT&&ctrlB)ctrlT.addEventListener("click",()=>{const o=ctrlB.classList.toggle("open");ctrlT.setAttribute("aria-expanded",o);});
   document.querySelectorAll(".loc-btn").forEach(b=>b.addEventListener("click",()=>{
-    document.querySelectorAll(".loc-btn").forEach(x=>x.setAttribute("aria-pressed","false"));
-    b.setAttribute("aria-pressed","true");
+    document.querySelectorAll(".loc-btn").forEach(x=>x.setAttribute("aria-pressed",x.dataset.loc===b.dataset.loc));
     state.userLoc=b.dataset.loc;
     renderRank();renderCompare();
     // Show a brief location note
