@@ -175,9 +175,9 @@
    <div class="preset-block">
     <h3>Preset stacks</h3>
     <div class="preset-search-wrap">
-     <label for="preset-search">Search by site name</label>
+     <label for="preset-search">Search by client or site name</label>
      <div class="preset-input-row">
-      <input type="text" id="preset-search" placeholder="e.g. GOV.UK, BBC…"
+      <input type="text" id="preset-search" placeholder="e.g. Sheffield Flourish, River Don…"
              autocomplete="off" role="combobox" aria-expanded="false"
              aria-controls="preset-listbox" aria-autocomplete="list" aria-haspopup="listbox">
      </div>
@@ -185,10 +185,11 @@
     </div>
     <div class="preset-quick">
      <span class="preset-quick-lbl" aria-hidden="true">Quick access:</span>
-     <button type="button" class="preset-quick-btn" data-preset="pub-govuk">GOV.UK</button>
-     <button type="button" class="preset-quick-btn" data-preset="pub-bbc">BBC</button>
-     <button type="button" class="preset-quick-btn" data-preset="pub-amazon">Amazon</button>
-     <button type="button" class="preset-quick-btn" data-preset="pub-google">Google</button>
+     <button type="button" class="preset-quick-btn" data-preset="ees">Explore Education Statistics</button>
+     <button type="button" class="preset-quick-btn" data-preset="weston-park">Weston Park</button>
+     <button type="button" class="preset-quick-btn" data-preset="hiveit">Hive IT</button>
+     <button type="button" class="preset-quick-btn" data-preset="now-then">Now Then</button>
+     <button type="button" class="preset-quick-btn" data-preset="river-don-platform">River Don</button>
      <button type="button" class="preset-clear-btn" id="stack-clear-btn" aria-label="Clear the current stack">Clear stack</button>
     </div>
    </div>
@@ -1249,11 +1250,11 @@ function initFootprint(){
 }
 
 // ---- stack builder ----
-/* GENERATED from stack-public-presets.json by build_data.py — do not hand-edit this object.
+/* GENERATED from stack-presets.json by build_data.py — do not hand-edit this object.
    Edit the JSON source and re-run the build. A hand-edit here will be
    destroyed by the next build; build_data.py refuses to run if it detects
    one, but only if it is run. */
-const PRESETS = [{"id":"pub-govuk","label":"GOV.UK (www.gov.uk)","ids":["rails","postgresql","mysql","mongodb","redis","aws","fastly","nginx","opensearch","kubernetes","googleanalytics"]},{"id":"pub-bbc","label":"BBC (bbc.co.uk)","ids":["react","nodejs","aws","lambda","nginx"]},{"id":"pub-amazon","label":"Amazon (amazon.co.uk) — public-info approximation","ids":["aws","dynamodb","lambda"]},{"id":"pub-google","label":"Google (google.co.uk) — public-info approximation","ids":["gcp","googleanalytics"]}];
+const PRESETS = [{"id":"pub-govuk","label":"GOV.UK (www.gov.uk)","client":"Public example","ids":["rails","postgresql","mysql","mongodb","redis","aws","fastly","nginx","opensearch","kubernetes","googleanalytics"]},{"id":"pub-bbc","label":"BBC (bbc.co.uk)","client":"Public example","ids":["react","nodejs","aws","lambda","nginx"]},{"id":"pub-amazon","label":"Amazon (amazon.co.uk) — public-info approximation","client":"Public example","ids":["aws","dynamodb","lambda"]},{"id":"pub-google","label":"Google (google.co.uk) — public-info approximation","client":"Public example","ids":["gcp","googleanalytics"]},{"id":"ees","label":"Explore Education Statistics","client":"Department for Education","ids":["nextjs","react","dotnet","express","postgresql","azure","googleanalytics"]},{"id":"hiveit","label":"Hive IT website","client":"Hive IT","ids":["nextjs","react","vercel","sanity","googleanalytics"]},{"id":"beekeeper","label":"BeeKeeper","client":"Hive IT","ids":["nextjs","react","express","mantine","drizzle","postgresql","digitalocean"]},{"id":"new-to-sheffield","label":"New to Sheffield","client":"Hive IT","ids":["webflow"]},{"id":"coglab","label":"Coglab","client":"Lynne Barker","ids":["react","aws","cognito"]},{"id":"metallobio","label":"MetalloBio","client":"Metallobio","ids":["webflow"]},{"id":"movement-strategies","label":"Movement Strategies","client":"Movement Strategies","ids":["webflow"]},{"id":"my-needs","label":"My Needs","client":"My Needs","ids":["nextjs","react","prisma","auth0","sendgrid","mantine","postgresql","digitalocean"]},{"id":"sleepi","label":"SleepiEstimator","client":"Nottingham Trent University","ids":["dotnet"]},{"id":"now-then","label":"Now Then","client":"Opus Independents","ids":["craft","mailgun","digitalocean"]},{"id":"festival-of-debate","label":"Festival of Debate","client":"Opus Independents","ids":["craft","digitalocean"]},{"id":"fairnesson83","label":"Fairness on the 83","client":"Opus Independents","ids":["nextjs","react","digitalocean"]},{"id":"river-don-platform","label":"River Don Platform","client":"Opus Independents","ids":["nextjs","react","auth0","aws","mantine","sequelize","postgresql","digitalocean","mapbox"]},{"id":"river-don-storyteller","label":"River Don Storyteller","client":"Opus Independents","ids":["express","digitalocean","openai"]},{"id":"sansanima","label":"Sansanima","client":"Sansanima","ids":["wordpress","kinsta"]},{"id":"eagles-heritage","label":"Sheffield Eagles Heritage","client":"Sheffield Eagles","ids":["nextjs","react","algolia","vercel","googleanalytics","sanity"]},{"id":"sheffield-flourish","label":"Sheffield Flourish website","client":"Sheffield Flourish","ids":["wordpress","woocommerce","jquery","postgresql","kinsta"]},{"id":"suicide-support","label":"Sheffield Suicide Support","client":"Sheffield Flourish","ids":["wordpress","jquery","kinsta"]},{"id":"mhg-frontend","label":"Sheffield Mental Health Guide","client":"Sheffield Flourish","ids":["nextjs","react","vercel","googleanalytics","gmaps"]},{"id":"my-toolkit","label":"My Toolkit","client":"Sheffield Flourish","ids":["nextjs","react","express","prisma","auth0","mantine","aws","digitalocean"]},{"id":"safety-plan","label":"Suicide Support Safety Plan","client":"Sheffield Flourish","ids":["nextjs","react","prisma","auth0","vercel"]},{"id":"yorkshire-portal","label":"Yorkshire Engagement Platform","client":"University of Sheffield","ids":["nextjs","react","mantine","digitalocean","mapbox","payloadcms"]},{"id":"emissions-dashboard","label":"Emissions Dashboard","client":"University of Sheffield","ids":["nextjs","react","auth0","mantine","drizzle","postgresql","digitalocean"]},{"id":"timeout-toolkit","label":"Timeout Toolkit","client":"WeAreWithYou","ids":["nextjs","react","vercel","googleanalytics","sanity"]},{"id":"weston-park","label":"Weston Park Cancer Charity","client":"Weston Park Cancer Charity","ids":["nextjs","react","mailgun","vercel","sanity"]}];
 
 // ---- load a preset by ID ----
 function loadPreset(presetId){
