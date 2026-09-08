@@ -148,20 +148,20 @@ code { font-family: ui-monospace, monospace; font-size: .85em; background: rgba(
 <main id="listing" tabindex="-1">
   <p class="status" id="status" role="status">Loading&hellip; (fetching file metadata and commit history)</p>
 
-  <div id="guides-section" hidden>
-    <div class="section-hdr">
-      <h2>Guides</h2>
-      <span class="section-count" id="guides-count"></span>
-    </div>
-    <ul class="grid" id="guides-list" aria-label="Guides"></ul>
-  </div>
-
   <div id="scorecards-section" hidden>
     <div class="section-hdr">
       <h2>Scorecards</h2>
       <span class="section-count" id="scorecards-count"></span>
     </div>
     <ul class="grid" id="scorecards-list" aria-label="Scorecards"></ul>
+  </div>
+
+  <div id="guides-section" hidden>
+    <div class="section-hdr">
+      <h2>Guides</h2>
+      <span class="section-count" id="guides-count"></span>
+    </div>
+    <ul class="grid" id="guides-list" aria-label="Guides"></ul>
   </div>
 
   <div id="poc-section" hidden>
@@ -372,8 +372,8 @@ code { font-family: ui-monospace, monospace; font-size: .85em; background: rgba(
     guides.forEach(function (e)     { e.section = "guide"; });
     scorecards.forEach(function (e) { e.section = "scorecard"; });
     pocs.forEach(function (e)       { e.section = "poc"; });
-    renderSection(guides,     guidesListEl,     guidesSection,     guidesCount);
     renderSection(scorecards, scorecardsListEl, scorecardsSection, scorecardsCount);
+    renderSection(guides,     guidesListEl,     guidesSection,     guidesCount);
     renderSection(pocs,       pocListEl,        pocSection,        pocCount);
     renderSection(docs,       docsListEl,       docsSection,       docsCount);
     var n = entries.length;
