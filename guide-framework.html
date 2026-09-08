@@ -162,6 +162,15 @@ footer a{color:var(--gold)}
 .fp-more th{text-align:left;padding:.15rem .6rem .15rem 0;vertical-align:top;white-space:nowrap;color:rgba(255,255,255,.75)}
 .fp-more td{padding:.15rem 0}
 .fp-more a{color:inherit}
+/* Contrast fix (8 Sep 2026): the footprint table was inheriting the global
+   table{background:#fff} rule, which put white-at-75% th text and inherited
+   white td text on a white ground inside the dark masthead - about 1.1:1,
+   i.e. invisible. Nothing in .fp-more reset that background. The table is
+   transparent on the masthead now: th 11:1, td 13:1 against --ink. */
+.fp-more table{background:transparent;width:auto}
+.fp-more tbody tr:nth-child(even){background:transparent}
+.fp-more th,.fp-more td{border-bottom:1px solid rgba(255,255,255,.18)}
+.fp-more td{color:rgba(255,255,255,.85)}
 
 /* Masthead links (fixed 14 Aug 2026): the global maroon link colour was
    1.33:1 against this dark masthead - invisible. Gold is 10.9:1 on --ink. */
