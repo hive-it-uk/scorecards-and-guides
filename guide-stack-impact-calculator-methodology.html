@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-  Stack Environmental Impact Calculator — Methodology — companion document, version 1.6 (13 August 2026)
+  Stack Environmental Impact Calculator — Methodology — companion document, version 1.7 (9 September 2026)
   © Hive IT 2026.
   Licensed under Creative Commons Attribution 4.0 (CC BY 4.0):
     https://creativecommons.org/licenses/by/4.0/
@@ -153,8 +153,8 @@ footer a{color:var(--gold)}
       <span class="kicker" style="color:rgba(255,255,255,.7)">Companion methodology · Stack Environmental Impact Calculator</span>
     </div>
     <h1>Stack Environmental Impact Calculator — Methodology</h1>
-    <p class="ver"><strong>Version 1.6 (13 August 2026)</strong></p>
-    <p class="meta"><a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a> · about a 44-minute read</p>
+    <p class="ver"><strong>Version 1.7 (9 September 2026)</strong></p>
+    <p class="meta"><a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a> · about a 51-minute read</p>
     <p class="lede">The Stack Builder includes an environmental impact calculator that estimates the monthly carbon emissions and water consumption of a website or application based on two user inputs — monthly page impression count and average page weight — combined with the ethics and sustainability scores already assigned to the technologies in the stack.</p>
   </div>
 </header>
@@ -180,6 +180,10 @@ footer a{color:var(--gold)}
 <li><a href="#where-the-five-band-values-come-from">Where the five band values come from</a></li>
 </ol>
 <li><a href="#baseline-comparison">Baseline comparison</a></li>
+<li><a href="#restatement-what-version-17-changed">Restatement: what version 1.7 changed</a>
+<ol class="toc-sub">
+<li><a href="#what-this-change-does-not-fix">What this change does not fix</a></li>
+</ol>
 <li><a href="#restatement-what-version-16-changed">Restatement: what version 1.6 changed</a></li>
 <li><a href="#restatement-what-version-15-changed">Restatement: what version 1.5 changed</a></li>
 <li><a href="#rating-thresholds">Rating thresholds</a></li>
@@ -204,7 +208,7 @@ footer a{color:var(--gold)}
   </nav>
 <main id="main">
     <article>
-<p><strong>Tool:</strong> Hive IT <a href="stack.html">Tech Stack Ethics Scorecard</a> <strong>Version:</strong> 1.6 (13 August 2026) <strong>Licence:</strong> Text and methodology CC BY 4.0; code Apache License 2.0. © Hive IT 2026 <strong>Produced by:</strong> Hive IT, Sheffield — <a class="ext" href="https://hiveit.co.uk" target="_blank" rel="noopener noreferrer">hiveit.co.uk</a></p>
+<p><strong>Tool:</strong> Hive IT <a href="stack.html">Tech Stack Ethics Scorecard</a> <strong>Version:</strong> 1.7 (9 September 2026) <strong>Licence:</strong> Text and methodology CC BY 4.0; code Apache License 2.0. © Hive IT 2026 <strong>Produced by:</strong> Hive IT, Sheffield — <a class="ext" href="https://hiveit.co.uk" target="_blank" rel="noopener noreferrer">hiveit.co.uk</a></p>
 <hr>
 <h2 id="changelog">Changelog</h2>
 <div class="table-wrap" role="region" aria-label="Table (scrollable)" tabindex="0"><table>
@@ -216,6 +220,11 @@ footer a{color:var(--gold)}
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>1.7</td>
+<td>9 September 2026</td>
+<td><strong>All three grid constants re-based to one dated Ember retrieval, and carbon figures are restated upward for UK and EU audiences.</strong> UK <strong>217.33 → 222.18</strong>, EU <strong>209.64 → 210.13</strong>, World <strong>458.54 → 459.03</strong>, from a single Ember <em>Yearly Electricity Data</em> pull of <strong>9 September 2026</strong> — and the retrieval date is now recorded, in this document and in the code comment, because it is part of the citation. <strong>This is not a correction of an error.</strong> The old constants match no single calendar year of Ember's current data: fitting all three gives an RMS error of 1.27% against 2025 and 1.75% against 2024, and the outlier moves between the two. Version 1.4 recorded the source but never the retrieval date, so the vintage cannot be established from the artefacts and the honest remedy is a fresh dated one rather than a guess at the old one. <strong>The rating bands go to four decimal places, 0.111 → 0.1115 and 0.334 → 0.3345.</strong> The exact rescaled values are 0.111505 and 0.334516, which sit almost exactly on a three-decimal rounding boundary: at 3dp a 0.11% change in the world figure becomes a 0.9% change in <code>bandGood</code>, so the extra digit removes an amplification that has nothing to do with the data. <strong>Effect: carbon figures rise about 0.8% for a UK audience, 0.15% for an EU audience and 0.10% for a worldwide audience.</strong> The UK moves most because its constant moved most (+2.23%) and because the rating thresholds rescale off the <em>world</em> figure, not the UK one, so there is no cancelling. <strong>No rating band changes in any tested configuration.</strong> Water figures are untouched. Full before/after in "Restatement: what version 1.7 changed", below. <strong>Figures published on version 1.6 or earlier understate carbon for any stack with a UK or EU audience share, and must be restated.</strong> Also in this version: <strong>E16</strong>, a release blocker asserting that the two rating bands are still the SWD published 0.12 / 0.36 rescaled by the page's own <code>globalCI</code>, because they are hand-typed literals and nothing checked them — <code>carbon_crosscheck.cjs</code> derives its own rescale factor at runtime so it adapts rather than catching a stale band.</td>
+</tr>
 <tr>
 <td>1.6</td>
 <td>13 August 2026</td>
@@ -474,14 +483,14 @@ footer a{color:var(--gold)}
 <tr>
 <td>0</td>
 <td>Unknown</td>
-<td>458.54</td>
-<td>No information; the world average grid intensity (Ember 2025)</td>
+<td>459.03</td>
+<td>No information; the world average grid intensity (Ember, retrieved 9 Sep 2026)</td>
 </tr>
 <tr>
 <td>No host in stack</td>
 <td>—</td>
-<td>458.54</td>
-<td>World average assumed (Ember 2025); a warning is shown</td>
+<td>459.03</td>
+<td>World average assumed (Ember, retrieved 9 Sep 2026); a warning is shown</td>
 </tr>
 </tbody>
 </table></div>
@@ -513,7 +522,7 @@ footer a{color:var(--gold)}
 <tr>
 <td>2</td>
 <td>320</td>
-<td><strong>Judgement value, original derivation unrecorded.</strong> Numerically it is the midpoint of band 3 and the Ember world average (175 + 458.54)/2 = 316.8, rounded to two significant figures — a plausible reconstruction, not a record. The one published score-2 figure (Azure, 175, market-based) sits well below it; Azure's own figure overrides</td>
+<td><strong>Judgement value, original derivation unrecorded.</strong> Numerically it is the midpoint of band 3 and the Ember world average (175 + 459.03)/2 = 317.0, rounded to two significant figures — a plausible reconstruction, not a record. The one published score-2 figure (Azure, 175, market-based) sits well below it; Azure's own figure overrides</td>
 <td>Reconstruction only</td>
 </tr>
 <tr>
@@ -524,8 +533,8 @@ footer a{color:var(--gold)}
 </tr>
 <tr>
 <td>0</td>
-<td>458.54</td>
-<td>Ember Yearly Electricity Data 2025, "World" — the same figure used as the baseline CI and for all embodied energy, already sourced and dated throughout this document</td>
+<td>459.03</td>
+<td>Ember Yearly Electricity Data, "World" 2025, retrieved 9 Sep 2026 — the same figure used as the baseline CI and for all embodied energy, sourced and dated throughout this document</td>
 <td>Fully sourced</td>
 </tr>
 </tbody>
@@ -580,37 +589,37 @@ footer a{color:var(--gold)}
   where  op_datacentre_kWh      = (page_weight_MB / 1000) × 0.055
          op_network_device_kWh  = (page_weight_MB / 1000) × 0.139
          embodied_kWh           = (page_weight_MB / 1000) × 0.106
-         world_CI               = 458.54 g CO₂e/kWh
+         world_CI               = 459.03 g CO₂e/kWh
 
 CO₂_monthly_kg  = CO₂_per_page_g × monthly_impressions / 1000</code></pre>
 <p>The three terms are computed by a single function in the tool (<code>carbonPerViewG</code>), called by both the live calculator and the CRP data block. Before version 1.5 the arithmetic existed in two separate copies, which is how one error came to affect two outputs.</p>
 <h4 id="worked-example-a-hetzner-hosting-2-mb-page-10000-visitorsmonth">Worked example A — Hetzner hosting, 2 MB page, 10,000 visitors/month</h4>
 <ul>
 <li>Hosting: Hetzner, C1 score 3 → CI = 175 g/kWh (operational data-centre energy only)  </li>
-<li>Audience: 100% UK → regional CI = 217.33 g/kWh (operational network + device)  </li>
-<li>Embodied energy: world CI = 458.54 g/kWh (never varied by host or audience)  </li>
+<li>Audience: 100% UK → regional CI = 222.18 g/kWh (operational network + device)  </li>
+<li>Embodied energy: world CI = 459.03 g/kWh (never varied by host or audience)  </li>
 <li>Stack efficiency: average C3 ≈ 3 → multiplier = 0.87  </li>
 <li>Operational data-centre: (2/1000) × 0.055 = 0.000110 kWh × 175 = 0.01925 g  </li>
-<li>Operational network + device: (2/1000) × 0.139 = 0.000278 kWh × 217.33 = 0.06042 g  </li>
-<li>Embodied: (2/1000) × 0.106 = 0.000212 kWh × 458.54 = 0.09721 g  </li>
-<li>CO₂ per page: (0.01925 + 0.06042 + 0.09721) × 0.87 = <strong>0.154 g</strong>  </li>
-<li>Monthly CO₂: 0.154 × 10,000 / 1,000 = <strong>1.54 kg</strong>  </li>
-<li>Rating: above 0.111 g, below 0.334 g → <strong>below global average</strong>  </li>
+<li>Operational network + device: (2/1000) × 0.139 = 0.000278 kWh × 222.18 = 0.06177 g  </li>
+<li>Embodied: (2/1000) × 0.106 = 0.000212 kWh × 459.03 = 0.09731 g  </li>
+<li>CO₂ per page: (0.01925 + 0.06177 + 0.09731) × 0.87 = <strong>0.155 g</strong>  </li>
+<li>Monthly CO₂: 0.155 × 10,000 / 1,000 = <strong>1.55 kg</strong>  </li>
+<li>Rating: above 0.1115 g, below 0.3345 g → <strong>below global average</strong>  </li>
 </ul>
 <blockquote class="callout">
-<p>Under version 1.4 this same stack returned 0.109 g and, contrary to what that version's text claimed, a "well below global average" rating — 0.1085 g is below the 0.111 g threshold, so the rating stated there was wrong as well as the figure. Correcting the embodied attribution raises it 42% to 0.154 g and moves it into "below global average", which is where version 1.4 had mistakenly placed it anyway. <strong>Embodied energy is now the largest single term</strong> — 0.097 g of the 0.177 g before the efficiency multiplier, or 0.085 g of the final 0.154 g, 55% of the result. That is the honest picture: most of a page view's carbon is the manufacture of the devices and infrastructure carrying it, and no hosting choice changes that. With a worldwide audience instead of a UK one the result would be 0.212 g.</p>
+<p>Under version 1.4 this same stack returned 0.109 g and, contrary to what that version's text claimed, a "well below global average" rating — 0.1085 g is below the 0.111 g threshold then in force, so the rating stated there was wrong as well as the figure. Correcting the embodied attribution raises it 42% to 0.155 g and moves it into "below global average", which is where version 1.4 had mistakenly placed it anyway. <strong>Embodied energy is now the largest single term</strong> — 0.097 g of the 0.178 g before the efficiency multiplier, or 0.085 g of the final 0.155 g, 55% of the result. That is the honest picture: most of a page view's carbon is the manufacture of the devices and infrastructure carrying it, and no hosting choice changes that. With a worldwide audience instead of a UK one the result would be 0.212 g.</p>
 </blockquote>
 <h4 id="worked-example-b-vercel-hosting-1-mb-page-50000-visitorsmonth">Worked example B — Vercel hosting, 1 MB page, 50,000 visitors/month</h4>
 <ul>
 <li>Hosting: Vercel, C1 score 2 → CI = 320 g/kWh (operational data-centre energy only)  </li>
-<li>Audience: 100% UK → regional CI = 217.33 g/kWh (operational network + device)  </li>
+<li>Audience: 100% UK → regional CI = 222.18 g/kWh (operational network + device)  </li>
 <li>Stack efficiency: average C3 ≈ 3.5 → multiplier = 0.75  </li>
 <li>Operational data-centre: (1/1000) × 0.055 = 0.000055 kWh × 320 = 0.01760 g  </li>
-<li>Operational network + device: (1/1000) × 0.139 = 0.000139 kWh × 217.33 = 0.03021 g  </li>
-<li>Embodied: (1/1000) × 0.106 = 0.000106 kWh × 458.54 = 0.04861 g  </li>
-<li>CO₂ per page: (0.01760 + 0.03021 + 0.04861) × 0.75 = <strong>0.072 g</strong>  </li>
-<li>Monthly CO₂: 0.072 × 50,000 / 1,000 = <strong>3.62 kg</strong>  </li>
-<li>Rating: below 0.111 g → <strong>well below global average</strong>  </li>
+<li>Operational network + device: (1/1000) × 0.139 = 0.000139 kWh × 222.18 = 0.03088 g  </li>
+<li>Embodied: (1/1000) × 0.106 = 0.000106 kWh × 459.03 = 0.04866 g  </li>
+<li>CO₂ per page: (0.01760 + 0.03088 + 0.04866) × 0.75 = <strong>0.073 g</strong>  </li>
+<li>Monthly CO₂: 0.073 × 50,000 / 1,000 = <strong>3.64 kg</strong>  </li>
+<li>Rating: below 0.1115 g → <strong>well below global average</strong>  </li>
 </ul>
 <blockquote class="callout">
 <p>This rises 34% from version 1.4's 0.054 g but keeps its rating. Note what happens to the hosting lever: Vercel's assumed 320 g/kWh is worse than the UK grid, yet it now governs only 0.055 of the 0.30 kWh/GB, so the penalty for a higher-carbon host is smaller than in any earlier version — while the floor set by embodied energy is higher. <strong>Page weight, not hosting choice, is overwhelmingly the dominant lever</strong>, and version 1.5 makes that starker than 1.4 did.</p>
@@ -704,7 +713,7 @@ CO₂_monthly_kg  = CO₂_per_page_g × monthly_impressions / 1000</code></pre>
 <tr>
 <td>2</td>
 <td>0.50</td>
-<td><strong>Sourced 13 Aug 2026.</strong> Shehabi, Newkirk, Smith et al., <em>2024 United States Data Center Energy Usage Report</em>, LBNL-2001637, DOI 10.71468/P1WC7Q, 20 Dec 2024: annual average <strong>site</strong> WUE across all US data centres "stays just over <strong>0.36 L/kWh</strong> through 2023… After 2023, the average WUE rises slightly, reaching between <strong>0.45 and 0.48 L/kWh</strong>" (p.48, from over a million simulations across 965 weather stations). 0.50 sits just above the 2028 projection. <strong>The old rationale — "midpoint of a 0.3–0.8 range" — was not what any source says and is withdrawn.</strong></td>
+<td><strong>Sourced 13 Aug 2026.</strong> Shehabi, Smith, Hubbard et al., <em>2024 United States Data Center Energy Usage Report</em>, LBNL-2001637, DOI 10.71468/P1WC7Q, 20 Dec 2024: annual average <strong>site</strong> WUE across all US data centres "stays just over <strong>0.36 L/kWh</strong> through 2023… After 2023, the average WUE rises slightly, reaching between <strong>0.45 and 0.48 L/kWh</strong>" (p.48, from over a million simulations across 965 weather stations). 0.50 sits just above the 2028 projection. <strong>The old rationale — "midpoint of a 0.3–0.8 range" — was not what any source says and is withdrawn.</strong></td>
 <td>Peer-reviewed national laboratory</td>
 </tr>
 <tr>
@@ -743,8 +752,8 @@ water_monthly_L         = water_per_page_L × monthly_impressions</code></pre>
 <p><strong>Important limitation:</strong> the water figure covers data centre consumption only. It excludes network infrastructure water use and the water embedded in device manufacture and electricity generation (hydroelectric and thermoelectric power generation are significant water consumers but are not quantified here due to absence of reliable per-stack data). The true water footprint of a website is likely 3–10× the figure shown.</p>
 <hr>
 <h2 id="baseline-comparison">Baseline comparison</h2>
-<p>The "stack vs global average" bar compares the stack's estimated carbon per page impression against a <strong>no-action baseline</strong>: the same page weight delivered entirely at the world average carbon intensity (<strong>458.54 g CO₂e/kWh</strong> — Ember Yearly Electricity Data 2025, "World") and no efficiency modification (multiplier = 1.0).</p>
-<pre><code>baseline_CO₂_per_page_g = energy_per_page_kWh × 458.54
+<p>The "stack vs global average" bar compares the stack's estimated carbon per page impression against a <strong>no-action baseline</strong>: the same page weight delivered entirely at the world average carbon intensity (<strong>459.03 g CO₂e/kWh</strong> — Ember Yearly Electricity Data, "World" 2025, retrieved 9 Sep 2026) and no efficiency modification (multiplier = 1.0).</p>
+<pre><code>baseline_CO₂_per_page_g = energy_per_page_kWh × 459.03
 
 savings_pct = round((1 − stack_CO₂_per_page_g / baseline_CO₂_per_page_g) × 100)</code></pre>
 <p>A positive figure means the stack emits less than the world average. A negative figure means it emits more (unusual unless efficiency scores are very low and the host uses a high-carbon grid).</p>
@@ -756,6 +765,126 @@ savings_pct = round((1 − stack_CO₂_per_page_g / baseline_CO₂_per_page_g) �
 </div>
 </details>
 <hr>
+<h2 id="restatement-what-version-17-changed">Restatement: what version 1.7 changed</h2>
+<p>Version 1.7 changes <strong>carbon only</strong>. No water figure, WUE band or energy constant moves, and the efficiency multiplier is unchanged. The three grid constants were re-based together to a single dated Ember retrieval, and the rating thresholds moved with the world figure as they must.</p>
+<div class="table-wrap" role="region" aria-label="Table (scrollable)" tabindex="0"><table>
+<thead>
+<tr>
+<th scope="col">constant</th>
+<th scope="col">1.6</th>
+<th scope="col">1.7</th>
+<th scope="col">change</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>UK grid intensity</td>
+<td>217.33</td>
+<td><strong>222.18</strong></td>
+<td>+2.23%</td>
+</tr>
+<tr>
+<td>EU grid intensity</td>
+<td>209.64</td>
+<td><strong>210.13</strong></td>
+<td>+0.23%</td>
+</tr>
+<tr>
+<td>World grid intensity</td>
+<td>458.54</td>
+<td><strong>459.03</strong></td>
+<td>+0.11%</td>
+</tr>
+<tr>
+<td><code>bandGood</code> threshold</td>
+<td>0.111</td>
+<td><strong>0.1115</strong></td>
+<td>+0.45%</td>
+</tr>
+<tr>
+<td><code>globalAvgPage</code> threshold</td>
+<td>0.334</td>
+<td><strong>0.3345</strong></td>
+<td>+0.15%</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Why the UK moves most.</strong> Its constant moved most, and unlike the world figure it does <strong>not</strong> self-cancel: the rating thresholds are rescaled by the <em>world</em> intensity, not the UK one, so a UK-audience figure rises while its threshold barely moves. This is the one that matters for a UK audience, and it is the constant nobody had checked.</p>
+<p>Per page impression at 2 MB with the efficiency multiplier at 1.0, so the arithmetic is legible:</p>
+<div class="table-wrap" role="region" aria-label="Table (scrollable)" tabindex="0"><table>
+<thead>
+<tr>
+<th scope="col">host band</th>
+<th scope="col">audience</th>
+<th scope="col">1.6</th>
+<th scope="col">1.7</th>
+<th scope="col">change</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Green (band 4, 50)</td>
+<td>100% UK</td>
+<td>0.16313 g</td>
+<td>0.16458 g</td>
+<td>+0.89%</td>
+</tr>
+<tr>
+<td>Green (band 4, 50)</td>
+<td>100% EU</td>
+<td>0.16099 g</td>
+<td>0.16123 g</td>
+<td>+0.15%</td>
+</tr>
+<tr>
+<td>Green (band 4, 50)</td>
+<td>50% UK / 25% EU</td>
+<td>0.17936 g</td>
+<td>0.18020 g</td>
+<td>+0.47%</td>
+</tr>
+<tr>
+<td>Green (band 4, 50)</td>
+<td>worldwide</td>
+<td>0.23018 g</td>
+<td>0.23042 g</td>
+<td>+0.10%</td>
+</tr>
+<tr>
+<td>Mid (band 2, 320)</td>
+<td>100% UK</td>
+<td>0.19283 g</td>
+<td>0.19428 g</td>
+<td>+0.75%</td>
+</tr>
+<tr>
+<td>Mid (band 2, 320)</td>
+<td>worldwide</td>
+<td>0.25988 g</td>
+<td>0.26012 g</td>
+<td>+0.09%</td>
+</tr>
+<tr>
+<td>Undisclosed (band 0)</td>
+<td>100% UK</td>
+<td>0.20807 g</td>
+<td>0.20957 g</td>
+<td>+0.72%</td>
+</tr>
+<tr>
+<td>Undisclosed (band 0)</td>
+<td>worldwide</td>
+<td>0.27512 g</td>
+<td>0.27542 g</td>
+<td>+0.11%</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>No rating band changes in any tested configuration.</strong> Both worked examples above keep their rating: A stays "below global average" at 0.155 g (was 0.154 g), B stays "well below" at 0.073 g (was 0.072 g).</p>
+<p><strong>Figures published on version 1.6 or earlier understate carbon for any stack with a UK or EU audience share, and must be restated.</strong> A stack served entirely to a worldwide audience moves by a tenth of a percent and is not worth restating on its own; a UK-audience stack moves by up to 0.9%.</p>
+<h3 id="what-this-change-does-not-fix">What this change does not fix</h3>
+<p><strong>The old vintage is still unknown, and that is the point of dating the new one.</strong> The 1.6 constants match no single calendar year of Ember's current data — fitting all three gives an RMS error of 1.27% against 2025 and 1.75% against 2024, with the outlier moving between them. Version 1.4 recorded the source and the release but never the retrieval date, and Ember revises history, so the two cannot be told apart after the fact. <strong>A dataset citation without a retrieval date is not reproducible</strong>, which is why 1.7 records one and why the constants must in future be re-based together rather than one at a time.</p>
+<p><strong>Ember will revise again.</strong> These figures will drift from the published dataset the same way, and that is expected rather than a defect. What matters is that the drift is now measurable: the retrieval date says exactly which numbers were taken, so a future reader can reproduce the difference instead of guessing at it.</p>
 <h2 id="restatement-what-version-16-changed">Restatement: what version 1.6 changed</h2>
 <p>Version 1.6 changes <strong>water only</strong>. No carbon figure, rating band, threshold or constant moves, and the carbon cross-check is untouched. Every figure below is a 2 MB page at 10,000 monthly impressions — the same basis as the water worked example above — computed from the shipped calculator before and after the change. Water is not modified by the efficiency multiplier, so these ratios hold at every page weight and impression count.</p>
 <div class="table-wrap" role="region" aria-label="Table (scrollable)" tabindex="0"><table>
@@ -1039,26 +1168,26 @@ savings_pct = round((1 − stack_CO₂_per_page_g / baseline_CO₂_per_page_g) �
 </thead>
 <tbody>
 <tr>
-<td>&lt; 0.111 g</td>
+<td>&lt; 0.1115 g</td>
 <td>Well below global average</td>
 <td>Green</td>
 </tr>
 <tr>
-<td>0.111 – 0.334 g</td>
+<td>0.1115 – 0.3345 g</td>
 <td>Below global average</td>
 <td>Amber</td>
 </tr>
 <tr>
-<td>&gt; 0.334 g</td>
+<td>&gt; 0.3345 g</td>
 <td>Above global average</td>
 <td>Red</td>
 </tr>
 </tbody>
 </table></div>
-<p>These bands are rebased to version 4 of the model, then <strong>rescaled</strong>. SWD v4 publishes them as <strong>0.12 g and 0.36 g</strong>, where 0.36 g is the global average page under v4 and also the pass/fail line in the Sustainable Web Design Digital Carbon Ratings system. But those published bands were calibrated against a world grid intensity of <strong>494 g CO₂e/kWh</strong>, and this calculator uses the newer Ember 2026 release figure of <strong>458.54</strong>. Keeping the published thresholds against a lower world intensity would have flattered every site by roughly 7% without anything actually improving, so both bands are rescaled by 458.54 / 494 = 0.9282, giving <strong>0.111 g and 0.334 g</strong>.</p>
+<p>These bands are rebased to version 4 of the model, then <strong>rescaled</strong>. SWD v4 publishes them as <strong>0.12 g and 0.36 g</strong>, where 0.36 g is the global average page under v4 and also the pass/fail line in the Sustainable Web Design Digital Carbon Ratings system. But those published bands were calibrated against a world grid intensity of <strong>494 g CO₂e/kWh</strong>, and this calculator uses Ember's world figure of <strong>459.03</strong>. Keeping the published thresholds against a lower world intensity would have flattered every site by roughly 7% without anything actually improving, so both bands are rescaled by 459.03 / 494 = 0.9292, giving <strong>0.1115 g and 0.3345 g</strong>. They are carried to four decimal places from v1.7: the exact values are 0.111505 and 0.334516, which sit almost exactly on a three-decimal rounding boundary, and rounding there would turn a 0.11% change in the world figure into a 0.9% change in the threshold.</p>
 <p>This is a deliberate, documented divergence from SWD's own Digital Carbon Ratings thresholds, and the tool states it in its own methodology output. It also means a figure from this calculator is <em>not</em> directly comparable to a Digital Carbon Rating band without applying the same rescaling.</p>
 <blockquote class="callout">
-<p>Versions 1.4 and earlier of this document printed 0.12 / 0.36 in this table while the tool applied 0.111 / 0.334 — the rescaling was described in the 1.4 changelog but this section was never updated to match. Corrected in 1.5. The tool's behaviour did not change; only this table was wrong. The previous v3-era bands (0.3 g and 0.8 g) would have marked almost every stack green once the energy constant was corrected.</p>
+<p>Versions 1.4 and earlier of this document printed 0.12 / 0.36 in this table while the tool applied the rescaled bands (0.111 / 0.334 at the time; 0.1115 / 0.3345 since v1.7) — the rescaling was described in the 1.4 changelog but this section was never updated to match. Corrected in 1.5. The tool's behaviour did not change; only this table was wrong. The previous v3-era bands (0.3 g and 0.8 g) would have marked almost every stack green once the energy constant was corrected.</p>
 </blockquote>
 <hr>
 <h2 id="equivalences">Equivalences</h2>
@@ -1219,65 +1348,102 @@ CO₂_per_imp_g  = energy_per_impression_kWh × blendedCI × efficiency_multipli
 <thead>
 <tr>
 <th scope="col">Variable</th>
+<th scope="col">Value</th>
 <th scope="col">Source</th>
-<th scope="col">Value/mapping</th>
+<th scope="col">Date</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>System energy intensity</td>
-<td>SWD Model v4</td>
 <td>0.30 kWh/GB (0.194 operational + 0.106 embodied)</td>
+<td>Sustainable Web Design Model v4, <code>sustainablewebdesign.org/estimating-digital-emissions/</code></td>
+<td><strong>The page carries no publication date.</strong> Model version 4 identifies it. Transcribed 29 July 2026; re-verified 13 August 2026</td>
 </tr>
 <tr>
-<td>Operational data centre intensity (water basis)</td>
-<td>SWD Model v4</td>
-<td>0.055 kWh/GB</td>
+<td>Operational segment split</td>
+<td>Data centre 0.055, network 0.059, device 0.080 kWh/GB</td>
+<td>Sustainable Web Design Model v4</td>
+<td>As above</td>
 </tr>
 <tr>
-<td>Carbon intensity (CI)</td>
-<td>Hosting provider C1 score</td>
-<td>50/175/320/442/458.54 g CO₂e/kWh</td>
+<td>Embodied segment split</td>
+<td>Data centre 0.012, network 0.013, device 0.081 kWh/GB</td>
+<td>Sustainable Web Design Model v4</td>
+<td>As above</td>
 </tr>
 <tr>
-<td>Water usage effectiveness (WUE)</td>
-<td>Hosting provider C2 score</td>
-<td>0.003/0.12/0.5/2.3/2.3 L/kWh (bands 1 and 0 restated in v1.6; 2.3 where no host is selected)</td>
+<td>Grid intensity — world</td>
+<td>459.03 g CO₂e/kWh. Used as the baseline CI, the embodied grid intensity and carbon band 0</td>
+<td>Ember, <em>Yearly Electricity Data</em>, "Total generation", "World" 2025</td>
+<td><strong>Retrieved 9 September 2026</strong></td>
+</tr>
+<tr>
+<td>Grid intensity — UK and EU</td>
+<td>UK 222.18, EU 210.13 g CO₂e/kWh</td>
+<td>Ember, <em>Yearly Electricity Data</em>, "Total generation", United Kingdom and EU 2025</td>
+<td><strong>Retrieved 9 September 2026</strong>, the same pull as the world figure</td>
+</tr>
+<tr>
+<td>Carbon fallback bands</td>
+<td>50 / 175 / 320 / 442 / 459.03 g CO₂e/kWh by criterion 1 score</td>
+<td>Bands 4 and 3 calibrated to published provider figures in section 5.1. Band 0 is Ember's world figure. <strong>Bands 2 and 1 are judgement values with no citable source</strong> — the derivation is reconstructed under Step 1, not recorded</td>
+<td>Reconstruction recorded 13 August 2026 (v1.6). Values unchanged since v1.0</td>
+</tr>
+<tr>
+<td>Water fallback bands (WUE)</td>
+<td>0.003 / 0.12 / 0.5 / 2.3 / 2.3 L/kWh by criterion 2 score; 2.3 where no host is selected</td>
+<td>Band 4 and band 2 from LBNL-2001637; band 3 from AWS's published WUE; bands 1 and 0 from Microsoft's published first-generation figure. Band 0 is <strong>a declared policy value, not an average</strong></td>
+<td>Bands 4 and 2 sourced 13 August 2026. Bands 1 and 0 restated 13 August 2026 (v1.6) from a Microsoft page of 24 June 2026</td>
+</tr>
+<tr>
+<td>Rating bands</td>
+<td>0.1115 g and 0.3345 g per page view</td>
+<td>SWD v4's published 0.12 and 0.36, rescaled by <code>globalCI / 494</code>. A declared deviation from SWD's Digital Carbon Ratings</td>
+<td>Rescaling introduced v1.4, July 2026. Values moved to four decimal places 9 September 2026 (v1.7). Enforced by E16</td>
+</tr>
+<tr>
+<td>Rating-band rescale base</td>
+<td>494 g CO₂e/kWh</td>
+<td>The world intensity SWD v4 calibrated its published bands against</td>
+<td>Fixed by SWD v4. Not a figure this project chooses</td>
 </tr>
 <tr>
 <td>Efficiency multiplier</td>
-<td>Average stack C3 score</td>
-<td>0.75/0.87/1.00/1.18/1.35</td>
+<td>0.75 / 0.87 / 1.00 / 1.18 / 1.35 by average criterion 3 score</td>
+<td><strong>A judgement mapping from a qualitative score to a multiplier. No citable source.</strong> It is declared as one rather than given a fabricated citation</td>
+<td>Present since v1.0. Unchanged</td>
 </tr>
 <tr>
-<td>Baseline CI</td>
-<td>World average (no action)</td>
-<td>458.54 g CO₂e/kWh (Ember Yearly Electricity Data 2025, "World")</td>
-</tr>
-<tr>
-<td>Embodied grid intensity</td>
-<td>Fixed, never varied</td>
-<td>458.54 g CO₂e/kWh (worldwide supply chain)</td>
+<td>CDN payload and intensity estimates</td>
+<td>Per service <code>typical_kb</code> and <code>ci</code>; see the CDN split section for the per-service basis</td>
+<td>Published provider infrastructure figures where a provider discloses one; typical payload estimates otherwise</td>
+<td>Introduced v1.2, June 2026</td>
 </tr>
 <tr>
 <td>Car emissions</td>
-<td>DfT fleet average 2023</td>
 <td>150 g CO₂e/km</td>
+<td>Department for Transport, vehicle emissions statistics, fleet average</td>
+<td>2023</td>
 </tr>
 <tr>
 <td>Tree absorption</td>
-<td>Woodland Trust estimate</td>
 <td>21 kg CO₂/year</td>
+<td>Woodland Trust estimate for a mature broadleaved tree</td>
+<td><strong>No date established from the source.</strong> Stated rather than guessed</td>
 </tr>
 </tbody>
 </table></div>
+<p><strong>Framework v4 requirement 4 asks for a source and a date against every constant.</strong> Both are given above. Where a constant is a judgement value, that is declared rather than dressed in a citation. Where a date cannot be established from the source, that is said. <strong>E17 enforces this table</strong>: it fails the release check if a governed constant has no row, or if a row's source or date cell is empty.</p>
 <hr>
 <h2 id="references">References</h2>
 <ul>
 <li>Sustainable Web Design Model v4 — <a class="ext" href="https://sustainablewebdesign.org/estimating-digital-emissions/" target="_blank" rel="noopener noreferrer">sustainablewebdesign.org/estimating-digital-emissions</a></li>
 <li>IEA Global CO₂ Emissions from Electricity (2022) — <a class="ext" href="https://www.iea.org/data-and-statistics/charts/global-co2-emissions-from-electricity-2022" target="_blank" rel="noopener noreferrer">iea.org</a></li>
+<li>Ember — <em>Yearly Electricity Data</em>: grid emissions intensity by country and for the world, revised annually. The source for the 459.03 g CO₂e/kWh world average used as the baseline CI, the embodied-energy grid intensity and carbon band 0 — <a class="ext" href="https://ember-energy.org/data/yearly-electricity-data/" target="_blank" rel="noopener noreferrer">ember-energy.org</a></li>
 <li>Green Software Foundation Software Carbon Intensity (SCI, ISO/IEC 21031:2024) — <a class="ext" href="https://greensoftware.foundation/projects/software-carbon-intensity" target="_blank" rel="noopener noreferrer">greensoftware.foundation</a></li>
 <li>AWS Water Stewardship Report (2023) — <a class="ext" href="https://sustainability.aboutamazon.com" target="_blank" rel="noopener noreferrer">sustainability.aboutamazon.com</a></li>
+<li>Shehabi, A., Smith, S. J., Hubbard, A. et al. (2024). <em>2024 United States Data Center Energy Usage Report</em>, LBNL-2001637, 20 December 2024 — the source for band 2's 0.50 L/kWh (annual average site WUE, p.48) and band 4's air-cooled "near zero" — <a class="ext" href="https://escholarship.org/uc/item/32d6m0d1" target="_blank" rel="noopener noreferrer">escholarship.org</a> (<a class="ext" href="https://doi.org/10.71468/P1WC7Q" target="_blank" rel="noopener noreferrer">DOI 10.71468/P1WC7Q</a>)</li>
 <li>Microsoft — <em>Inside Microsoft's two-decade push to cut water intensity while scaling for growth</em> (24 June 2026), the source for the 2.3 L/kWh first-generation figure at bands 1 and 0 — <a class="ext" href="https://blogs.microsoft.com/blog/2026/06/24/inside-microsofts-two-decade-push-to-cut-water-intensity-while-scaling-for-growth/" target="_blank" rel="noopener noreferrer">blogs.microsoft.com</a></li>
 <li>Scaleway Environmental Metrics (2024 Impact Report) — <a class="ext" href="https://www.scaleway.com/en/environmental-leadership/" target="_blank" rel="noopener noreferrer">scaleway.com</a></li>
 <li>Department for Transport — Vehicle Emissions Statistics (2023) — <a class="ext" href="https://www.gov.uk/government/collections/vehicle-licensing-statistics" target="_blank" rel="noopener noreferrer">gov.uk/government/collections/vehicle-licensing-statistics</a></li>
@@ -1286,14 +1452,14 @@ CO₂_per_imp_g  = energy_per_impression_kWh × blendedCI × efficiency_multipli
 <hr>
 <p><em>© Hive IT 2026. Text and methodology licensed under <a class="ext" href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>; accompanying code under the <a class="ext" href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank" rel="noopener noreferrer">Apache License, Version 2.0</a>. Built by Hive IT as part of the Online Ecosystem Ethics Framework (OEEF) v3.2.</em></p>
 <hr>
-<p><em>End of this document, version 1.6 (13 August 2026).</em></p>
+<p><em>End of this document, version 1.7 (9 September 2026).</em></p>
 <p><em>© Hive IT 2026. Licensed under <a class="ext" href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">Creative Commons Attribution 4.0 (CC BY 4.0)</a> — you may copy, adapt and use this work, including commercially, provided you credit Hive IT and the Online Ecosystem Ethics Framework (OEEF).</em></p>
 </article>
   </main>
 </div>
 <footer>
   <div class="fi">
-    <p><strong>Stack Environmental Impact Calculator — Methodology, version 1.6 (13 August 2026)</strong> Companion document. Prepared by Hive IT.</p>
+    <p><strong>Stack Environmental Impact Calculator — Methodology, version 1.7 (9 September 2026)</strong> Companion document. Prepared by Hive IT.</p>
     <p>© Hive IT 2026. Licensed under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">Creative Commons Attribution 4.0 (CC BY 4.0)</a> — you may copy, adapt and use this work, including commercially, provided you credit Hive IT and the Online Ecosystem Ethics Framework (OEEF).</p>
   </div>
 </footer>

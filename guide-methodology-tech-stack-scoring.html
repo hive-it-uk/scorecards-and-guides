@@ -154,7 +154,7 @@ footer a{color:var(--gold)}
     </div>
     <h1>Tech-stack scorecard — scoring methodology</h1>
     <p class="ver"><strong>Version 1.0 — approved 13 August 2026</strong></p>
-    <p class="meta"><a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a> · about a 29-minute read</p>
+    <p class="meta"><a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a> · about a 30-minute read</p>
     <p class="lede">Companion to the <a href="guide-framework.html">Online Ecosystem Ethics Framework v4</a> and to the <a href="guide-stack-impact-calculator-methodology.html">stack impact calculator methodology</a> v1.6, which covers the carbon and water <strong>calculator</strong> and is unchanged by this document. This document covers the <strong>scoring</strong>: what kinds of thing the scorecard assesses, which criteria apply to them and in which state, what a competent search checks, and how a stack result is composed.</p>
   </div>
 </header>
@@ -205,7 +205,7 @@ footer a{color:var(--gold)}
 <p><em>Implemented in full:</em> the 0–4 scale and assurance levels; performance and evidence as separate axes; the applicability matrix in section 3 below (three of the framework's five states are in use as values — see the declared non-conformance at the end of this statement); criterion levels at the framework defaults; the quantity-versus-duty rule; the weighted geometric mean with zero-guard and weak-pillar flag; equal pillar weights as default with the equal-weight sensitivity line; the criterion 9 transparency cap; red flags and mitigation flags reported separately; the company-agreement and corporate-steward rules; the results hierarchy with the composite shown by default and dismissible (framework rule C1); evidence-coverage reporting; the not-disclosed rule with the search standards in section 7.</p>
 <p><em>Declared deviation — criterion 12 not applicable for open-source entries.</em> Of the 92 entries, <strong>42 are not scored on criterion 12 at all</strong>: the 16 corporate-stewarded, 13 foundation and 13 community entries. The exclusion is made by the governance rule in <code>GOVERNANCE_NA</code>, which lists criterion 12 for all three open-source governance classes, and <code>applicabilityOf()</code> resolves governance ahead of entity type — so for those entries the criterion returns <strong>not applicable</strong>, is excluded from the total and is never penalised. The scored population is <strong>50</strong>. The reason is structural: self-hosted software transmits no user data to its maintainers, so no data controller, no jurisdiction and no transfer exposure arises for the project to be judged on.</p>
 <p>Two things follow that a reader must not be left to infer. First, <strong>there is no near-uniform score of 3 recording this</strong> — an earlier version of this statement said there was, and it was wrong. Those 42 entries carry no criterion 12 score in the result at all; the exclusion is the record. Second, criterion 12 also covers <strong>security practice</strong>, where these entries genuinely differ: some run a formal security team, a published security policy and a CVE disclosure process, and others have none of these. Excluding the criterion excludes that limb with it, so the variation is <strong>not assessed anywhere in this tool</strong> — not narrowed into a lower score, not carried by a flag. That is a real gap, declared here rather than carried quietly. Assessing the security limb would need per-project evidence and its own applicable criterion; it is recorded as available future work, not a defect to be silently carried.</p>
-<p><em>Declared deviation:</em> the calculator rescales the Sustainable Web Design model's published rating bands by the ratio of the current Ember world grid intensity to the intensity the bands were calibrated against (458.54 / 494 g CO₂e/kWh, giving thresholds of 0.111 g and 0.334 g per page view). Keeping the published bands against a lower world intensity would flatter every site assessed. Full arithmetic in the <a href="guide-stack-impact-calculator-methodology.html">stack impact calculator methodology</a> v1.6.</p>
+<p><em>Declared deviation:</em> the calculator rescales the Sustainable Web Design model's published rating bands by the ratio of the current Ember world grid intensity to the intensity the bands were calibrated against (459.03 / 494 g CO₂e/kWh, giving thresholds of 0.1115 g and 0.3345 g per page view). Keeping the published bands against a lower world intensity would flatter every site assessed. Full arithmetic in the <a href="guide-stack-impact-calculator-methodology.html">stack impact calculator methodology</a> v1.6.</p>
 <p><em>Declared domain binding — the criterion 7 (workers and labour) scale.</em> Framework v4's criterion levels are adopted without departure, but they do not say where the boundaries fall for a software company that publishes nothing, which is most of this tool's population. The calibrated scale in section 4.1 fixes those boundaries for this domain: an explicit denial of representation scores 1, silence or boilerplate scores 2, functioning representation scores 3. It narrows the framework's levels rather than replacing them, and it is declared here because a reader comparing two tools' criterion 7 scores needs to know the boundary rule that produced them.</p>
 <p><em>Declared non-conformance — two applicability states are declared but unused.</em> Framework v4 declares five applicability states. This tool uses <strong>three</strong> as values: <code>scored</code>, <code>inherited</code> and <code>not_applicable</code>. <code>upstream</code> and <code>not_disclosed</code> are declared in the vocabulary of <code>APPLICABILITY</code> and handled by the resolution point, but <strong>no entry carries either as a value</strong> — verified 13 August 2026 across the shipped HTML and <code>build/data/stack-data.json</code>. Where sections 3.2 and 3.3 record a row as <em>upstream</em> or <em>not disclosed</em>, that is a <strong>target state, not an implemented one</strong>: the cell is at present <code>scored</code>, at the upstream provider's value, with the attribution stated in the note. The scores are correct; what is missing is machine-readable state, which v4 asks for so that a consumer of the export can tell the two apart without reading prose.</p>
 <p>This is a <strong>deliberate declaration, ruled on 13 August 2026</strong>, not an outstanding defect. Re-engineering the applicability layer would move no score and would risk several, so the state is declared here and in the published export instead. Two related points, both verified the same day: <strong>no cell in this tool carries a per-cell <code>na</code> flag</strong> (the mechanism v4 forbids — the count is zero, down from 51), and <code>APPLICABILITY_EXCEPTIONS</code> holds <strong>exactly one entry</strong>, <code>cloudflare</code> criterion 8 kept scored, with its reason recorded beside it in the code.</p>
@@ -462,7 +462,7 @@ footer a{color:var(--gold)}
 </ol>
 <p>Instruments that work, and their limits, are in section 7 under C7; the ones that produce false nils are recorded in the rulings files rather than here, because that list grows.</p>
 <h2 id="5-constants-and-models">5. Constants and models</h2>
-<p>All calculator constants are defined in the <a href="guide-stack-impact-calculator-methodology.html">stack impact calculator methodology</a> <strong>v1.6</strong> and referenced here rather than repeated. Framework v4 requirement 4 asks for a <strong>source and a date</strong> against every constant, so both are given below; where a date cannot be established from the source itself, that is said rather than guessed.</p>
+<p>All calculator constants are defined in the <a href="guide-stack-impact-calculator-methodology.html">stack impact calculator methodology</a> <strong>v1.7</strong> and referenced here rather than repeated. Framework v4 requirement 4 asks for a <strong>source and a date</strong> against every constant. <strong>E17 enforces that.</strong> Both are given below; where a date cannot be established from the source itself, that is said rather than guessed.</p>
 <div class="table-wrap" role="region" aria-label="Table (scrollable)" tabindex="0"><table>
 <thead>
 <tr>
@@ -481,13 +481,13 @@ footer a{color:var(--gold)}
 </tr>
 <tr>
 <td>Grid intensities</td>
-<td>UK 217.33, EU 209.64, World 458.54 g CO₂e/kWh</td>
-<td>Ember, Yearly Electricity Data, "Total generation" (lifecycle CO₂e)</td>
-<td>2025 release. <strong>The retrieval date is not recorded</strong> in the calculator methodology; the figures were re-verified in the built tool on 13 August 2026</td>
+<td>UK 222.18, EU 210.13, World 459.03 g CO₂e/kWh</td>
+<td>Ember, Yearly Electricity Data, "Total generation" (lifecycle CO₂e), "World"/EU/United Kingdom 2025</td>
+<td><strong>Retrieved 9 September 2026</strong> and re-based as one set (calculator methodology v1.7). The previous constants recorded a release but no retrieval date, and could not afterwards be matched to any single year of Ember's data — which is why the date is now part of the citation</td>
 </tr>
 <tr>
 <td>Rescaled rating bands</td>
-<td>0.111 g and 0.334 g per page view (SWD's published 0.12 / 0.36 × 458.54 / 494)</td>
+<td>0.1115 g and 0.3345 g per page view (SWD's published 0.12 / 0.36 × 459.03 / 494)</td>
 <td>SWD v4 Digital Carbon Ratings thresholds, rescaled — a declared deviation, section 1</td>
 <td>Rescaling introduced in calculator methodology v1.4, July 2026</td>
 </tr>
@@ -604,7 +604,7 @@ footer a{color:var(--gold)}
 </tr>
 <tr>
 <td>0, or no host selected</td>
-<td>458.54 (the world average, <code>SWD_V4.globalCI</code>)</td>
+<td>459.03 (the world average, <code>SWD_V4.globalCI</code>)</td>
 </tr>
 </tbody>
 </table></div>
@@ -632,18 +632,18 @@ footer a{color:var(--gold)}
 </tr>
 <tr>
 <td>1</td>
-<td>1.5</td>
+<td>2.30</td>
 </tr>
 <tr>
 <td>0, or no host selected</td>
-<td>1.8</td>
+<td>2.30</td>
 </tr>
 </tbody>
 </table></div>
 <p><strong>The water bands must not invert at the bottom.</strong> An earlier version of the calculator returned a <em>better</em> water use effectiveness for a host scoring 0, and for "no host selected", than for a host scoring 1 — so non-disclosure was rewarded over minimal disclosure. That is the opposite of the rule the carbon bands implement one line above, and a breach of the framework's not-disclosed principle. The band is monotonic across its whole range now, and the 0 point rests on a published figure rather than on a modelling assumption.</p>
 <p><strong>The band values themselves are defined by the <a href="guide-stack-impact-calculator-methodology.html">stack impact calculator methodology</a>, which is authoritative for them; cite its current version.</strong> Water figures produced under calculator v1.5 or earlier understate use for a host scoring 0 or 1 and must be restated rather than carried forward.</p>
-<p>One citation trap is worth keeping: <strong>1.80 L/kWh is not a citation for this band.</strong> The figure is widely repeated, but the Green Grid's 2011 value of the same number is a source-side grid-water intensity (EWIF) — a different metric that coincidentally shares the value.</p>
-<p><strong>What these bands are, and are not.</strong> They are a judgement mapping from a qualitative score to a physical quantity, not a measured relationship. The values sit close to the raw metrics recorded for providers at the same score — band 3 for carbon (175) is Azure's raw figure, band 4 (50) is near the three European independents' 53 to 60, and band 3 for water (0.12) is AWS's published WUE — which is how they were calibrated. The derivation of the carbon bands is reconstructed in the calculator methodology; what that reconstruction can and cannot establish is set out in section 10, and the honest position is that bands 2 and 1 are calibrated in shape but not in magnitude. The water bands carry published figures at both ends.</p>
+<p>One citation trap is worth keeping: <strong>1.80 L/kWh is not a citation for these bands.</strong> The figure is widely repeated, and band 0 used it until calculator v1.6 — but the Green Grid's 2011 value of the same number is a source-side grid-water intensity (EWIF), a different metric that coincidentally shares the value.</p>
+<p><strong>What these bands are, and are not.</strong> They are a judgement mapping from a qualitative score to a physical quantity, not a measured relationship. The values sit close to the raw metrics recorded for providers at the same score — band 3 for carbon (175) is Azure's raw figure, band 4 (50) is near the three European independents' 53 to 60, and band 3 for water (0.12) is AWS's published WUE — which is how they were calibrated. The derivation of the carbon bands is reconstructed in the calculator methodology; what that reconstruction can and cannot establish is set out in section 10, and the honest position is that bands 2 and 1 are calibrated in shape but not in magnitude. <strong>The water bands are not all published figures.</strong> Band 3's 0.12 (above) and band 1's 2.30 are — AWS's and Microsoft's own, both self-reported. Band 2's 0.50 sits just above LBNL's published 0.45–0.48 projection rather than on it; band 4's 0.003 is a judgement within LBNL's "near zero" for air-cooled systems; and band 0 is a declared <strong>policy value</strong>, set equal to the worst published figure so that non-disclosure cannot score better than disclosed-poor. The calculator methodology's provenance table carries each band's basis and whether it is independent.</p>
 <p>Any output resting on a band rather than a raw metric is labelled as score-derived, and the distinction is carried into the Carbon Reduction Plan data block. A band is an estimate about a provider that has not published, and it is never presented as a measurement.</p>
 <h3 id="53-where-the-host-intensity-applies">5.3 Where the host intensity applies</h3>
 <p><strong>Confirmed against <code>stack-internal.html</code> on 13 August 2026.</strong> The split is by <strong>operational versus embodied energy</strong>, not by place, and there are three destinations:</p>
@@ -669,7 +669,7 @@ footer a{color:var(--gold)}
 <tr>
 <td><code>EMBODIED_SHARE</code></td>
 <td>0.106 kWh/GB, 35% of the total</td>
-<td>The <strong>world</strong> figure, 458.54 g CO₂e/kWh, regardless of host or audience</td>
+<td>The <strong>world</strong> figure, 459.03 g CO₂e/kWh, regardless of host or audience</td>
 </tr>
 </tbody>
 </table></div>
@@ -712,7 +712,7 @@ footer a{color:var(--gold)}
 <h2 id="9-location-overrides">9. Location overrides</h2>
 <p>The rule, not just the values: a UK, EU or US deployment context overrides a cell only where the criterion's meaning genuinely changes with the deployer's location — criterion 12, where the materiality of a foreign jurisdiction's legal reach depends on where the client and its users are; and criterion 1, where a provider's renewable profile meets a different local grid. Overrides never touch company-level conduct criteria (7, 10, 11), which do not vary with the deployer. Each override carries its own note and inherits the base cell's sources.</p>
 <h2 id="10-decisions-raised-not-made">10. Decisions raised, not made</h2>
-<p><strong>One outstanding.</strong> The release check does not enforce source-and-date on calculator constants, so a constant can still be added or changed carrying neither. Recorded as open rather than settled.</p>
+<p><strong>None outstanding, as of 11 September 2026.</strong> The last one — the release check did not enforce source-and-date on calculator constants — is closed by <strong>E17</strong>. E17 reads the Model inputs summary in the calculator methodology and fails the release check on two conditions: a governed constant with no row, and a row with an empty source or date cell. It also reads the <code>SWD_V4</code> and <code>GRID_CI</code> objects in the shipped page and fails on any numeric key it does not govern, so a new constant cannot arrive undocumented. A judgement value passes, but only if the row says it is one. A blank does not pass, and neither does "TBC".</p>
 <p>Every other decision this document raised has been taken and applied, and each is described in the section it affects: the <code>fullstack</code>/<code>engine</code> split and the dissolution of the <code>cloud</code> category (section 3), the removal of the per-cell <code>na</code> flags — the count in this tool is now <strong>zero</strong>, down from 51, with <code>APPLICABILITY_EXCEPTIONS</code> holding one entry (Cloudflare's criterion 8, scored) — hosted-service criterion 5 becoming scored (section 3.3), the near-constant clusters resolved by sourcing rather than by justification (section 3.4), and both fallback band corrections (section 5.2). The decision trail itself is in the OEEF decision register rather than repeated here.</p>
 <p><strong>A limitation that no approval can close, so it is stated rather than raised.</strong> The carbon fallback bands at scores 2 and 1 are judgement values whose original derivation was never written down. Bands 4 and 3 are calibrated against the published provider metrics in section 5.1 — the renewable European cluster at 53–60 and the market-based hyperscaler range at 150–180 — and band 0 is the Ember world figure. For bands 2 and 1 the calculator methodology's account is a <strong>reconstruction, not a record</strong>: 320 matches the band-3/world midpoint to two significant figures, and 442's attribution to IEA 2022 could not be confirmed against IEA's published series (≈460 for 2022; 445 for 2024). The bands are monotonic and defensible in shape, and calibrated in magnitude only at the ends. A reader relying on a band rather than a raw metric should treat the middle of the range accordingly — which is why any output resting on a band is labelled score-derived.</p>
 <hr>
