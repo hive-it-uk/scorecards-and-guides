@@ -153,7 +153,7 @@
             <span aria-hidden="true">ℹ️</span>
             <p>
                 AI vendor privacy settings change frequently — GitHub Copilot's individual plans switched to training-by-default in April 2026, and Atlassian began contributing Jira and Confluence data to AI training on 17 August 2026 (already in force). Each tool below shows when its steps were last checked, with links to the vendor's own page.
-                <strong>Always confirm against the vendor's own settings page before relying on it.</strong> All 19 tools last reviewed 8 September 2026.
+                <strong>Always confirm against the vendor's own settings page before relying on it.</strong> All 19 tools last reviewed 1 October 2026.
             </p>
         </div>
 
@@ -454,7 +454,7 @@
             github_copilot: {
                 id: 'github_copilot',
                 name: 'GitHub Copilot',
-                lastVerified: '8 September 2026',
+                lastVerified: '1 October 2026',
                 sources: [
                     { label: "GitHub Copilot privacy settings", url: "https://github.com/settings/copilot/features" },
                     { label: "GitHub Copilot docs", url: "https://docs.github.com/copilot" },
@@ -488,12 +488,13 @@
             jetbrains_ai: {
                 id: 'jetbrains_ai',
                 name: 'JetBrains AI Assistant',
-                lastVerified: '8 September 2026',
+                lastVerified: '1 October 2026',
                 sources: [
-                    { label: "JetBrains AI data collection & use policy", url: "https://www.jetbrains.com/legal/docs/ai/data-collection/" },
+                    { label: "Detailed code-related data collection FAQ", url: "https://www.jetbrains.com/legal/docs/terms/product_data_collection_faq/1.0/" },
+                    { label: "Product Data Collection and Usage Notice", url: "https://www.jetbrains.com/legal/docs/terms/product_data_collection/" },
                 ],
                 icon: `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>`,
-                desc: 'AI Assistant connects your IDE to LLMs. "Detailed code-related data" collection (full prompts and code fragments) is OFF by default on paid, trial, community and EAP licences, but ON by default on the free non-commercial licence.',
+                desc: 'AI Assistant connects your IDE to LLMs. "Detailed code-related data" (edit history, terminal use, AI prompts and responses) can be used for product improvement and AI training. It is OFF by default on paid, trial, community and EAP licences, but ON by default on the free non-commercial licence.',
                 tiers: {
                     noncommercial: {
                         id: 'jetbrains_ai_noncommercial',
@@ -501,18 +502,18 @@
                         privateByDefault: false,
                         steps: [
                             'On the free <strong>non-commercial</strong> licence, detailed code-related data collection is <strong>on by default</strong>.',
-                            'In your IDE open <strong>Settings → Appearance &amp; Behavior → System Settings → Data Sharing</strong> (or <strong>Settings → Tools → AI Assistant → Data Sharing</strong>).',
-                            'Uncheck <strong>"Send detailed code-related data"</strong> / <strong>"Allow detailed data collection by JetBrains AI"</strong>.',
-                            '<em>Note:</em> with it off, your prompts and code go straight to the LLM provider and are not stored on JetBrains servers or used to train JetBrains models.'
+                            'In your IDE open <strong>Settings → Appearance &amp; Behavior → System Settings → Data Sharing</strong>.',
+                            'Turn <strong>off</strong> detailed code-related data collection.',
+                            '<em>Note:</em> with it off, prompts go straight to the LLM provider under that provider’s terms. Where detailed data is collected, JetBrains keeps it for up to one year.'
                         ]
                     },
                     commercial: {
                         id: 'jetbrains_ai_commercial',
-                        name: 'Paid / commercial / Enterprise licence',
+                        name: 'Paid / commercial / organisation licence',
                         privateByDefault: true,
                         steps: [
-                            '<strong>Private by default:</strong> since IDE 2025.3.1, detailed data collection is opt-in (off) on all paid, trial, EAP and community licences.',
-                            'On company licences it is controlled centrally by admins and stays disabled unless explicitly enabled; Enterprise also offers an on-premises LLM option.'
+                            '<strong>Private by default:</strong> detailed data collection is opt-in on paid, trial, EAP and community licences.',
+                            'On organisation licences users cannot opt in unless an admin allows it, via <strong>JetBrains Central Console → AI management → Settings → Collection of Detailed Data</strong>. Confirm it is not set to “Let users decide” if you want it fully off.'
                         ]
                     }
                 }
@@ -520,9 +521,9 @@
             chatgpt: {
                 id: 'chatgpt',
                 name: 'OpenAI ChatGPT',
-                lastVerified: '8 September 2026',
+                lastVerified: '1 October 2026',
                 sources: [
-                    { label: "ChatGPT Data Controls", url: "https://chatgpt.com/#settings/DataControls" },
+                    { label: "Data controls in ChatGPT (OpenAI Help)", url: "https://help.openai.com/en/articles/7730893-data-controls-in-chatgpt" },
                     { label: "OpenAI privacy centre", url: "https://privacy.openai.com/" },
                 ],
                 icon: `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>`,
@@ -537,7 +538,8 @@
                             'Click your <strong>profile picture</strong> and select <strong>Settings</strong>.',
                             'Go to the <strong>Data Controls</strong> tab.',
                             'Toggle <strong>OFF</strong> <strong>"Improve the model for everyone"</strong>.',
-                            '<em>Pro-tip:</em> for sensitive queries, use <strong>Temporary Chat</strong> for no permanent history.'
+                            '<em>Pro-tip:</em> for sensitive queries, use <strong>Temporary Chat</strong> for no permanent history.',
+                            '<em>Note:</em> on personal plans this same setting also covers your <strong>Codex</strong> tasks. It stops future training only and does not delete saved chats.'
                         ]
                     },
                     plus: {
@@ -546,7 +548,8 @@
                         privateByDefault: false,
                         steps: [
                             'Log in at <a href="https://chatgpt.com" target="_blank" class="underline font-bold text-hive-dark hover:text-hive-yellow-hover">chatgpt.com</a>.',
-                            'Open <strong>Settings → Data Controls</strong> and toggle <strong>OFF</strong> "Improve the model for everyone". Paid consumer tiers are <strong>not</strong> private by default.'
+                            'Open <strong>Settings → Data Controls</strong> and toggle <strong>OFF</strong> "Improve the model for everyone". Paid consumer tiers are <strong>not</strong> private by default.',
+                            'The same setting also applies to <strong>Codex</strong> tasks on personal plans.'
                         ]
                     },
                     enterprise: {
@@ -563,7 +566,7 @@
             claude: {
                 id: 'claude',
                 name: 'Anthropic Claude',
-                lastVerified: '8 September 2026',
+                lastVerified: '1 October 2026',
                 sources: [
                     { label: "Anthropic privacy policy updates", url: "https://privacy.anthropic.com/en/articles/10301952-updates-to-our-privacy-policy" },
                     { label: "Your Claude privacy controls", url: "https://claude.ai/settings/data-privacy-controls" },
@@ -606,7 +609,7 @@
             gemini: {
                 id: 'gemini',
                 name: 'Google Gemini',
-                lastVerified: '8 September 2026',
+                lastVerified: '1 October 2026',
                 sources: [
                     { label: "Gemini Apps Activity settings", url: "https://myactivity.google.com/product/gemini" },
                     { label: "Gemini Apps privacy notice", url: "https://support.google.com/gemini/answer/13594961" },
@@ -622,7 +625,9 @@
                             'Open <a href="https://myactivity.google.com/product/gemini" target="_blank" class="underline font-bold text-hive-dark hover:text-hive-yellow-hover">myactivity.google.com/product/gemini</a>.',
                             'Find the <strong>"Keep Activity"</strong> toggle at the top of the Gemini Apps Activity page.',
                             'Switch it <strong>Off</strong> and confirm in the dialog.',
-                            '<em>Note:</em> even when off, chats may be kept ~72 hours for service and safety, and any conversation already seen by a human reviewer can be retained up to 3 years.'
+                            '<em>Note:</em> even when off, chats may be kept ~72 hours for service and safety, and any conversation already seen by a human reviewer can be retained up to 3 years.',
+                            '<em>Caveat:</em> Google states this setting does not control processing of chats to create anonymised data for improving its services.',
+                            '<em>Pro-tip:</em> use <strong>Temporary Chat</strong> for sensitive prompts — it is not saved to your activity or used to train Google\'s models. If you keep activity on, shorten auto-delete from the 18-month default to 3 months.'
                         ]
                     },
                     advanced: {
@@ -648,29 +653,31 @@
             notebooklm: {
                 id: 'notebooklm',
                 name: 'Google NotebookLM',
-                lastVerified: '8 September 2026',
+                lastVerified: '1 October 2026',
                 sources: [
-                    { label: "NotebookLM help centre", url: "https://support.google.com/notebooklm" },
+                    { label: "NotebookLM: how your data and feedback are used", url: "https://support.google.com/notebooklm/answer/17004255" },
                 ],
                 icon: `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>`,
-                desc: 'Synthesises your uploaded documents. Sources are not used to train public models; collaboration sharing is the main exposure to watch.',
+                desc: 'Answers questions from documents you upload. Content is not used to train Google’s models — but on personal accounts, sending feedback is the exception. Sharing is the other main exposure.',
                 tiers: {
                     standard: {
                         id: 'notebooklm_standard',
-                        name: 'Standard plan',
+                        name: 'Personal account',
                         privateByDefault: true,
                         steps: [
-                            '<strong>Private by default:</strong> NotebookLM does not use your uploaded PDFs, slides, notes or sources to train public models.',
-                            '<em>Collaboration note:</em> anyone invited to a shared notebook can inspect and download your uploaded source files.'
+                            '<strong>Private by default:</strong> your uploads, queries and responses are not used to train Google’s models <strong>unless you submit feedback</strong>.',
+                            '<em>Feedback:</em> thumbs up/down or “Send feedback” shares the related content, which may be human-reviewed and kept for up to 3 years (disconnected from your account). Avoid rating responses on sensitive notebooks.',
+                            '<em>Note:</em> chatting with a notebook inside the Gemini app follows your Gemini “Keep Activity” setting instead.',
+                            '<em>Sharing:</em> anyone invited to a notebook can view and download its source files.'
                         ]
                     },
                     workspace: {
                         id: 'notebooklm_workspace',
-                        name: 'Workspace Enterprise / Edu',
+                        name: 'Workspace / Education',
                         privateByDefault: true,
                         steps: [
-                            '<strong>Private by default:</strong> governed by Google Workspace enterprise data agreements.',
-                            'Processed source content is not used for foundation-model training.'
+                            '<strong>Private by default:</strong> uploads, queries and responses are not human-reviewed — even when feedback is given — and are not used to train AI models.',
+                            'Work accounts are covered by Google Cloud terms; school accounts by Workspace for Education terms.'
                         ]
                     }
                 }
@@ -678,7 +685,7 @@
             copilot: {
                 id: 'copilot',
                 name: 'Microsoft Copilot',
-                lastVerified: '8 September 2026',
+                lastVerified: '1 October 2026',
                 sources: [
                     { label: "Microsoft Copilot privacy settings", url: "https://copilot.microsoft.com/" },
                     { label: "Microsoft privacy statement", url: "https://privacy.microsoft.com/privacystatement" },
@@ -718,32 +725,34 @@
             },
             mistral: {
                 id: 'mistral',
-                name: 'Mistral AI',
-                lastVerified: '8 September 2026',
+                name: 'Mistral AI (Vibe, formerly Le Chat)',
+                lastVerified: '1 October 2026',
                 sources: [
-                    { label: "Mistral privacy policy", url: "https://mistral.ai/terms/#privacy-policy" },
+                    { label: "Mistral Help: opting out of training", url: "https://help.mistral.ai/en/articles/455207-can-i-opt-out-of-my-input-or-output-data-being-used-for-training" },
+                    { label: "Mistral privacy policy", url: "https://legal.mistral.ai/terms/privacy-policy" },
                 ],
                 icon: `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>`,
-                desc: 'Le Chat (Free) uses your inputs and outputs to train Mistral\'s models by default unless you opt out. API, Team and Enterprise plans are excluded. Mistral is EU-based and stores data in the EU.',
+                desc: 'Mistral renamed Le Chat to Vibe in May 2026. Vibe Free, Pro and Education use your inputs, outputs and uploaded documents for training by default. Vibe Teams/Enterprise and the paid Scale API plan are excluded. Mistral is EU-based.',
                 tiers: {
                     free: {
                         id: 'mistral_free',
-                        name: 'Free (le Chat)',
+                        name: 'Vibe Free / Pro / Education',
                         privateByDefault: false,
                         steps: [
-                            'On the web at <a href="https://chat.mistral.ai" target="_blank" class="underline font-bold text-hive-dark hover:text-hive-yellow-hover">chat.mistral.ai</a>, open <strong>Settings</strong> and find the <strong>Privacy</strong> section.',
-                            'Turn <strong>OFF</strong> the toggle <strong>"Allow your interactions to be used to train our models"</strong>.',
-                            'On iOS / Android: <strong>Settings → Data &amp; Account Controls</strong>, then deselect <strong>"Enable data sharing"</strong>.',
-                            '<em>Note:</em> feedback you submit via the thumbs up/down buttons is still used regardless of this setting.'
+                            'Open the <strong>Mistral Admin panel</strong>, select <strong>Vibe</strong> under <strong>Manage</strong>, then go to <strong>Privacy</strong>.',
+                            'Turn <strong>OFF</strong> <strong>“Allow your interactions to be used to train our models”</strong>.',
+                            'On iOS / Android: <strong>Data &amp; Account Controls</strong> → deselect <strong>“Enable data sharing”</strong>.',
+                            'If you also use Mistral Studio / the API on a free plan, opt out there separately — <strong>the Vibe and API toggles are independent</strong>.',
+                            '<em>Note:</em> thumbs up/down feedback lets Mistral use that whole conversation for training regardless of your opt-out.'
                         ]
                     },
                     api: {
                         id: 'mistral_api',
-                        name: 'API / Team / Enterprise',
+                        name: 'Vibe Teams / Enterprise · API Scale plan',
                         privateByDefault: true,
                         steps: [
-                            '<strong>Private by default:</strong> API, Team and Enterprise inputs and outputs are not used for training.',
-                            'API data is kept for ~30 rolling days for abuse monitoring then deleted (or not stored at all under Zero Data Retention).'
+                            '<strong>Private by default:</strong> Vibe Teams/Enterprise and API Scale plans are opted out of training by default.',
+                            'The free API (Experiment) plan is not — opt out in the Admin Console. Training opt-out is separate from Zero Data Retention.'
                         ]
                     }
                 }
@@ -751,23 +760,23 @@
             aws_kiro: {
                 id: 'aws_kiro',
                 name: 'AWS Kiro',
-                lastVerified: '8 September 2026',
+                lastVerified: '1 October 2026',
                 sources: [
-                    { label: "Kiro data & privacy docs", url: "https://kiro.dev/docs/reference/privacy-and-data/" },
+                    { label: "Kiro data protection docs", url: "https://kiro.dev/docs/privacy-and-security/data-protection/" },
                     { label: "AWS Service Terms", url: "https://aws.amazon.com/service-terms/" },
                 ],
                 icon: codeIcon,
-                desc: 'Amazon\'s agentic IDE. Free Tier and individual subscribers (social login / AWS Builder ID) have content collection on by default, which may be used for model training. Accounts via IAM Identity Center or Amazon Q Developer Pro, and enterprise, are excluded.',
+                desc: 'Amazon’s agentic IDE. Free and individual plans (Pro, Pro+, Power; social login or AWS Builder ID) collect content for service improvement by default, stored in AWS US East. Accounts via IAM Identity Center, an external identity provider or Q Developer Pro are excluded.',
                 tiers: {
                     individual: {
                         id: 'aws_kiro_individual',
-                        name: 'Free Tier / individual subscriber',
+                        name: 'Free / Pro / Pro+ / Power (individual)',
                         privateByDefault: false,
                         steps: [
-                            'In Kiro, open <strong>Settings → Data Sharing And Prompt Logging</strong> (in Kiro Web: <strong>Settings → Agent</strong>).',
-                            'Turn <strong>OFF</strong> <strong>"Content Collection For Service Improvement"</strong> / <strong>"Share Kiro content with AWS"</strong> (Kiro Web: <strong>"Allow AWS to use your Kiro Web content for service improvement"</strong>).',
-                            'Also turn <strong>OFF</strong> the <strong>Telemetry</strong> setting to stop usage and metrics collection.',
-                            '<em>Note:</em> Kiro\'s docs and the AWS Service Terms (§50.3) have been inconsistent on this, so opting out is the safe choice. Opt-out is prospective only.'
+                            'In Kiro, open <strong>Settings → User → Application → Telemetry and Content</strong> (older builds: <strong>Data Sharing And Prompt Logging</strong>).',
+                            'Uncheck <strong>“Content Collection For Service Improvement”</strong>.',
+                            'Also turn off <strong>Telemetry</strong> to stop usage metrics. In Kiro Web, use <strong>Settings → Agent</strong>.',
+                            '<em>Note:</em> opt-out is prospective. Kiro’s docs and the AWS Service Terms have not always matched, so opting out is the safe choice.'
                         ]
                     },
                     enterprise: {
@@ -775,8 +784,8 @@
                         name: 'IAM Identity Center / Q Developer Pro / Enterprise',
                         privateByDefault: true,
                         steps: [
-                            '<strong>Private by default:</strong> content from users signing in via AWS IAM Identity Center, an external identity provider, or an Amazon Q Developer Pro subscription is not used for service improvement or training.',
-                            'Enterprise telemetry is controlled by your admin in the Kiro console.'
+                            '<strong>Private by default:</strong> content from users signing in via IAM Identity Center, an external identity provider or Amazon Q Developer Pro is not used for service improvement.',
+                            'Enterprise telemetry is controlled by your admin.'
                         ]
                     }
                 }
@@ -784,21 +793,31 @@
             lovable: {
                 id: 'lovable',
                 name: 'Lovable',
-                lastVerified: '8 September 2026',
+                lastVerified: '1 October 2026',
                 sources: [
-                    { label: "Lovable privacy policy", url: "https://lovable.dev/privacy" },
+                    { label: "Lovable privacy policy changes (effective 9 Sept 2026)", url: "https://lovable.dev/legal/privacypolicyaugust2026" },
+                    { label: "Lovable docs: training data and privacy", url: "https://docs.lovable.dev/features/business/data-opt-out" },
                 ],
                 icon: codeIcon,
-                desc: 'AI app builder ("vibe coding"). Your prompts, code and project data may be used to train Lovable models by default. Identifiable personal data is excluded, and the underlying providers (OpenAI, Google, OpenRouter) are governed by their own terms.',
+                desc: 'AI app builder. Under its policy effective 9 September 2026, Lovable may train on Free and Pro users’ data, with an in-app opt-out. In the UK, EEA, Switzerland and Brazil this happens only with your consent. Your apps’ end-user data is never used for training.',
                 tiers: {
-                    free: {
-                        id: 'lovable_free',
-                        name: 'Free / Pro',
+                    uk_eea: {
+                        id: 'lovable_uk',
+                        name: 'Free / Pro — UK, EEA, Switzerland',
                         privateByDefault: false,
                         steps: [
-                            'There is no in-product toggle on Free/Pro — email <a href="mailto:privacy@lovable.dev" class="underline font-bold text-hive-dark hover:text-hive-yellow-hover">privacy@lovable.dev</a> (or contact Support) to opt out of model-training use.',
-                            'Lovable says it honours the request for future use, free of charge, on any plan.',
-                            '<em>Note:</em> opt-out is prospective; identifiable PII is not used for training in any case.'
+                            'Training on your data here requires your <strong>consent</strong>. Check you have not given it.',
+                            'Open <strong>Account Settings → Privacy</strong> and make sure <strong>Data collection opt out</strong> is enabled (or consent withdrawn).',
+                            '<em>Note:</em> some Lovable help pages still describe an older email-only route; the privacy policy is authoritative.'
+                        ]
+                    },
+                    free: {
+                        id: 'lovable_free',
+                        name: 'Free / Pro — other regions',
+                        privateByDefault: false,
+                        steps: [
+                            'Training is on by default. Open <strong>Account Settings → Privacy</strong> and enable <strong>Data collection opt out</strong>.',
+                            '<em>Note:</em> opt-out is prospective — it does not retract data from training sets assembled before you opted out.'
                         ]
                     },
                     business: {
@@ -806,8 +825,8 @@
                         name: 'Business / Enterprise',
                         privateByDefault: false,
                         steps: [
-                            'A workspace admin or owner can enable <strong>Data collection opt out</strong> in <strong>Settings → Privacy &amp; security</strong> so workspace code and data are not used for training or internal evaluation.',
-                            'This control is only available on Business and Enterprise workspaces.'
+                            'A workspace admin or owner enables <strong>Data collection opt out</strong> in <strong>Settings → Privacy &amp; security</strong>.',
+                            'This covers the whole workspace’s code and data.'
                         ]
                     }
                 }
@@ -815,7 +834,7 @@
             atlassian: {
                 id: 'atlassian',
                 name: 'Atlassian (Jira / Confluence / JSM)',
-                lastVerified: '8 September 2026',
+                lastVerified: '1 October 2026',
                 sources: [
                     { label: "Data contribution settings | Atlassian Support", url: "https://support.atlassian.com/security-and-access-policies/docs/data-contribution-settings/" },
                     { label: "Data contribution settings availability", url: "https://support.atlassian.com/security-and-access-policies/docs/data-contribution-settings-availability/" }
@@ -869,7 +888,7 @@
             meta_ai: {
                 id: 'meta_ai',
                 name: 'Meta AI / Llama',
-                lastVerified: '8 September 2026',
+                lastVerified: '1 October 2026',
                 sources: [
                     { label: "Meta Privacy Center — AI at Meta", url: "https://www.facebook.com/privacy/genai" },
                 ],
@@ -900,30 +919,31 @@
             deepseek: {
                 id: 'deepseek',
                 name: 'DeepSeek',
-                lastVerified: '8 September 2026',
+                lastVerified: '1 October 2026',
                 sources: [
                     { label: "DeepSeek privacy policy", url: "https://cdn.deepseek.com/policies/en-US/deepseek-privacy-policy.html" },
                 ],
                 icon: chatIcon,
-                desc: 'China-based. Inputs and outputs may be used for model improvement by default. A toggle exists, but data is stored under Chinese jurisdiction with weak deletion guarantees, so opting out is not a strong safeguard.',
+                desc: 'China-based. DeepSeek processes and stores data in China and uses inputs to train its models by default — including traffic to its own API. A toggle exists, but given the jurisdiction it is a weak safeguard.',
                 tiers: {
                     free: {
                         id: 'deepseek_free',
-                        name: 'Consumer (web / app)',
+                        name: 'Consumer app and DeepSeek API',
                         privateByDefault: false,
                         steps: [
-                            'Web: click the <strong>⋯</strong> next to your name → <strong>Settings → Data</strong>. App: <strong>Settings → Data controls</strong>.',
-                            'Turn <strong>OFF</strong> <strong>"Improve the model for everyone"</strong>.',
-                            '<strong>Caution:</strong> DeepSeek stores data on servers subject to Chinese law and may retain it; for confidential or client work, avoid the platform rather than relying on this toggle.'
+                            'Web: <strong>Settings → Data</strong>. App: <strong>Settings → Data controls</strong>.',
+                            'Turn <strong>OFF</strong> <strong>“Improve the model for everyone”</strong>.',
+                            '<em>Note:</em> unlike OpenAI or Anthropic, DeepSeek does not exclude its own paid API from training by default.',
+                            '<strong>Caution:</strong> for confidential or client work, avoid the platform rather than relying on this toggle.'
                         ]
                     },
                     api: {
                         id: 'deepseek_hosted',
-                        name: 'Via a Western host (Bedrock, Azure, etc.)',
+                        name: 'Via a Western host or self-hosted',
                         privateByDefault: true,
                         steps: [
-                            '<strong>Lower risk:</strong> running the open DeepSeek model through a Western cloud/API host keeps data off DeepSeek\'s own servers and under that host\'s terms.',
-                            'Check the specific host\'s training and retention policy.'
+                            '<strong>Lower risk:</strong> running the open DeepSeek model through a Western cloud host, or locally, keeps data off DeepSeek’s servers.',
+                            'The host’s own training and retention terms then apply.'
                         ]
                     }
                 }
@@ -931,20 +951,20 @@
             qwen: {
                 id: 'qwen',
                 name: 'Qwen (Alibaba)',
-                lastVerified: '8 September 2026',
+                lastVerified: '1 October 2026',
                 sources: [
-                    { label: "Alibaba Cloud privacy policy", url: "https://www.alibabacloud.com/help/en/legal/latest/alibaba-cloud-international-website-privacy-policy" },
+                    { label: "Qwen Chat privacy policy", url: "https://chat.qwen.ai/legal-agreement/privacy-policy" },
                 ],
                 icon: chatIcon,
-                desc: 'Alibaba\'s chat and model service (operated by Alibaba Cloud Singapore). The consumer chat has no clear training opt-out toggle; data use is governed by Alibaba\'s privacy policy.',
+                desc: 'Alibaba’s chat and model service. Qwen Chat may use de-identified user content to improve its AI models, offers no training opt-out, and its terms grant Alibaba a perpetual, sub-licensable licence over your content.',
                 tiers: {
                     free: {
                         id: 'qwen_free',
                         name: 'Qwen Chat (consumer)',
                         privateByDefault: false,
                         steps: [
-                            'There is no obvious in-product training opt-out. Manage what you can in your account settings, and exercise data rights via <a href="mailto:DPO_qwenlm-intl@service.alibaba.com" class="underline font-bold text-hive-dark hover:text-hive-yellow-hover">the Alibaba Cloud DPO</a>.',
-                            '<strong>Caution:</strong> treat consumer Qwen Chat as training-by-default; do not enter confidential or client data.'
+                            'There is <strong>no training opt-out</strong>. You can exercise data-protection rights via the privacy contact in Qwen’s policy.',
+                            '<strong>Caution:</strong> treat Qwen Chat as training-by-default and do not enter confidential or client data.'
                         ]
                     },
                     api: {
@@ -952,7 +972,7 @@
                         name: 'Alibaba Cloud API',
                         privateByDefault: true,
                         steps: [
-                            '<strong>Lower risk:</strong> Alibaba Cloud states API inputs and outputs are not retained for training by default; confirm against your account region and terms.'
+                            '<strong>Lower risk:</strong> Alibaba Cloud states API inputs and outputs are not retained for training by default. Confirm against your account region and terms.'
                         ]
                     }
                 }
@@ -960,23 +980,23 @@
             grok: {
                 id: 'grok',
                 name: 'Grok (xAI)',
-                lastVerified: '8 September 2026',
+                lastVerified: '1 October 2026',
                 sources: [
-                    { label: "X privacy settings", url: "https://x.com/settings/privacy_and_safety" },
+                    { label: "X Grok data-sharing settings", url: "https://x.com/settings/grok_settings" },
                     { label: "xAI privacy portal", url: "https://x.ai/privacy-portal" },
                 ],
                 icon: chatIcon,
-                desc: 'xAI trains Grok on your conversations and your public X posts by default. A genuine opt-out exists in X settings, but it is not retroactive and is separate from your X account-data stream.',
+                desc: 'xAI trains Grok on your conversations and public X posts by default. There are separate opt-outs on X and in the standalone Grok app/website. Opting out is not retroactive and does not cover feedback.',
                 tiers: {
                     free: {
                         id: 'grok_free',
-                        name: 'Grok via X account',
+                        name: 'Grok via X and grok.com',
                         privateByDefault: false,
                         steps: [
-                            'On the web, open X <strong>Settings and privacy → Privacy and safety → Grok &amp; Third-party Collaborators</strong> (sometimes labelled <strong>Data sharing</strong>).',
-                            'Uncheck the option allowing your data and Grok interactions to be used for training and fine-tuning.',
-                            'Use <strong>Private Chat</strong> for sensitive prompts (not saved to history; deleted within ~30 days), and the xAI Privacy Portal (x.ai/privacy-portal) for deletion requests.',
-                            '<em>Note:</em> opt-out is prospective; making your X account private also limits public-post training.'
+                            'On X: <strong>Settings and privacy → Privacy and safety → Grok &amp; Third-party Collaborators</strong> (or go to <a href="https://x.com/settings/grok_settings" target="_blank" class="underline font-bold text-hive-dark hover:text-hive-yellow-hover">x.com/settings/grok_settings</a>) and untick the training box.',
+                            'On grok.com or the Grok app: <strong>Settings → Data Controls</strong> and turn off model training as well.',
+                            'Use <strong>Private Chat</strong> for sensitive prompts — not used for training and deleted within ~30 days.',
+                            '<em>Note:</em> feedback you give is not covered by the opt-out; making your X account private also limits public-post training.'
                         ]
                     },
                     enterprise: {
@@ -984,7 +1004,7 @@
                         name: 'xAI API / Enterprise',
                         privateByDefault: true,
                         steps: [
-                            '<strong>Private by default:</strong> xAI API and enterprise agreements are not used for training. Confirm against your contract.'
+                            '<strong>Private by default:</strong> xAI API and enterprise use is not used for training. Confirm against your contract.'
                         ]
                     }
                 }
@@ -992,20 +1012,21 @@
             kimi: {
                 id: 'kimi',
                 name: 'Kimi (Moonshot AI)',
-                lastVerified: '8 September 2026',
+                lastVerified: '1 October 2026',
                 sources: [
-                    { label: "Moonshot AI / Kimi", url: "https://kimi.moonshot.cn/" },
+                    { label: "Kimi (Moonshot AI)", url: "https://www.kimi.com/" },
                 ],
                 icon: chatIcon,
-                desc: 'China-based. Moonshot AI trains on prompts and outputs by default — including API usage — and there is no in-product opt-out toggle.',
+                desc: 'China-based. Kimi’s international privacy policy (updated 13 August 2026) allows prompts, files and outputs to be used to train its models. There is no in-app opt-out, and the policy does not name where data is stored.',
                 tiers: {
                     free: {
                         id: 'kimi_free',
-                        name: 'Consumer &amp; API',
+                        name: 'Consumer app and website',
                         privateByDefault: false,
                         steps: [
-                            'There is no settings toggle. To opt out you must contact Moonshot AI directly (e.g. <a href="mailto:membership@moonshot.ai" class="underline font-bold text-hive-dark hover:text-hive-yellow-hover">membership@moonshot.ai</a>) and request that your data not be used for training.',
-                            '<strong>Caution:</strong> assume anything you enter, including via the API, may become permanent training data; do not share confidential or client information.'
+                            'There is <strong>no settings toggle</strong>. To opt out, contact Kimi support or the privacy contact in its Terms and request that your data is excluded from training.',
+                            'Opting out does not delete your chat history.',
+                            '<strong>Caution:</strong> a data-isolation failure exposing one user’s details to another was reported in April 2026. Do not share confidential or client information.'
                         ]
                     }
                 }
@@ -1013,20 +1034,21 @@
             duck_ai: {
                 id: 'duck_ai',
                 name: 'Duck.ai (DuckDuckGo)',
-                lastVerified: '8 September 2026',
+                lastVerified: '1 October 2026',
                 sources: [
-                    { label: "DuckDuckGo AI Chat privacy", url: "https://duckduckgo.com/aichat/privacy-terms" },
+                    { label: "Duck.ai Privacy Policy and Terms", url: "https://duckduckgo.com/duckai/privacy-terms" },
                 ],
                 icon: aggIcon,
-                desc: 'Aggregator. DuckDuckGo proxies your request, strips your IP and metadata, and holds agreements with every model provider (OpenAI, Anthropic, and Together.ai for Llama/Mistral) prohibiting training and requiring deletion within 30 days. The policy is uniform across all its models.',
+                desc: 'Aggregator. DuckDuckGo strips your IP and metadata before forwarding prompts, and has agreements with every provider (Anthropic, OpenAI, Azure OpenAI, Meta, together.ai) prohibiting training and requiring deletion within 30 days. The policy is uniform across its models.',
                 tiers: {
                     standard: {
                         id: 'duck_ai_standard',
-                        name: 'Free / Plus / Pro',
+                        name: 'Free / subscription',
                         privateByDefault: true,
                         steps: [
-                            '<strong>Private by default:</strong> no chats are used for training by DuckDuckGo or the underlying providers; chats are stored locally on your device unless you turn that off.',
-                            '<strong>Residual risk:</strong> protection is contractual and operational rather than technically guaranteed, and DuckDuckGo is US-based — fine for general work, not a channel for regulated or highly sensitive data.'
+                            '<strong>Private by default:</strong> chats are not used for training by DuckDuckGo or the providers, and DuckDuckGo does not store prompts or outputs on its servers.',
+                            '<em>Tip:</em> for sensitive work, pick models labelled <strong>Zero Data Retention</strong> or <strong>Zero Provider Visibility</strong>. Optional Sync &amp; Backup deletes inactive data after 18 months.',
+                            '<strong>Residual risk:</strong> protection is contractual rather than technically guaranteed, with safety and legal exceptions to the 30-day limit, and DuckDuckGo is US-based.'
                         ]
                     }
                 }
@@ -1034,29 +1056,31 @@
             zed: {
                 id: 'zed',
                 name: 'Zed (hosted models)',
-                lastVerified: '8 September 2026',
+                lastVerified: '1 October 2026',
                 sources: [
-                    { label: "Zed AI privacy & security", url: "https://zed.dev/docs/ai/privacy-and-security" },
+                    { label: "Zed AI privacy", url: "https://zed.dev/docs/ai/privacy-and-security" },
+                    { label: "Zed feedback and training data", url: "https://zed.dev/docs/ai/ai-improvement" },
                 ],
                 icon: aggIcon,
-                desc: 'Code editor that routes to multiple hosted models. Zed holds zero-data-retention, no-training agreements with all hosted providers (Anthropic, Google, OpenAI, xAI), so the umbrella is uniform — with a couple of exceptions worth knowing.',
+                desc: 'Code editor that routes to multiple hosted models. Zed holds no-training and zero-data-retention agreements with all hosted providers (Anthropic, Google, OpenAI, xAI), with a few exceptions worth knowing.',
                 tiers: {
                     hosted: {
                         id: 'zed_hosted',
-                        name: 'Zed-hosted models (Pro)',
+                        name: 'Zed-hosted models (Free / Pro / Business)',
                         privateByDefault: true,
                         steps: [
-                            '<strong>Private by default:</strong> prompts and code are discarded after each request and never used for training across all hosted providers.',
-                            '<strong>Exceptions:</strong> provider-designated "safety retention" models (e.g. Anthropic Mythos-class) get short-term provider retention but still no training; and Edit Prediction training is opt-in, only for open-source projects.'
+                            '<strong>Private by default:</strong> providers may not train on your prompts or code, and inference requests are not retained.',
+                            '<strong>Exceptions:</strong> provider-designated models with safety retention (Anthropic’s “Covered Models”) get short-term provider retention, still without training. On Free/Pro, <strong>rating a response sends the whole thread to Zed</strong>, and Edit Prediction training is opt-in for open-source projects.',
+                            'Zed Business blocks both feedback sharing and Edit Prediction training for all members.'
                         ]
                     },
                     byok: {
                         id: 'zed_byok',
-                        name: 'Bring-your-own API key',
+                        name: 'Own API key / gateways / external agents',
                         privateByDefault: false,
                         steps: [
-                            'If you use your own API key instead of Zed-hosted models, Zed\'s umbrella no longer applies — the provider\'s own terms govern.',
-                            'Opt out (or confirm exclusion) directly with that provider, and see its entry in this navigator.'
+                            'With your own API key, a gateway, an external agent or terminal threads, Zed’s agreements do not apply — the provider’s own terms govern.',
+                            'Opt out (or confirm exclusion) with that provider directly, and see its entry in this navigator.'
                         ]
                     }
                 }
@@ -1064,21 +1088,21 @@
             t3_chat: {
                 id: 't3_chat',
                 name: 'T3 Chat',
-                lastVerified: '8 September 2026',
+                lastVerified: '1 October 2026',
                 sources: [
-                    { label: "T3 Chat privacy policy", url: "https://t3.chat/privacy" },
+                    { label: "T3 Chat privacy policy", url: "https://t3.chat/privacy-policy" },
                 ],
                 icon: aggIcon,
-                desc: 'Aggregator routing to OpenAI, Anthropic, Google, DeepSeek and others via their APIs. T3 says it does not train on your data, and mainstream providers do not train on API traffic — but T3 retains chat history (no anonymising proxy), and the umbrella does not extend cleanly to non-Western models.',
+                desc: 'Aggregator routing to OpenAI, Google and Anthropic directly, and to other models (including DeepSeek and Qwen) via OpenRouter. T3 says it does not use personal information to train AI models, but it retains your history and processes data in the US.',
                 tiers: {
                     standard: {
                         id: 't3_chat_standard',
                         name: 'Standard account',
                         privateByDefault: false,
                         steps: [
-                            'T3 states it does not use your data to train models, and OpenAI/Anthropic/Google do not train on API requests — so coverage for mainstream models is reasonable.',
-                            'Unlike Duck.ai, T3 stores your message history on its servers and does not strip your identity, so it is not zero-retention.',
-                            '<strong>Caution:</strong> if you select <strong>DeepSeek or Qwen</strong> inside T3, those upstream Chinese providers have weaker and less clear training/retention terms — avoid sensitive data with those models.'
+                            'T3 states it does not train AI models on your personal information, and OpenAI, Anthropic and Google do not train on API requests — so coverage for mainstream models is reasonable.',
+                            'T3 stores your prompts and uploads and does not anonymise them. Its policy also states that data sent through the service is <strong>owned by T3 Chat</strong>.',
+                            '<strong>Caution:</strong> models reached via OpenRouter — including DeepSeek and Qwen — are subject to their upstream providers’ terms. Avoid sensitive data with those models.'
                         ]
                     }
                 }
